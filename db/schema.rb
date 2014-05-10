@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20140509210915) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
+    t.string   "image"
     t.string   "provider"
     t.string   "uid"
   end
