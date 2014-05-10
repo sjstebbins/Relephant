@@ -3,6 +3,8 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'shoulda/matchers'
+require 'capybara/rails'
+require 'capybara/rspec'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -17,7 +19,49 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 
+# Helper for testing with Omniauth-facebook
+def valid_sign_in_with_facebook
+  OmniAuth.config.test_mode = true
+  OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
+    :provider => 'facebook',
+    :uid => '100008308304468',
+    :info => {
+      :email => 'ezgsjqv_occhinosen_1399740222@tfbnw.net',
+      :password => 'abc12345',
+      :name => 'Tom Amhcjhcjddfh Occhinosen',
+      :image => ''
+    }
+  })
+  visit '/'
+  click_link 'Sign in with Facebook'
+end
+
+def invalid_sign_in_with_facebook
+  OmniAuth.config.test_mode = true
+  OmniAuth.config.mock_auth[:facebook] = :invalid_credentials
+end
+
+def create_test_user(name, email, password)
+  visit '/'
+  click_link 'Sign Up'
+  fill_in 'Name', with: name
+  fill_in 'Email', with: email
+  fill_in 'Password', with: password
+  fill_in 'Password confirmation', with: password
+  click_button 'Sign up'
+  click_link 'Sign out'
+end
+
+def sign_in(email, password)
+  visit '/'
+  click_link 'Login'
+  fill_in 'Email', with: email
+  fill_in 'Password', with: password
+  click_button 'Sign in'
+end
+
 RSpec.configure do |config|
+  config.deprecation_stream = 'log/deprecations.log'
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
