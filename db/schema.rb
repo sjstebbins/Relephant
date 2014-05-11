@@ -13,7 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20140510042351) do
 
-
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -54,4 +53,5 @@ ActiveRecord::Schema.define(version: 20140510042351) do
     t.string   "part_of_speech"
     t.string   "letters"
   end
+
 end
