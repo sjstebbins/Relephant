@@ -1,0 +1,38 @@
+<!-- tried to fix the stuff throwing errors -->
+<% #FIXME the default font color is too dark and can't see the text in the navbar if it's not a link %>
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Rephanto</a>
+    </div><!-- end brand header-->
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+
+    <% if user_signed_in? %>
+       <li id="user-name"><%= current_user.name %></li>
+       <li><%= image_tag(current_user.image, id: "profile-photo") %></li>
+
+      <li><%= link_to 'Sign out', destroy_user_session_path, method: :delete %></li>
+    <% else %>
+      <li><%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %></li>
+      <li><%= link_to 'Login', new_user_session_path %></li>
+      <li><%= link_to 'Sign Up', new_user_registration_path %></li>
+    <% end %>
+  </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+
+
+

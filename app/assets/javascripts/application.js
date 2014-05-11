@@ -14,7 +14,15 @@
 //= require jquery_ujs
 //= require turbolinks
 
+// move to separate file
 function ready() {
+  $('#user-name').hide();
+  $('nav').on("mouseenter", function(){
+    $('#user-name').fadeIn('slow');
+  });
+  $('nav').on("mouseleave", function(){
+    $('#user-name').fadeOut('slow');
+  });
 }
 
 $(document).ready(ready);

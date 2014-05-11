@@ -13,3 +13,12 @@
  *= require_tree .
  *= require_self
  */
+
+#profile-photo{
+border-radius: 45px;
+padding: 10px
+}
+#user-name{
+  margin-top: 20px;
+}
+
