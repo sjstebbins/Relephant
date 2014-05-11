@@ -14,3 +14,13 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+
+$(document).ready(function(){
+  $('#user-name').hide();
+  $('nav').on("mouseenter", function(){
+    $('#user-name').fadeIn('slow');
+  });
+  $('nav').on("mouseleave", function(){
+    $('#user-name').fadeOut('slow');
+  });
+});
