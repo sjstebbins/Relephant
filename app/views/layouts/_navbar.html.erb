@@ -10,7 +10,11 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+      <% if current_user? %>
+       <a class="navbar-brand" href="/user/<%= current_user.id %>">Rephanto</a>
+      <% else %>
       <a class="navbar-brand" href="/">Rephanto</a>
+      <% end %>
     </div><!-- end brand header-->
 
     <!-- Collect the nav links, forms, and other content for toggling -->
