@@ -10,7 +10,7 @@
   <ul>
     <% if user_signed_in? %>
       <li><%= image_tag(current_user.image) %></li>
-      <li><%= current_user.name %></li>
+      <li><%= link_to current_user.name, current_user %></li>
       <li><%= link_to 'Sign out', destroy_user_session_path, method: :delete %></li>
     <% else %>
       <li><%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %></li>

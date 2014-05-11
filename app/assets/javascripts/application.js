@@ -13,4 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree .
+
+function ready() {
+}
+
+$(document).ready(ready);
+$(document).on('page:load', ready);

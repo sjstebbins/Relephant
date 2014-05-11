@@ -7,9 +7,12 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
-User.create(name: 'Jesse Sessler', email: 'jesse@sessler.com', password: 'abc12345', password_confirmation: 'abc12345')
-User.create(name: 'Spencer Stebbins', email: 'spencer@stebbins.com', password: 'abc12345', password_confirmation: 'abc12345')
-Word.create(created_at: Date.today, part_of_speech: 'test', letters: 'hello')
-Word.create(created_at: Date.today, part_of_speech: 'test', letters: 'how')
-Word.create(created_at: Date.today, part_of_speech: 'test', letters: 'are')
-Word.create(created_at: Date.today, part_of_speech: 'test', letters: 'you')
+j = User.create(name: 'Jesse Sessler', email: 'jesse@sessler.com', password: 'abc12345', password_confirmation: 'abc12345')
+s = User.create(name: 'Spencer Stebbins', email: 'spencer@stebbins.com', password: 'abc12345', password_confirmation: 'abc12345')
+w1 = Word.create(created_at: Date.today, part_of_speech: 'test', letters: 'hello')
+w2 = Word.create(created_at: Date.today, part_of_speech: 'test', letters: 'how')
+w3 = Word.create(created_at: Date.today, part_of_speech: 'test', letters: 'are')
+w4 = Word.create(created_at: Date.today, part_of_speech: 'test', letters: 'you')
+
+j.words << w1 << w2
+s.words << w3 << w4

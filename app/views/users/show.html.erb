@@ -1,0 +1,10 @@
+<%= javascript_include_tag 'backboneApp', 'data-turbolinks-track' => true %>
+
+<h1><%= current_user.name %></h1>
+<div id="speech-recorder"></div>
+<div id="word-chart"></div>
+
+<script type="text/template" id="graph-template">
+  <p>Test</p>
+  <%%= console.log(this) %>
+</script>
