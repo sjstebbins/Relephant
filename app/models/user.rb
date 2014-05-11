@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:facebook]
 
-  has_many :entries
+  has_and_belongs_to_many(:words)
 
   validates(:name, :email, presence: true)
 
