@@ -4,7 +4,8 @@ var reco = new WebSpeechRecognition();
 var SpeechInputView = Backbone.View.extend({
   el: '#speech-input',
   events: {
-    'click button#microphone':'microphoneButton'
+    'click button#microphone':'microphoneButton',
+    'mouseover div#speech-input':'searchInput'
   },
   initialize: function(){
     this.wordStorage = [];

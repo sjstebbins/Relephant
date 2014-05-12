@@ -2,15 +2,15 @@
 
 <div id="speech-input">
 
-  <div id="status"></div>
+
 
   <button id="microphone" style="border: 0; background-color:transparent">
     <%= image_tag('mic.gif', alt: 'Start', id: 'status_img') %>
   </button>
 
-  <div id="word-chart"></div>
 
   <div id="results">
+    <div id="status"></div>
     <span id="final_span"></span>
     <span id="interim_span"></span>
   </div>
@@ -19,11 +19,15 @@
 </div>
 
 
-
-<script type="text/template" id="graph-template">
-  <h3>Words:</h3>
-  <%% _.each(this.collection.models, function(wordModel, index){  %>
-    <p>"<%%= wordModel.attributes.letters %>" created at: <%%= new Date(wordModel.attributes.created_at.toString()) %></p>
-  <%% }); %>
-  <div id='click'>Click this</div>
-</script>
+<div id="word-chart">
+  <div id="chart_container">
+          <div id="y_axis"></div>
+          <div id="chart"></div>
+          <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" style=" margin-left: 40px; width: 900px;">
+              <div class="ui-slider-range ui-widget-header" style="left: 0%; width: 100%;">
+              </div>
+            <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%; border: 1px solid black;"></a>
+            <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%; border: 1px solid black;"></a>
+          </div>
+    </div>
+</div>

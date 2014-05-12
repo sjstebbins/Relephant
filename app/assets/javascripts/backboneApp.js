@@ -1,5 +1,6 @@
 //= require underscore
 //= require backbone
+//= require jquery.ui.slider
 //= require webspeech
 //= require_tree ./backbonefiles/models
 //= require_tree ./backbonefiles/collections
