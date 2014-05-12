@@ -8,7 +8,6 @@
     <%= image_tag('mic.gif', alt: 'Start', id: 'status_img') %>
   </button>
 
-  <div id="word-chart"></div>
 
   <div id="results">
     <span id="final_span"></span>
@@ -19,10 +18,15 @@
 </div>
 
 
+<div id="word-chart">
+  <div id="chart_container">
+          <div id="y_axis"></div>
+          <div id="chart"></div>
 
-<script type="text/template" id="graph-template">
-  <h3>Words:</h3>
-  <%% _.each(this.collection.models, function(wordModel, index){  %>
-    <p>"<%%= wordModel.attributes.letters %>" created at: <%%= wordModel.attributes.created_at %></p>
-  <%% }); %>
-</script>
+  </div>
+  <div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" style="width: 900px;">
+        <div class="ui-slider-range ui-widget-header" style="left: 0%; width: 100%;"></div>
+        <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a>
+        <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%;"></a>
+  </div>
+</div>

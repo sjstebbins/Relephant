@@ -13,7 +13,6 @@ var RephantoRouter = Backbone.Router.extend({
       success: function(){
         this.speechInputView = new SpeechInputView({ collection: this.collection });
         this.wordListView = new WordListView({ collection: this.collection });
-        $('#word-chart').html(this.wordListView.el);
       }.bind(this)
     });
   }

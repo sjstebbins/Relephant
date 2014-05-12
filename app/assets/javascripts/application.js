@@ -9,7 +9,7 @@
 //
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
-//
+//= require rickshaw_with_d3
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
