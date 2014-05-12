@@ -4,73 +4,25 @@
 
   <div id="status"></div>
 
+  <button id="microphone" style="border: 0; background-color:transparent">
+    <%= image_tag('mic.gif', alt: 'Start', id: 'status_img') %>
+  </button>
+
+  <div id="word-chart"></div>
+
   <div id="results">
     <span id="final_span"></span>
     <span id="interim_span"></span>
   </div>
 
-  <button onclick="microphoneButton()" style="border: 0; background-color:transparent">
-
-  <%= image_tag('mic.gif', alt: 'Start', id: 'status_img') %></button>
-
-  <script>
-    var reco = new WebSpeechRecognition();
-    reco.statusText('status');
-    reco.statusImage('status_img');
-    reco.finalResults('final_span');
-    reco.interimResults('interim_span');
-    reco.continuous = true;
-    reco.maxAlternatives = 10;
-
-    // Handler for speech recognition results.
-    reco.recognition.onresult = function(event) {
-      var interim_transcript = '';
-      // Process all new results, both final and interim.
-      for (var i = event.resultIndex; i < event.results.length; ++i) {
-        if (event.results[i].isFinal) {
-          appendSelectOptions('final_span', event.results[i]);
-        } else {
-          interim_transcript += event.results[i][0].transcript;
-        }
-      }
-      document.getElementById('interim_span').innerHTML = interim_transcript;
-    };
-
-    // Create a new <select> element containing an <option> for each of the
-    // speech_recognition_result alternatives.
-    // Then append this <select> element to destination_id.
-    function appendSelectOptions(destination_id, speech_recognition_result) {
-      console.log(speech_recognition_result);
-      // var select = document.createElement('SELECT')
-      // for (var i = 0; i < speech_recognition_result.length; ++i) {
-      //   var option = document.createElement('OPTION')
-      //   option.text = speech_recognition_result[i].transcript;
-      //   option.value = i;
-      //   select.options.add(option)
-      // }
-      // document.getElementById(destination_id).appendChild(select);
-    }
-
-    // Handler when user clicks microphone button.
-    function microphoneButton() {
-      reco.toggleStartStop();
-    }
-
-    // Handler when speech recognition completes.
-    reco.onEnd = function() {
-
-    };
-  </script>
 
 </div>
 
-<div id="word-chart"></div>
 
 
 <script type="text/template" id="graph-template">
   <h3>Words:</h3>
   <%% _.each(this.collection.models, function(wordModel, index){  %>
-    <p><%%= wordModel.attributes.letters %></p>
-    <p><%%= wordModel.attributes.created_at %></p>
+    <p>"<%%= wordModel.attributes.letters %>" created at: <%%= wordModel.attributes.created_at %></p>
   <%% }); %>
 </script>

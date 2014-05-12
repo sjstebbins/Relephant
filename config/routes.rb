@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  post '/words', to: "words#create"
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   resources :users, only: [:show] do
     resources :words, shallow: true, only: [:index, :show]

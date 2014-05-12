@@ -1,10 +1,54 @@
+var reco = new WebSpeechRecognition();
+
 var SpeechInputView = Backbone.View.extend({
   el: '#speech-input',
   events: {
-    'click #status_img':'startRecording'
+    'click button#microphone':'microphoneButton'
   },
-  startRecording: function(){
-    console.log('hi');
-    microphoneButton();
+  initialize: function(){
+    this.wordStorage = [],
+
+    //setup webspeech and custom listeners
+    reco.statusText('status');
+    reco.statusImage('status_img');
+    reco.finalResults('final_span');
+    reco.interimResults('interim_span');
+    reco.continuous = true;
+    reco.maxAlternatives = 10;
+
+    reco.recognition.onresult = function(event) {
+      var interim_transcript = '';
+      // Process all new results, both final and interim.
+      for (var i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          var indivWords = event.results[i][0].transcript.trim().split(" ");
+          _.each(indivWords, function(word, index){
+            this.wordStorage.push(word);
+          }.bind(this));
+          // appendSelectOptions('final_span', event.results[i]);
+        } else {
+          interim_transcript += event.results[i][0].transcript;
+        }
+      }
+      document.getElementById('interim_span').innerHTML = interim_transcript;
+    }.bind(this);
+
+    //begin listening every for word additions
+    this.listenForWords();
+  },
+  microphoneButton: function(){
+    reco.toggleStartStop();
+  },
+  listenForWords: function(){
+    var interval = setInterval(function(){
+        // console.log(this.wordStorage);
+      _.each(this.wordStorage, function(word, index){
+        var newWord = {letters: word};
+        console.log(this.collection);
+        // console.log(newWord);
+        this.collection.create(newWord);
+      }.bind(this));
+      this.wordStorage = [];
+    }.bind(this), 10000);
   }
 });
