@@ -2,9 +2,6 @@ var WordListView = Backbone.View.extend({
   el: '#word-chart',
   initialize: function(){
     this.listenTo(this.collection, 'add', this.render);
-
-
-
     this.render();
     //set up listeners to update graph whenever collection has additions
 
@@ -15,13 +12,12 @@ var WordListView = Backbone.View.extend({
     this.collection.fetch();
     // do javascript setup for graph here
     this.chart();
-    this.slider();
   },
   // addOne will eventually be "update graph" or "appendToGraph"
   addOne: function(wordModel){
   },
 
-  chart: function(data){
+  chart: function(){
 
 //Main GRAPH details
 
@@ -37,7 +33,10 @@ var WordListView = Backbone.View.extend({
         } ]
 } );
 
-var x_axis = new Rickshaw.Graph.Axis.Time( { graph: graph
+
+
+var x_axis = new Rickshaw.Graph.Axis.Time( {
+  graph: graph,
 } );
 
 var y_axis = new Rickshaw.Graph.Axis.Y( {
@@ -46,6 +45,29 @@ var y_axis = new Rickshaw.Graph.Axis.Y( {
         tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
         element: document.getElementById('y_axis'),
 } );
+graph.render();
+
+//SLIDER details
+
+$(function() {
+$( "#slider-range" ).slider({
+range: true,
+min: 0,
+max: 500,
+values: [ 75, 300 ],
+slide: function( event, ui ) {
+$( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+}
+});
+$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+" - $" + $( "#slider-range" ).slider( "values", 1 ) );
+});
+
+
+// var slider = new Rickshaw.Graph.RangeSlider( {
+//     graph: graph,
+//     element: document.querySelector('#slider-range')
+// });
 
 //HOVER details
 
@@ -62,18 +84,8 @@ var hoverDetail = new Rickshaw.Graph.HoverDetail( {
     return content;
   }
 });
-graph.render();
+
+
   },
-
-//SLIDER details
-
-slider: function(){
-
-var slider = new Rickshaw.Graph.RangeSlider({
-    graph: graph,
-    element: '#slider'
-});
-slider.render();
-}
 
 });

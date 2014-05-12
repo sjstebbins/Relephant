@@ -43,6 +43,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 
 gem 'rickshaw_rails'
 
+gem 'jquery-ui-rails'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0.beta'
