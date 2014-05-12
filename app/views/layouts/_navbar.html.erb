@@ -11,11 +11,12 @@
         <span class="icon-bar"></span>
       </button>
       <% if user_signed_in? %>
-       <a class="navbar-brand" href="/users/<%= current_user.id %>">Rephanto</a>
+       <a class="navbar-brand" href="/users/<%= current_user.id %>"><%= image_tag("REPHANTO-icon.png", id: "logo")%>EPHANTO</a>
       <% else %>
-      <a class="navbar-brand" href="/">Rephanto</a>
+      <li><a class="navbar-brand" href="/"><%= image_tag("REPHANTO-icon.png", id: "logo")%>EPHANTO</a></li>
       <% end %>
     </div><!-- end brand header-->
+
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
