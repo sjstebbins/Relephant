@@ -1,7 +1,5 @@
 var RephantoRouter = Backbone.Router.extend({
   routes: {
-    //maybe make naming more semantic
-    //is this a problem since it uses '#'
     "":"show"
   },
   initialize: function(){
@@ -11,12 +9,11 @@ var RephantoRouter = Backbone.Router.extend({
     Backbone.history.start();
   },
   show: function(){
-    console.log('made it to router show');
-    // Might need "formView" that is the google microphone icon
     this.collection.fetch({
       success: function(){
-        this.wordList = new WordListView({ collection: this.collection });
-        $('#word-chart').html(this.wordList.el);
+        this.speechInputView = new SpeechInputView({ collection: this.collection });
+        this.wordListView = new WordListView({ collection: this.collection });
+        $('#word-chart').html(this.wordListView.el);
       }.bind(this)
     });
   }

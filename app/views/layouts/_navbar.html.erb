@@ -11,7 +11,7 @@
         <span class="icon-bar"></span>
       </button>
       <% if user_signed_in? %>
-       <a class="navbar-brand" href="/user/<%= current_user.id %>">Rephanto</a>
+       <a class="navbar-brand" href="/users/<%= current_user.id %>">Rephanto</a>
       <% else %>
       <a class="navbar-brand" href="/">Rephanto</a>
       <% end %>
