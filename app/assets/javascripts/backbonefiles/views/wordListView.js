@@ -1,5 +1,8 @@
 var WordListView = Backbone.View.extend({
   className: 'word-graph',
+  events: {
+    'click #click': 'logDates'
+  },
   initialize: function(){
     this.template = _.template($('#graph-template').html());
     this.listenTo(this.collection, 'add', this.render);

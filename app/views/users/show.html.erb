@@ -23,6 +23,7 @@
 <script type="text/template" id="graph-template">
   <h3>Words:</h3>
   <%% _.each(this.collection.models, function(wordModel, index){  %>
-    <p>"<%%= wordModel.attributes.letters %>" created at: <%%= wordModel.attributes.created_at %></p>
+    <p>"<%%= wordModel.attributes.letters %>" created at: <%%= new Date(wordModel.attributes.created_at.toString()) %></p>
   <%% }); %>
+  <div id='click'>Click this</div>
 </script>
