@@ -2,7 +2,7 @@ var WordListView = Backbone.View.extend({
   className: 'word-graph',
   initialize: function(){
     this.template = _.template($('#graph-template').html());
-    this.listenTo(this.collection, 'add', this.render)
+    this.listenTo(this.collection, 'add', this.render);
     this.render();
     //set up listeners to update graph whenever collection has additions
 

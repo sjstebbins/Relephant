@@ -42,11 +42,8 @@ var SpeechInputView = Backbone.View.extend({
   },
   listenForWords: function(){
     var interval = setInterval(function(){
-        // console.log(this.wordStorage);
       _.each(this.wordStorage, function(word, index){
         var newWord = {letters: word};
-        console.log(this.collection);
-        // console.log(newWord);
         this.collection.create(newWord);
       }.bind(this));
       this.wordStorage = [];
