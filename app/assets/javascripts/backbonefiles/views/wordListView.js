@@ -6,24 +6,29 @@ var WordListView = Backbone.View.extend({
   },
   initialize: function(){
     this.listenTo(this.collection, 'add', this.render);
+    this.listenTo(this.collection, 'reset', this.render);
+    // $('#chart_container').empty();
     this.render();
     //set up listeners to update graph whenever collection has additions
 
     //not sure if next line is necessary
-    this.listenTo(this.collection, 'reset', this.render);
-    this.chart();
   },
   render: function(){
     this.collection.fetch();
+    this.chart();
     // do javascript setup for graph here
   },
   // addOne will eventually be "update graph" or "appendToGraph"
   addOne: function(wordModel){
   },
-
   chart: function(){
 
 //Main GRAPH details
+    // Remove duplicates
+    $('#chart').remove();
+    $('#y_axis').remove();
+    $('#chart_container').prepend("<div id='chart'>");
+    $('#chart_container').prepend("<div id='y_axis'>");
 
     var graph = new Rickshaw.Graph({
         element: document.querySelector("#chart"),
