@@ -42,3 +42,12 @@
 #final_span{
   color: black;
 }
+
+#logo{
+  width: 60px;
+  margin: 0px;
+  margin-top: -10px;
+}
+li{
+  text-decoration: none
+}
