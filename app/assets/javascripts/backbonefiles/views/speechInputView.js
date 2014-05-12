@@ -1,3 +1,4 @@
+// Global namespace pollution?
 var reco = new WebSpeechRecognition();
 
 var SpeechInputView = Backbone.View.extend({
@@ -6,7 +7,7 @@ var SpeechInputView = Backbone.View.extend({
     'click button#microphone':'microphoneButton'
   },
   initialize: function(){
-    this.wordStorage = [],
+    this.wordStorage = [];
 
     //setup webspeech and custom listeners
     reco.statusText('status');
