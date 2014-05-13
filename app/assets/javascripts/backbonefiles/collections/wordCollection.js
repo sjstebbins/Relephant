@@ -36,7 +36,6 @@ var WordCollection = Backbone.Collection.extend({
     }
     return timeIntervals;
   },
-
   earliestTimeInRange: function(startDateTimeSeconds, endDateTimeSeconds){
     var filteredWordArray = this.wordModelsFromStartToEnd(startDateTimeSeconds, endDateTimeSeconds);
     var sortedfilteredWordArray = _.sortBy(filteredWordArray, function(word, index){
@@ -44,6 +43,12 @@ var WordCollection = Backbone.Collection.extend({
     });
     var firstWord = sortedfilteredWordArray[0];
     return (new Date(Date.parse(firstWord.get('created_at'))).getTime() / 1000);
+  },
+  alchemyQueryString: function(startDateTime, endDateTime){
+    var arrayOfModels = this.wordModelsFromStartToEnd(startDateTime, endDateTime);
+    var results = _.map(arrayOfModels, function(wordModel){
+                    return wordModel.get('letters');
+                  });
+    return results.join("+");
   }
-
 });

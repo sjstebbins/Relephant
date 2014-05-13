@@ -1,9 +1,12 @@
+    stringToQuery = this.collection.alchemyQueryString(new Date(leftDateTimeInSecs), new Date(rightDateTimeInSecs));
 var graph;
+var stringToQuery;
 
 var WordListView = Backbone.View.extend({
   el: '#word-chart',
   events: {
     'change #datepicker': 'render',
+    'mouseover .ui-slider-handle': 'renderAlchemy'
   },
 
   initialize: function(){
@@ -28,6 +31,27 @@ var WordListView = Backbone.View.extend({
     this.setSlider();
     this.setTickInterval();
   },
+  renderAlchemy: function(){
+    //assume at this point we have alchemyQueryString
+    $.ajax({
+      url: '/alchemy_search',
+      method: 'get',
+      data: {
+        words: stringToQuery
+      },
+      dataType: 'text'
+    }).done(function(data){
+      console.log(data);
+
+     var entities = _.map(data, function(entity){
+        var value = parseFloat(entity["relevance"]);
+        //Fancy Treemap
+        // return {"id": entity["text"], "size": [ value], "color": [(value * 3)] };
+        return {"label": entity["text"], "value": (value * 100) };
+      });
+      this.treemap(entities);
+    }.bind(this));
+  },
 
   setTickInterval: function(){
     var baseTimeInSeconds = this.endDate / 1000;
@@ -50,14 +74,14 @@ var WordListView = Backbone.View.extend({
     this.$('.datepicker').datepicker();
 
     graph = new Rickshaw.Graph({
-        element: document.querySelector("#chart"),
-        width: 1080,
-        height: 480,
-        series: [{
-          data: dataArray,
-          color: 'steelblue'
-        }]
-      });
+      element: document.querySelector("#chart"),
+      width: 1080,
+      height: 480,
+      series: [{
+        data: dataArray,
+        color: 'steelblue'
+      }]
+    });
 
     var x_axis = new Rickshaw.Graph.Axis.Time({
       graph: graph,
@@ -75,11 +99,16 @@ var WordListView = Backbone.View.extend({
       graph: graph,
       formatter: function(series, x, y) {
         var date = '<span class="time">' + new Date(x * 1000).toString() + '</span>';
-        var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
+        if ( (parseInt(y) >= 0) ) {
+          var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
         //Need to change the parseInt(y) to be the array of words and the Date function work properly
+        } else {
+          var swatch = '<span class="detail_swatch" style="background-color: rgba(0,0,0,0)"></span>';
+        }
         var content = swatch + date  + '<br>' + parseInt(y);
         // I THINK it would be nicer if on hover over the words of the array were displayed horizontally like on the legend here: http://code.shutterstock.com/rickshaw/examples/hover.html //
-        return content;
+
+          return content;
       }
     });
   },
@@ -108,5 +137,15 @@ var WordListView = Backbone.View.extend({
     var selectedDate = $('.datepicker').val();
     var startDate = new Date(selectedDate).getTime();
     return startDate;
-  }
+  },
+
+  treemap: function(entities){
+    // $('#treemap').remove();
+                $("#treemap").treemap({data: entities
+                    //Fancy Treemap
+                    // "nodeData": {
+                    //     "id":"entities", "children": entities
+                    // }
+                });
+            }
 });

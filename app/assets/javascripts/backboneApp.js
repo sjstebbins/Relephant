@@ -3,6 +3,7 @@
 //= require bootstrap-datepicker.js
 //= require jquery.ui.slider
 //= require webspeech
+//= require treemap_rex
 //= require_tree ./backbonefiles/models
 //= require_tree ./backbonefiles/collections
 //= require_tree ./backbonefiles/views

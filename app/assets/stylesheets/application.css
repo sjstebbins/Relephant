@@ -15,7 +15,9 @@
  *= require_tree .
  *= require_self
  */
-
+#main-container{
+  margin: 0 auto;
+}
 #profile-photo{
   border-radius: 45px;
   padding: 10px
@@ -52,4 +54,46 @@
 }
 li{
   text-decoration: none
+}
+
+#navbar{
+  border: 1px solid grey;
+  position: fixed;
+  width: 100%;
+  margin-top: -20px;
+  height: 100px;
+}
+#treemap{
+  margin-left: 40px
+}
+.treemap-node {
+  box-sizing: border-box;
+  border: 1px solid #fff;
+  padding: 0.5em;
+  overflow: hidden;
+  color: #fff;
+  text-shadow: 1px 1px #333;
+}
+.treemap-legend {
+  width: 500px;
+  padding: 0 1em;
+  box-sizing: border-box;
+  border: 1px solid #fff;
+  overflow: hidden;
+  color: #fff;
+  text-shadow: 1px 1px #333;
+  background-image: -webkit-linear-gradient(left, #93C 0%, cyan 20%, lime 40%, yellow 60%, orange 80%, red 100%);
+}
+.treemap-legend-end {
+  float: right;
+}
+.loader {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  margin-top: 50px;
+  height: 100%;
+  z-index: 999;
+  background: url('http://www.hannahreed.co.uk/images/loading.gif') 50% 50% no-repeat rgb(249,249,249);
 }
