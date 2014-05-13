@@ -44,6 +44,14 @@ var WordCollection = Backbone.Collection.extend({
       timeIntervals.push(new Date((startSecondsSinceEpoch + i) * 1000));
     }
     return timeIntervals;
+  },
+
+  alchemyQueryString: function(startDateTime, endDateTime){
+    var arrayOfModels = this.wordModelsFromStartToEnd(startDateTime, endDateTime);
+    var results = _.map(arrayOfModels, function(wordModel){
+                    return wordModel.get('letters');
+                  });
+    return results.join("+");
   }
 
 });

@@ -47,6 +47,8 @@ gem 'jquery-ui-rails'
 
 gem 'bootstrap-datepicker-rails'
 
+gem 'httparty'
+
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0.beta'
   gem 'pry-rails'
