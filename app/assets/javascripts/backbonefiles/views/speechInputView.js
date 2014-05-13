@@ -15,22 +15,21 @@ var SpeechInputView = Backbone.View.extend({
     reco.finalResults('final_span');
     reco.interimResults('interim_span');
     reco.continuous = true;
-    reco.maxAlternatives = 10;
+    reco.maxAlternatives = 1;
 
     reco.recognition.onresult = function(event) {
       var interim_transcript = '';
       // Process all new results, both final and interim.
       for (var i = event.resultIndex; i < event.results.length; ++i) {
-        if (event.results[i].isFinal) {
-          var indivWords = event.results[i][0].transcript.trim().split(" ");
-          _.each(indivWords, function(word, index){
-            this.wordStorage.push(word);
-          }.bind(this));
-          // appendSelectOptions('final_span', event.results[i]);
-        } else {
-          interim_transcript += event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            var indivWords = event.results[i][0].transcript.trim().split(" ");
+            _.each(indivWords, function(word, index){
+              this.wordStorage.push(word);
+            }.bind(this));
+          } else {
+            interim_transcript += event.results[i][0].transcript;
+          }
         }
-      }
       document.getElementById('interim_span').innerHTML = interim_transcript;
     }.bind(this);
 
@@ -47,6 +46,6 @@ var SpeechInputView = Backbone.View.extend({
         this.collection.create(newWord, {wait: true});
       }.bind(this));
       this.wordStorage = [];
-    }.bind(this), 10000);
+    }.bind(this), 5000);
   }
 });

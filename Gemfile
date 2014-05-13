@@ -53,4 +53,5 @@ group :development, :test do
   gem 'minitest'
   gem 'shoulda-matchers'
   gem 'capybara'
+  gem 'jasmine-rails'
 end
