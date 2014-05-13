@@ -40,7 +40,6 @@ var WordListView = Backbone.View.extend({
     var leftDateTimeInSecs = leftSliderVal * graphIntervalSeconds + this.startDate;
     var rightDateTimeInSecs = rightSliderVal * graphIntervalSeconds + this.startDate;
     var graphDataArray = this.collection.graphObjectInDateTimeRange(new Date(leftDateTimeInSecs), new Date(rightDateTimeInSecs), 30);
-    console.log(graphDataArray[0]['x']);
 
      graph = new Rickshaw.Graph({
         element: document.querySelector("#chart"),

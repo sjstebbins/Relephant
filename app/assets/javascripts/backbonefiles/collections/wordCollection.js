@@ -1,10 +1,12 @@
 var WordCollection = Backbone.Collection.extend({
   model: WordModel,
+
   url: function(){
     // User regex to match current_user's id in "/users/3" and extract the "3"
     var curUserID = window.location.pathname.match(/\/\d+$/)[0].replace("/","");
     return "/users/" + curUserID + "/words";
   },
+
   graphObjectInDateTimeRange: function(startDateTime, endDateTime, interval) {
     var result = [];
     var timeIntervals = this.timeIntervals(startDateTime, endDateTime, interval);
@@ -18,6 +20,7 @@ var WordCollection = Backbone.Collection.extend({
     }
     return result;
   },
+
   earliestTimeInRange: function(startDateTime, endDateTime){
     var filteredWordArray = this.wordModelsFromStartToEnd(startDateTime, endDateTime);
     var sortedfilteredWordArray = _.sortBy(filteredWordArray, function(word, index){
@@ -26,6 +29,7 @@ var WordCollection = Backbone.Collection.extend({
     var firstWord = sortedfilteredWordArray[0];
     return new Date(Date.parse(firstWord.get('created_at')));
   },
+
   wordModelsFromStartToEnd: function(startDateTime, endDateTime){
     var filteredWordArray = this.filter(function(word){
       var createdAt = new Date(Date.parse(word.get('created_at')));
@@ -33,6 +37,7 @@ var WordCollection = Backbone.Collection.extend({
     });
     return filteredWordArray;
   },
+
   timeIntervals: function(startDateTime, endDateTime, interval){
     var timeIntervals = [];
     var startSecondsSinceEpoch = startDateTime.getTime() / 1000;
@@ -42,4 +47,5 @@ var WordCollection = Backbone.Collection.extend({
     }
     return timeIntervals;
   }
+
 });
