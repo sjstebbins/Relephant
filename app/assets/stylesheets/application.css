@@ -11,6 +11,7 @@
  * file per style scope.
  *
  *= require rickshaw
+ *= require jquery.ui.slider
  *= require_tree .
  *= require_self
  */

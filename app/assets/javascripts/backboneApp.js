@@ -1,5 +1,6 @@
 //= require underscore
 //= require backbone
+//= require bootstrap-datepicker.js
 //= require jquery.ui.slider
 //= require webspeech
 //= require_tree ./backbonefiles/models
