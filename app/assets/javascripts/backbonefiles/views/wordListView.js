@@ -49,8 +49,8 @@ graph.render();
 
 //SLIDER details
 
-$(function() {
-$( "#slider-range" ).slider({
+var slider = $(function() {
+$( "#slider" ).slider({
 range: true,
 min: 0,
 max: 500,
@@ -60,7 +60,7 @@ $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
 }
 });
 $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-" - $" + $( "#slider-range" ).slider( "values", 1 ) );
+" - $" + $( "#slider" ).slider( "values", 1 ) );
 });
 
 
