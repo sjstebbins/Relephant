@@ -8,9 +8,10 @@
 //= require_tree ./backbonefiles/views
 //= require backbonefiles/router
 
-var rephantoRouter = new RephantoRouter();
+var rephantoRouter;
 
 function backboneReady(){
+  rephantoRouter = new RephantoRouter();
   rephantoRouter.start();
 }
 

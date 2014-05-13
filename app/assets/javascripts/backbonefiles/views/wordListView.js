@@ -1,26 +1,30 @@
+var graph;
+
 var WordListView = Backbone.View.extend({
   el: '#word-chart',
   events: {
     'change #datepicker': 'render',
-    'mousedown .ui-slider-handle': 'renderAlchemyOnUp'
+    'click .ui-slider-handle': 'renderAlchemy'
   },
   initialize: function(){
-    this.startDate = new Date().getTime() - 24*60*60*1000;
+    this.HOURSPAST = 1;
+    this.startDate = new Date().getTime() - this.HOURSPAST*60*60*1000;
     this.listenTo(this.collection, 'add', this.render);
     this.listenTo(this.collection, 'reset', this.render);
     this.render();
   },
   render: function(){
+    console.log('rendering');
     this.collection.fetch();
-    this.chart();
+    this.updateChart();
+    this.updateSlider();
   },
   renderAlchemyOnUp: function(){},
-  chart: function(){
-
+  updateChart: function(){
     //Set start date if there is one
     this.startDate = isNaN(this.setStartDate()) ? this.startDate : this.setStartDate();
 
-    //Main GRAPH details
+    //Reset chart elements and setup main GRAPH details
     $('#chart').remove();
     $('#y_axis').remove();
     $('#chart_container').prepend("<div id='chart'>");
@@ -33,9 +37,10 @@ var WordListView = Backbone.View.extend({
     var rightSliderVal =  parseFloat(document.getElementById('right-slider').style.left)/100; //right slider %
     var leftDateTimeInSecs = leftSliderVal * graphIntervalSeconds + this.startDate;
     var rightDateTimeInSecs = rightSliderVal * graphIntervalSeconds + this.startDate;
+
     var graphDataArray = this.collection.graphObjectInDateTimeRange(new Date(leftDateTimeInSecs), new Date(rightDateTimeInSecs), 30);
 
-     var graph = new Rickshaw.Graph({
+     graph = new Rickshaw.Graph({
         element: document.querySelector("#chart"),
         width: 1080,
         height: 480,
@@ -57,11 +62,6 @@ var WordListView = Backbone.View.extend({
       element: document.getElementById('y_axis'),
     });
 
-    var slider = new Rickshaw.Graph.RangeSlider( {
-      graph: graph,
-      element: document.querySelector('#slider-range')
-    });
-
     var hoverDetail = new Rickshaw.Graph.HoverDetail( {
       graph: graph,
       formatter: function(series, x, y) {
@@ -75,6 +75,17 @@ var WordListView = Backbone.View.extend({
     });
 
     graph.render();
+  },
+  configSlider: function(){
+    var slider = $("<div id='slider-range' class='ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all' style='margin-left: 40px; width: 900px;'><div class='ui-slider-range ui-widget-header' style='left: 0%; width: 100%;''></div><a id='left-slider' class='ui-slider-handle ui-state-default ui-corner-all' href='#' style='left: 0%; border: 1px solid black;'></a><a id='right-slider' class='ui-slider-handle ui-state-default ui-corner-all' href='#' style='left: 100%; border: 1px solid black;''></a></div>");
+    var curLeftSliderLeft = parseFloat(document.getElementById('left-slider').style.left);
+    var curRightSliderLeft = parseFloat(document.getElementById('right-slider').style.left);
+  },
+  updateSlider: function(){
+    var slider = new Rickshaw.Graph.RangeSlider( {
+      graph: graph,
+      element: document.querySelector('#slider-range')
+    });
   },
   setStartDate: function(){
     var selectedDate = $('.datepicker').val();
