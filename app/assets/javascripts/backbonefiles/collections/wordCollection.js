@@ -6,11 +6,11 @@ var WordCollection = Backbone.Collection.extend({
     return "/users/" + curUserID + "/words";
   },
   graphObjectInDateTimeRange: function(startDateTime, endDateTime, interval) {
-    var result = {};
+    var result = [];
     var timeIntervals = this.timeIntervals(startDateTime, endDateTime, interval);
     for (var i = 0; i < (timeIntervals.length - 1); i++) {
       var filteredWordArray = this.wordModelsFromStartToEnd(timeIntervals[i], timeIntervals[i+1]);
-      result[new Date(timeIntervals[i]).toString()] = filteredWordArray;
+      result.push({x: new Date(timeIntervals[i]), y: filteredWordArray.length});
     }
     return result;
   },

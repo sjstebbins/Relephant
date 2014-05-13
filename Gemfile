@@ -45,6 +45,8 @@ gem 'rickshaw_rails'
 
 gem 'jquery-ui-rails'
 
+gem 'bootstrap-datepicker-rails'
+
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0.beta'
   gem 'pry-rails'
