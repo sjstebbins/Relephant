@@ -1,6 +1,6 @@
 <!-- tried to fix the stuff throwing errors -->
 <% #FIXME the default font color is too dark and can't see the text in the navbar if it's not a link %>
-<nav class="navbar navbar-default navbar-static-top" role="navigation">
+<nav id="navbar" class="navbar navbar-default navbar-static-top" role="navigation">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -11,7 +11,7 @@
         <span class="icon-bar"></span>
       </button>
       <% if user_signed_in? %>
-       <a class="navbar-brand" href="/users/<%= current_user.id %>"><%= image_tag("REPHANTO-icon.png", id: "logo")%>EPHANTO</a>
+       <a id="logo-text" class="navbar-brand" href="/users/<%= current_user.id %>"><%= image_tag("REPHANTO-icon.png", id: "logo")%>EPHANTO</a>
       <% else %>
       <li><a class="navbar-brand" href="/"><%= image_tag("REPHANTO-icon.png", id: "logo")%>EPHANTO</a></li>
       <% end %>

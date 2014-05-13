@@ -27,3 +27,24 @@ function ready() {
 
 $(document).ready(ready);
 $(document).on('page:load', ready);
+
+$(window).scroll(function(){
+    currentoffset = $(this).scrollTop();
+    if (currentoffset>100) {
+      var navHeight = $("#navbar").height();
+      var resultsMargin = $("#results").css('margin-top');
+      $("#navbar").css('height', (navHeight * .97));
+      $("#results").css('margin-top', (resultsMargin *.97));
+      $("#navbar").css('background-color', 'rgba(255,255,255,.6)');
+
+    }
+      // $('#logo-text').text().css('left', (currentoffset/200) + 'px');
+
+
+});
+
+
+
+ // thisoffset = currentoffset - 50*(currentoffset/200);
+      // scale = (currentoffset*(.001)) +1;
+      // $("#navbar").css({top:thisoffset,transform:"scale("+scale+")"});

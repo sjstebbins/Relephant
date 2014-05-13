@@ -53,3 +53,11 @@
 li{
   text-decoration: none
 }
+
+#navbar{
+  border: 1px solid grey;
+  position: fixed;
+  width: 100%;
+  margin-top: -20px;
+  height: 100px;
+}
