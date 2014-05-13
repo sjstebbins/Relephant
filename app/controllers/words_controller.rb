@@ -10,7 +10,7 @@ class WordsController < ApplicationController
     end
   end
 
-   def alchemy_search
+  def alchemy_search
     words = params[:words]
     response = AlchemySearch::fetch_entities(words)
     render text: response

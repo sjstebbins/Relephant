@@ -1,4 +1,3 @@
-    stringToQuery = this.collection.alchemyQueryString(new Date(leftDateTimeInSecs), new Date(rightDateTimeInSecs));
 var graph;
 var stringToQuery;
 
@@ -6,11 +5,11 @@ var WordListView = Backbone.View.extend({
   el: '#word-chart',
   events: {
     'change #datepicker': 'render',
-    'mouseover .ui-slider-handle': 'renderAlchemy'
+    'mouseover .ui-slider-handle': 'setUpAlchemy'
   },
 
   initialize: function(){
-    this.DEFAULTHOURSPAST = 1;
+    this.DEFAULTHOURSPAST = .5;
     this.XINTERVAL = 1;
     this.TICKSECONDS = 1;
     this.SMOOTHING = 1.02;
@@ -31,7 +30,19 @@ var WordListView = Backbone.View.extend({
     this.setSlider();
     this.setTickInterval();
   },
-  renderAlchemy: function(){
+  setUpAlchemy: function(){
+    //get left slider val in seconds
+    //get right slider val in seconds
+    var graphIntervalSeconds = new Date() - this.startDate; // total seconds length of line
+    var leftSliderPct =  parseFloat(document.getElementById('left-slider').style.left)/100; //left slider %
+    var rightSliderPct =  parseFloat(document.getElementById('right-slider').style.left)/100; //right slider %
+    var leftDateTime = (leftSliderPct * graphIntervalSeconds + this.startDate)/1000;
+    // is this just Date.now?
+    var rightDateTime = (rightSliderPct * graphIntervalSeconds + this.startDate)/1000;
+    var stringToQuery = this.collection.alchemyQueryString(leftDateTime, rightDateTime);
+    this.renderAlchemy(stringToQuery);
+  },
+  renderAlchemy: function(stringToQuery){
     //assume at this point we have alchemyQueryString
     $.ajax({
       url: '/alchemy_search',
