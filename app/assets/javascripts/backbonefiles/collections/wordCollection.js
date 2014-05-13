@@ -7,45 +7,43 @@ var WordCollection = Backbone.Collection.extend({
     return "/users/" + curUserID + "/words";
   },
 
-  //All date times should come in as seconds eventually
+  //All date args and returns should be in seconds since epoch
 
-  graphObjectInDateTimeRange: function(startDateTime, endDateTime, interval) {
+  graphObjectInDateTimeRange: function(startDateTimeSeconds, endDateTimeSeconds, interval) {
     var result = [];
-    var timeIntervals = this.timeIntervals(startDateTime, endDateTime, interval);
+    var timeIntervals = this.timeIntervals(startDateTimeSeconds, endDateTimeSeconds, interval);
     for (var i = 0; i < timeIntervals.length; i++) {
       var filteredWordArray = this.wordModelsFromStartToEnd(timeIntervals[i], timeIntervals[i+1]);
       //Rickshaw needs time in seconds
-      var rickshawTime = new Date(timeIntervals[i]).getTime()/1000;
-      result.push({x: rickshawTime, y: filteredWordArray.length});
+      result.push({x: timeIntervals[i], y: filteredWordArray.length});
     }
     return result;
   },
 
-  earliestTimeInRange: function(startDateTime, endDateTime){
-    var filteredWordArray = this.wordModelsFromStartToEnd(startDateTime, endDateTime);
-    var sortedfilteredWordArray = _.sortBy(filteredWordArray, function(word, index){
-      return (new Date(Date.parse(word.get('created_at'))));
-    });
-    var firstWord = sortedfilteredWordArray[0];
-    return new Date(Date.parse(firstWord.get('created_at')));
-  },
-
-  wordModelsFromStartToEnd: function(startDateTime, endDateTime){
+  wordModelsFromStartToEnd: function(startDateTimeSeconds, endDateTimeSeconds){
     var filteredWordArray = this.filter(function(word){
-      var createdAt = new Date(Date.parse(word.get('created_at')));
-      return (createdAt > startDateTime && createdAt < endDateTime);
+      var createdAtInSeconds = new Date(Date.parse(word.get('created_at'))).getTime() / 1000;
+      return (createdAtInSeconds > startDateTimeSeconds && createdAtInSeconds < endDateTimeSeconds);
     });
     return filteredWordArray;
   },
 
-  timeIntervals: function(startDateTime, endDateTime, interval){
+  timeIntervals: function(startDateTimeSeconds, endDateTimeSeconds, interval){
     var timeIntervals = [];
-    var startSecondsSinceEpoch = startDateTime.getTime() / 1000;
-    var secondsRange = (endDateTime - startDateTime) / 1000;
+    var secondsRange = endDateTimeSeconds - startDateTimeSeconds;
     for (var i = 0; i < secondsRange; i+= interval) {
-      timeIntervals.push(new Date((startSecondsSinceEpoch + i) * 1000));
+      timeIntervals.push(startDateTimeSeconds + i);
     }
     return timeIntervals;
+  },
+
+  earliestTimeInRange: function(startDateTimeSeconds, endDateTimeSeconds){
+    var filteredWordArray = this.wordModelsFromStartToEnd(startDateTimeSeconds, endDateTimeSeconds);
+    var sortedfilteredWordArray = _.sortBy(filteredWordArray, function(word, index){
+      return (new Date(Date.parse(word.get('created_at'))));
+    });
+    var firstWord = sortedfilteredWordArray[0];
+    return (new Date(Date.parse(firstWord.get('created_at'))).getTime() / 1000);
   }
 
 });

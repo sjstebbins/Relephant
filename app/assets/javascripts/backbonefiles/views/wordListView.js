@@ -7,9 +7,9 @@ var WordListView = Backbone.View.extend({
   },
 
   initialize: function(){
-    this.DEFAULTHOURSPAST = 1;
-    this.XINTERVAL = 30;
-    this.TICKSECONDS = 5;
+    this.DEFAULTHOURSPAST = .25;
+    this.XINTERVAL = 1;
+    this.TICKSECONDS = 1;
     this.tempWordStorage = [];
     // set start date using function instead of using following line
     this.startDate = new Date().getTime() - this.DEFAULTHOURSPAST*60*60*1000; // in milliseconds
@@ -17,8 +17,8 @@ var WordListView = Backbone.View.extend({
     this.collection.fetch();
     this.listenTo(this.collection, 'add', this.addToTempStorage);
     // this.listenTo(this.collection, 'reset', this.render);
-    this.dataArray = queryDBforGraphData(this.XINTERVAL);
-    this.initializeChart(dataArray);
+    this.dataArray = this.queryDBforGraphData(this.XINTERVAL);
+    this.initializeChart(this.dataArray);
     this.render();
   },
 
@@ -29,10 +29,15 @@ var WordListView = Backbone.View.extend({
   },
 
   setTickInterval: function(){
+    var baseTimeInSeconds = this.endDate / 1000;
     var counter = 1;
     var interval = setInterval(function(){
-
-    }, this.TICKSECONDS * 1000);
+      graph.series[0].data.push({x: baseTimeInSeconds + (this.TICKSECONDS * counter),
+                                 y: this.tempWordStorage.length});
+      this.tempWordStorage = [];
+      graph.render();
+      counter++;
+    }.bind(this), this.TICKSECONDS * 1000);
   },
 
   initializeChart: function(dataArray){
@@ -80,18 +85,14 @@ var WordListView = Backbone.View.extend({
     var graphIntervalSeconds = new Date() - this.startDate; // total seconds length of line
     var leftSliderPct =  parseFloat(document.getElementById('left-slider').style.left)/100; //left slider %
     var rightSliderPct =  parseFloat(document.getElementById('right-slider').style.left)/100; //right slider %
-    var leftDateTime = new Date(leftSliderVal * graphIntervalSeconds + this.startDate);
+    var leftDateTime = (leftSliderPct * graphIntervalSeconds + this.startDate)/1000;
     // is this just Date.now?
-    var rightDateTime = new Date(rightSliderPct * graphIntervalSeconds + this.startDate);
+    var rightDateTime = (rightSliderPct * graphIntervalSeconds + this.startDate)/1000;
     var graphDataArray = this.collection.graphObjectInDateTimeRange(leftDateTime, rightDateTime, interval);
     return graphDataArray;
   },
   addToTempStorage: function(newWord){
     this.tempWordStorage.push(newWord.get('letters'));
-  },
-  updateChart: function(){
-
-    graph.render();
   },
   setSlider: function(){
     var slider = new Rickshaw.Graph.RangeSlider( {
