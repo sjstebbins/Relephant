@@ -7,9 +7,10 @@ var WordListView = Backbone.View.extend({
   },
 
   initialize: function(){
-    this.DEFAULTHOURSPAST = .25;
+    this.DEFAULTHOURSPAST = 1;
     this.XINTERVAL = 1;
     this.TICKSECONDS = 1;
+    this.SMOOTHING = 1.02;
     this.tempWordStorage = [];
     // set start date using function instead of using following line
     this.startDate = new Date().getTime() - this.DEFAULTHOURSPAST*60*60*1000; // in milliseconds
@@ -32,8 +33,11 @@ var WordListView = Backbone.View.extend({
     var baseTimeInSeconds = this.endDate / 1000;
     var counter = 1;
     var interval = setInterval(function(){
+      var curGraphData = graph.series[0].data;
+      //smooth out graph on no talking
+      var yVal = this.tempWordStorage.length === 0 ? curGraphData[curGraphData.length - 1]['y'] / this.SMOOTHING : this.tempWordStorage.length;
       graph.series[0].data.push({x: baseTimeInSeconds + (this.TICKSECONDS * counter),
-                                 y: this.tempWordStorage.length});
+                                 y: yVal});
       this.tempWordStorage = [];
       graph.render();
       counter++;
