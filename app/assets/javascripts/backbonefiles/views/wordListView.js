@@ -1,3 +1,5 @@
+var graph
+
 var WordListView = Backbone.View.extend({
   el: '#word-chart',
   // className: 'word-graph',
@@ -31,12 +33,21 @@ var WordListView = Backbone.View.extend({
     $('#chart_container').prepend("<div id='y_axis'>");
     $('.datepicker').datepicker();
 
-    var graph = new Rickshaw.Graph({
+    var dataArray = [];
+    var graphIntervalSeconds = (new Date()) - this.startDate; // total seconds length of line
+    var leftSliderVal =  parseFloat(document.getElementById('left-slider').style.left)/100; //left slider %
+    var rightSliderVal =  parseFloat(document.getElementById('right-slider').style.left)/100; //right slider %
+    var leftDateTimeInSecs = leftSliderVal * graphIntervalSeconds + this.startDate;
+    var rightDateTimeInSecs = rightSliderVal * graphIntervalSeconds + this.startDate;
+    var graphDataArray = this.collection.graphObjectInDateTimeRange(new Date(leftDateTimeInSecs), new Date(rightDateTimeInSecs), 30);
+    console.log(graphDataArray[0]['x']);
+
+     graph = new Rickshaw.Graph({
         element: document.querySelector("#chart"),
         width: 1080,
         height: 480,
-        series: [ {
-          data: [ { x: 0, y: 0 }, { x: 10, y: 10 } ],
+        series: [{
+          data: graphDataArray,
           color: 'steelblue'
         }]
     });
@@ -44,6 +55,7 @@ var WordListView = Backbone.View.extend({
 
   var x_axis = new Rickshaw.Graph.Axis.Time({
       graph: graph,
+      timeUnit: 'seconds'
   });
 
   var y_axis = new Rickshaw.Graph.Axis.Y({
@@ -78,23 +90,6 @@ var WordListView = Backbone.View.extend({
       }
     });
 
-
-    // logic to create data array
-    var dataArray = [];
-    var graphIntervalSeconds = (new Date()) - this.startDate; // total seconds length of line
-    var leftSliderVal =  parseFloat($('#left-slider').css('left')) / graph.width; //left slider %
-    var rightSliderVal =  parseFloat($('#right-slider').css('left')) / graph.width; //right slider %
-    var leftDateTimeInSecs = leftSliderVal * graphIntervalSeconds + this.startDate;
-    var rightDateTimeInSecs = rightSliderVal * graphIntervalSeconds + this.startDate;
-    var graphObject = this.collection.graphObjectInDateTimeRange(new Date(leftDateTimeInSecs), new Date(rightDateTimeInSecs), 30);
-    console.log(graphObject);
-
-    // data: [ { x: 0, y: 0 }, { x: 10, y: 10 } ],
-
-    //call functions from collection
-    // reset start date
-
-    //Reset graph data before rendering
     graph.render();
   },
   setStartDate: function(){

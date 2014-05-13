@@ -10,7 +10,11 @@ var WordCollection = Backbone.Collection.extend({
     var timeIntervals = this.timeIntervals(startDateTime, endDateTime, interval);
     for (var i = 0; i < (timeIntervals.length - 1); i++) {
       var filteredWordArray = this.wordModelsFromStartToEnd(timeIntervals[i], timeIntervals[i+1]);
-      result.push({x: new Date(timeIntervals[i]), y: filteredWordArray.length});
+      //Rickshaw needs time in UTC in seconds
+      var timeInCurZone = new Date(timeIntervals[i]);
+      var offset = timeInCurZone.getTimezoneOffset();
+      var rickshawTime = timeInCurZone.getTime()/1000 - (offset * 60);
+      result.push({x: rickshawTime, y: filteredWordArray.length});
     }
     return result;
   },
