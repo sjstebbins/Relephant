@@ -4,48 +4,48 @@ var WordListView = Backbone.View.extend({
   el: '#word-chart',
   events: {
     'change #datepicker': 'render',
-    'click .ui-slider-handle': 'renderAlchemy'
   },
+
   initialize: function(){
-    this.HOURSPAST = 1;
-    this.startDate = new Date().getTime() - this.HOURSPAST*60*60*1000;
-    this.listenTo(this.collection, 'add', this.render);
-    this.listenTo(this.collection, 'reset', this.render);
+    this.DEFAULTHOURSPAST = 1;
+    this.XINTERVAL = 30;
+    this.TICKSECONDS = 5;
+    this.tempWordStorage = [];
+    // set start date using function instead of using following line
+    this.startDate = new Date().getTime() - this.DEFAULTHOURSPAST*60*60*1000; // in milliseconds
+    this.endDate = new Date().getTime();
+    this.collection.fetch();
+    this.listenTo(this.collection, 'add', this.addToTempStorage);
+    // this.listenTo(this.collection, 'reset', this.render);
+    this.dataArray = queryDBforGraphData(this.XINTERVAL);
+    this.initializeChart(dataArray);
     this.render();
   },
+
   render: function(){
-    console.log('rendering');
-    this.collection.fetch();
-    this.updateChart();
-    this.updateSlider();
+    graph.render();
+    this.setSlider();
+    this.setTickInterval();
   },
-  renderAlchemyOnUp: function(){},
-  updateChart: function(){
-    //Set start date if there is one
-    this.startDate = isNaN(this.setStartDate()) ? this.startDate : this.setStartDate();
 
-    //Reset chart elements and setup main GRAPH details
-    $('#chart').remove();
-    $('#y_axis').remove();
-    $('#chart_container').prepend("<div id='chart'>");
-    $('#chart_container').prepend("<div id='y_axis'>");
-    $('.datepicker').datepicker();
+  setTickInterval: function(){
+    var counter = 1;
+    var interval = setInterval(function(){
 
-    var dataArray = [];
-    var graphIntervalSeconds = new Date() - this.startDate; // total seconds length of line
-    var leftSliderVal =  parseFloat(document.getElementById('left-slider').style.left)/100; //left slider %
-    var rightSliderVal =  parseFloat(document.getElementById('right-slider').style.left)/100; //right slider %
-    var leftDateTimeInSecs = leftSliderVal * graphIntervalSeconds + this.startDate;
-    var rightDateTimeInSecs = rightSliderVal * graphIntervalSeconds + this.startDate;
+    }, this.TICKSECONDS * 1000);
+  },
 
-    var graphDataArray = this.collection.graphObjectInDateTimeRange(new Date(leftDateTimeInSecs), new Date(rightDateTimeInSecs), 30);
+  initializeChart: function(dataArray){
+    this.$('#chart_container').prepend("<div id='chart'>");
+    this.$('#chart_container').prepend("<div id='y_axis'>");
+    this.$('.datepicker').datepicker();
 
-     graph = new Rickshaw.Graph({
+    graph = new Rickshaw.Graph({
         element: document.querySelector("#chart"),
         width: 1080,
         height: 480,
         series: [{
-          data: graphDataArray,
+          data: dataArray,
           color: 'steelblue'
         }]
       });
@@ -73,15 +73,27 @@ var WordListView = Backbone.View.extend({
         return content;
       }
     });
+  },
+
+  queryDBforGraphData: function(interval){
+    var dataArray = [];
+    var graphIntervalSeconds = new Date() - this.startDate; // total seconds length of line
+    var leftSliderPct =  parseFloat(document.getElementById('left-slider').style.left)/100; //left slider %
+    var rightSliderPct =  parseFloat(document.getElementById('right-slider').style.left)/100; //right slider %
+    var leftDateTime = new Date(leftSliderVal * graphIntervalSeconds + this.startDate);
+    // is this just Date.now?
+    var rightDateTime = new Date(rightSliderPct * graphIntervalSeconds + this.startDate);
+    var graphDataArray = this.collection.graphObjectInDateTimeRange(leftDateTime, rightDateTime, interval);
+    return graphDataArray;
+  },
+  addToTempStorage: function(newWord){
+    this.tempWordStorage.push(newWord.get('letters'));
+  },
+  updateChart: function(){
 
     graph.render();
   },
-  configSlider: function(){
-    var slider = $("<div id='slider-range' class='ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all' style='margin-left: 40px; width: 900px;'><div class='ui-slider-range ui-widget-header' style='left: 0%; width: 100%;''></div><a id='left-slider' class='ui-slider-handle ui-state-default ui-corner-all' href='#' style='left: 0%; border: 1px solid black;'></a><a id='right-slider' class='ui-slider-handle ui-state-default ui-corner-all' href='#' style='left: 100%; border: 1px solid black;''></a></div>");
-    var curLeftSliderLeft = parseFloat(document.getElementById('left-slider').style.left);
-    var curRightSliderLeft = parseFloat(document.getElementById('right-slider').style.left);
-  },
-  updateSlider: function(){
+  setSlider: function(){
     var slider = new Rickshaw.Graph.RangeSlider( {
       graph: graph,
       element: document.querySelector('#slider-range')

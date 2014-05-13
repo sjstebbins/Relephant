@@ -7,6 +7,8 @@ var WordCollection = Backbone.Collection.extend({
     return "/users/" + curUserID + "/words";
   },
 
+  //All date times should come in as seconds eventually
+
   graphObjectInDateTimeRange: function(startDateTime, endDateTime, interval) {
     var result = [];
     var timeIntervals = this.timeIntervals(startDateTime, endDateTime, interval);
