@@ -14,7 +14,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require treemap_rex
-//= require turbolinks
 
 // move to separate file
 function ready() {
