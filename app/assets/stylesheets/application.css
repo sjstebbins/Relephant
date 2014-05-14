@@ -16,7 +16,6 @@
  *= require_self
  */
 #main-container{
-  margin: 0 auto;
 }
 #profile-photo{
   border-radius: 45px;
@@ -99,4 +98,9 @@ li{
 }
 #range-slider{
   background-color: black;
+}
+#welcome{
+  margin-top: 60px;
+  margin-left: 20px;
+  color: rgba(0,0,0,.4);
 }

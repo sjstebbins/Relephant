@@ -5,11 +5,12 @@ var WordListView = Backbone.View.extend({
   el: '#word-chart',
   events: {
     'change #datepicker': 'render',
-    'mouseover .ui-slider-handle': 'setUpAlchemy'
+    'mouseover .ui-slider-handle': 'setUpAlchemy',
+    'click .treemap-node': 'googleResults'
   },
 
   initialize: function(){
-    this.DEFAULTHOURSPAST = 1;
+    this.DEFAULTHOURSPAST = 6;
     this.XINTERVAL = 10;
     this.TICKSECONDS = 10;
     this.SMOOTHING = 1.02;
@@ -54,10 +55,8 @@ var WordListView = Backbone.View.extend({
     }).done(function(data){
 
      var entities = _.map(data.entities, function(entity){
-          console.log(entity["sentiment"]["score"]);
           var value = parseFloat(entity["relevance"]);
-        var sentiment = parseFloat(entity["sentiment"]["score"]);
-        return {"label": entity["text"], "value": (value * 100), "sentiment": sentiment};
+        return {"label": entity["text"], "value": (value * 100), "type": entity["type"]};
     });
       this.treemap(entities);
    }.bind(this));
@@ -155,16 +154,36 @@ var WordListView = Backbone.View.extend({
     // $('#treemap').remove();
                 $("#treemap").treemap({data: entities,
                   colors: ['#990000', '#002BD7'],
-                  legend: true,
-                  legendLabels: ['Negative', 'Positive'],
                   width: 1080,
-                  click: function (node, event) {
-                    var entity = node.innerHtml();
-                    $('<h3>'+ entity + '</h3>').appendTo('#treemap');
-                  }
                 });
   },
   displayError: function(){
     $('<div id="RelephantError">RelephantError: Search query too large.</div>').appendTo('#word-chart');
+  },
+  googleResults: function(entity){
+    $.ajax({
+      url: '/google_search',
+      method: 'get',
+      data: {
+        entity: entity
+      },
+      dataType: 'json'
+    }).done(function(data){
+        var results = data.items;
+    });
+      this.googleResultsRender(results);
+   }.bind(this),
+
+  googleResultsRender: function(result){
+
+    _.each(results){
+      var image = result["image"];
+      var link = result["link"];
+      var title = result["title"];
+      var snippet = result["snippet"];
+      $('<div><img src="' + image + '"><a href="' + link + '"><h3>'+ title +'</h3></a><br><p>'+ snippet + '</p>').appendTo('#google-results');
+    }
   }
+
+
 });
