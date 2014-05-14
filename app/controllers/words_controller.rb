@@ -13,7 +13,6 @@ class WordsController < ApplicationController
   def alchemy_search
     words = params[:words]
     response = AlchemySearch::fetch_entities(words)
-    render text: response
     respond_to do |format|
       format.html { }
       format.json { render json: response.to_json }

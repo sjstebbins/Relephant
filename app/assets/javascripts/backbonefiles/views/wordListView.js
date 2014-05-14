@@ -9,9 +9,9 @@ var WordListView = Backbone.View.extend({
   },
 
   initialize: function(){
-    this.DEFAULTHOURSPAST = .5;
-    this.XINTERVAL = 1;
-    this.TICKSECONDS = 1;
+    this.DEFAULTHOURSPAST = 1.5;
+    this.XINTERVAL = 10;
+    this.TICKSECONDS = 10;
     this.SMOOTHING = 1.02;
     this.tempWordStorage = [];
     // set start date using function instead of using following line
@@ -50,18 +50,15 @@ var WordListView = Backbone.View.extend({
       data: {
         words: stringToQuery
       },
-      dataType: 'text'
+      dataType: 'json'
     }).done(function(data){
-      console.log(data);
 
-     var entities = _.map(data, function(entity){
+     var entities = _.map(data.entities, function(entity){
         var value = parseFloat(entity["relevance"]);
-        //Fancy Treemap
-        // return {"id": entity["text"], "size": [ value], "color": [(value * 3)] };
         return {"label": entity["text"], "value": (value * 100) };
-      });
+    });
       this.treemap(entities);
-    }.bind(this));
+   }.bind(this));
   },
 
   setTickInterval: function(){
@@ -111,9 +108,11 @@ var WordListView = Backbone.View.extend({
       formatter: function(series, x, y) {
         var date = '<span class="time">' + new Date(x * 1000).toString() + '</span>';
         if ( (parseInt(y) >= 0) ) {
+          $('.detail').css("visibility", "visible");
           var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
         //Need to change the parseInt(y) to be the array of words and the Date function work properly
         } else {
+          $('.detail').css("visibility", "hidden");
           var swatch = '<span class="detail_swatch" style="background-color: rgba(0,0,0,0)"></span>';
         }
         var content = swatch + date  + '<br>' + parseInt(y);
@@ -153,10 +152,9 @@ var WordListView = Backbone.View.extend({
   treemap: function(entities){
     // $('#treemap').remove();
                 $("#treemap").treemap({data: entities
-                    //Fancy Treemap
-                    // "nodeData": {
-                    //     "id":"entities", "children": entities
-                    // }
                 });
-            }
+  },
+  displayError: function(){
+    $('<div id="RelephantError">RelephantError: Search query too large.</div>').appendTo('#word-chart');
+  }
 });
