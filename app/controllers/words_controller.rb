@@ -12,7 +12,8 @@ class WordsController < ApplicationController
 
   def alchemy_search
     words = params[:words]
-    response = AlchemySearch::fetch_entities(words)
+    words.gsub!("+", " ")
+    response = AlchemySearch::fetch_entities(words);
     respond_to do |format|
       format.html { }
       format.json { render json: response.to_json }

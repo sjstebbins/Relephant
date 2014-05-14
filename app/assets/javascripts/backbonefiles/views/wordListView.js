@@ -10,10 +10,10 @@ var WordListView = Backbone.View.extend({
   },
 
   initialize: function(){
-    this.DEFAULTHOURSPAST = 6;
-    this.XINTERVAL = 10;
-    this.TICKSECONDS = 10;
-    this.SMOOTHING = 1.02;
+    this.DEFAULTHOURSPAST = .25;
+    this.XINTERVAL = 1;
+    this.TICKSECONDS = 1;
+    this.SMOOTHING = 1.01;
     this.tempWordStorage = [];
     // set start date using function instead of using following line
     this.startDate = new Date().getTime() - this.DEFAULTHOURSPAST*60*60*1000; // in milliseconds
@@ -21,8 +21,8 @@ var WordListView = Backbone.View.extend({
     this.collection.fetch();
     this.listenTo(this.collection, 'add', this.addToTempStorage);
     // this.listenTo(this.collection, 'reset', this.render);
-    this.dataArray = this.queryDBforGraphData(this.XINTERVAL);
-    this.initializeChart(this.dataArray);
+    this.lineDataArray = this.queryDBforGraphData(this.XINTERVAL);
+    this.initializeChart(this.lineDataArray);
     this.render();
   },
 
@@ -47,13 +47,12 @@ var WordListView = Backbone.View.extend({
     //assume at this point we have alchemyQueryString
     $.ajax({
       url: '/alchemy_search',
-      method: 'get',
+      method: 'post',
       data: {
         words: stringToQuery
       },
       dataType: 'json'
     }).done(function(data){
-
      var entities = _.map(data.entities, function(entity){
           var value = parseFloat(entity["relevance"]);
         return {"label": entity["text"], "value": (value * 100), "type": entity["type"]};
@@ -66,7 +65,7 @@ var WordListView = Backbone.View.extend({
     var baseTimeInSeconds = this.endDate / 1000;
     var counter = 1;
     var interval = setInterval(function(){
-      var curGraphData = graph.series[0].data;
+      var curGraphData = this.lineDataArray;
       //smooth out graph on no talking
       var yVal = this.tempWordStorage.length === 0 ? curGraphData[curGraphData.length - 1]['y'] / this.SMOOTHING : this.tempWordStorage.length;
       graph.series[0].data.push({x: baseTimeInSeconds + (this.TICKSECONDS * counter),
@@ -77,19 +76,28 @@ var WordListView = Backbone.View.extend({
     }.bind(this), this.TICKSECONDS * 1000);
   },
 
-  initializeChart: function(dataArray){
+  initializeChart: function(lineDataArray){
     this.$('#chart_container').prepend("<div id='chart'>");
     this.$('#chart_container').prepend("<div id='y_axis'>");
     this.$('.datepicker').datepicker();
 
     graph = new Rickshaw.Graph({
       element: document.querySelector("#chart"),
+      renderer: 'multi',
       width: 1080,
       height: 480,
-      series: [{
-        data: dataArray,
-        color: 'steelblue'
-      }]
+      series: [
+                {
+                  data: lineDataArray,
+                  renderer: 'line',
+                  color: 'steelblue'
+                },
+                {
+                  data: lineDataArray,
+                  renderer: 'scatterplot',
+                  color: 'red'
+                }
+              ]
     });
 
     var x_axis = new Rickshaw.Graph.Axis.Time({
@@ -172,18 +180,17 @@ var WordListView = Backbone.View.extend({
         var results = data.items;
     });
       this.googleResultsRender(results);
-   }.bind(this),
+   }.bind(this)
 
-  googleResultsRender: function(result){
+  // googleResultsRender: function(result){
 
-    _.each(results){
-      var image = result["image"];
-      var link = result["link"];
-      var title = result["title"];
-      var snippet = result["snippet"];
-      $('<div><img src="' + image + '"><a href="' + link + '"><h3>'+ title +'</h3></a><br><p>'+ snippet + '</p>').appendTo('#google-results');
-    }
-  }
-
+  //   _.each(results){
+  //     var image = result["image"];
+  //     var link = result["link"];
+  //     var title = result["title"];
+  //     var snippet = result["snippet"];
+  //     $('<div><img src="' + image + '"><a href="' + link + '"><h3>'+ title +'</h3></a><br><p>'+ snippet + '</p>').appendTo('#google-results');
+  //   }
+  // }
 
 });

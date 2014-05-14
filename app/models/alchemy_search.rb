@@ -1,10 +1,14 @@
 class AlchemySearch
 
-  def self.fetch_entities(url)
+  def self.fetch_entities(words)
     alchemy = "9ddce0957447a5027cf1a73b860383823614057f";
-
-    HTTParty.get("http://access.alchemyapi.com/calls/url/URLGetRankedNamedEntities?outputMode=json&url=#{url}&apikey=#{alchemy}")
-
+    words.gsub!("+", " ")
+    response = HTTParty.post("http://access.alchemyapi.com/calls/text/TextGetRankedNamedEntities",
+                            :body => {
+                                 :outputMode => 'json',
+                                 :apikey => alchemy,
+                                 :text => words
+                              })
   end
 
 end
