@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
-  get '/alchemy_search', to: 'words#alchemy_search'
   post '/words', to: "words#create"
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   resources :users, only: [:show] do
     resources :words, shallow: true, only: [:index, :show]
   end
+  get '/alchemy_search', to: 'searches#alchemy_search'
+  resources :searches, only: [:show]
   root to: "welcome#index"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
