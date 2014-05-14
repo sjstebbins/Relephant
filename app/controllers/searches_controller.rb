@@ -8,6 +8,7 @@ class SearchesController < ApplicationController
     words = params[:words]
     words.gsub!("+", " ")
     search = Search.create(content: words);
+    sleep(2)
     response = AlchemySearch::fetch_entities(url_for(search))
     # search.destroy
     respond_to do |format|
