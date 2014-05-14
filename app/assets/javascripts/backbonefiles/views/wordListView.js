@@ -9,7 +9,7 @@ var WordListView = Backbone.View.extend({
   },
 
   initialize: function(){
-    this.DEFAULTHOURSPAST = 1.5;
+    this.DEFAULTHOURSPAST = 1;
     this.XINTERVAL = 10;
     this.TICKSECONDS = 10;
     this.SMOOTHING = 1.02;
@@ -52,9 +52,10 @@ var WordListView = Backbone.View.extend({
       },
       dataType: 'json'
     }).done(function(data){
-
+    console.log('');
      var entities = _.map(data.entities, function(entity){
         var value = parseFloat(entity["relevance"]);
+        var sentiment = parseFloat(entity["sentiment"]["score"]);
         return {"label": entity["text"], "value": (value * 100) };
     });
       this.treemap(entities);
@@ -151,7 +152,15 @@ var WordListView = Backbone.View.extend({
 
   treemap: function(entities){
     // $('#treemap').remove();
-                $("#treemap").treemap({data: entities
+                $("#treemap").treemap({data: entities,
+                  colors: ['#990000', '#002BD7'],
+                  legend: true,
+                  legendLabels: ['Negative', 'Positive'],
+                  width: 1080,
+                  click: function (node, event) {
+                    var entity = node.val();
+                    $('<h3>'+ entity + '</h3>').appendTo('#treemap');
+                  }
                 });
   },
   displayError: function(){
