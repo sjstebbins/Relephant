@@ -80,7 +80,7 @@ var WordListView = Backbone.View.extend({
   initializeChart: function(dataArray){
     this.$('#chart_container').prepend("<div id='chart'>");
     this.$('#chart_container').prepend("<div id='y_axis'>");
-    this.$('.datepicker').datepicker();
+    this.$('#datetimepicker1').datetimepicker();
 
     graph = new Rickshaw.Graph({
       element: document.querySelector("#chart"),
@@ -145,7 +145,7 @@ var WordListView = Backbone.View.extend({
     });
   },
   setStartDate: function(){
-    var selectedDate = $('.datepicker').val();
+    var selectedDate = $('.form-control').val();
     var startDate = new Date(selectedDate).getTime();
     return startDate;
   },
@@ -176,13 +176,13 @@ var WordListView = Backbone.View.extend({
 
   googleResultsRender: function(result){
 
-    _.each(results){
-      var image = result["image"];
-      var link = result["link"];
-      var title = result["title"];
-      var snippet = result["snippet"];
-      $('<div><img src="' + image + '"><a href="' + link + '"><h3>'+ title +'</h3></a><br><p>'+ snippet + '</p>').appendTo('#google-results');
-    }
+    // _.each(results){
+    //   var image = result["image"];
+    //   var link = result["link"];
+    //   var title = result["title"];
+    //   var snippet = result["snippet"];
+    //   $('<div><img src="' + image + '"><a href="' + link + '"><h3>'+ title +'</h3></a><br><p>'+ snippet + '</p>').appendTo('#google-results');
+    // }
   }
 
 

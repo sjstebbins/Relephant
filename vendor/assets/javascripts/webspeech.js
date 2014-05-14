@@ -225,9 +225,9 @@ var status_array_en = {
 var image_array_mic = {
   'ready' : '/assets/mic.gif',
   'complete' : '/assets/mic.gif',
-  'active' : '/assets/mic-animate.gif',
+  'active' : '/assets/mic_animate.gif',
   'no-speech' : '/assets/mic.gif',
-  'disable' : '/assets/mic-slash.gif'
+  'disable' : '/assets/mic_slash.gif'
 };
 
 

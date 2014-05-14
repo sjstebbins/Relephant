@@ -1,6 +1,5 @@
 //= require underscore
 //= require backbone
-//= require bootstrap-datepicker.js
 //= require jquery.ui.slider
 //= require webspeech
 //= require treemap_rex
@@ -8,7 +7,8 @@
 //= require_tree ./backbonefiles/collections
 //= require_tree ./backbonefiles/views
 //= require backbonefiles/router
-
+//= require moment
+//= require bootstrap-datetimepicker
 var rephantoRouter;
 
 function backboneReady(){
