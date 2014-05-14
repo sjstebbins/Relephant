@@ -1,5 +1,7 @@
 //= require underscore
 //= require backbone
+//= require moment
+//= require bootstrap-datetimepicker
 //= require jquery.ui.slider
 //= require webspeech
 //= require treemap_rex
@@ -7,13 +9,13 @@
 //= require_tree ./backbonefiles/collections
 //= require_tree ./backbonefiles/views
 //= require backbonefiles/router
-//= require moment
-//= require bootstrap-datetimepicker
+
 var rephantoRouter;
 
 function backboneReady(){
   rephantoRouter = new RephantoRouter();
   rephantoRouter.start();
+  $('#datetimepicker1').datetimepicker();
 }
 
 $(document).ready(backboneReady);

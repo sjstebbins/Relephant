@@ -80,7 +80,6 @@ var WordListView = Backbone.View.extend({
   initializeChart: function(dataArray){
     this.$('#chart_container').prepend("<div id='chart'>");
     this.$('#chart_container').prepend("<div id='y_axis'>");
-    this.$('#datetimepicker1').datetimepicker();
 
     graph = new Rickshaw.Graph({
       element: document.querySelector("#chart"),
