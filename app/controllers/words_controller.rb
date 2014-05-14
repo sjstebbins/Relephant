@@ -10,6 +10,24 @@ class WordsController < ApplicationController
     end
   end
 
+  def alchemy_search
+    words = params[:words]
+    response = AlchemySearch::fetch_entities(words)
+    respond_to do |format|
+      format.html { }
+      format.json { render json: response.to_json }
+    end
+  end
+
+  def gooogle_search
+    entity = params[:entity]
+    response = GoogleSearch::fetch_results(entity)
+    respond_to do |format|
+      format.html { }
+      format.json { render json: response.to_json }
+    end
+  end
+
   def show
     word = Word.find(params[:id])
     respond_to do |format|
@@ -21,7 +39,7 @@ class WordsController < ApplicationController
   def create
     word = current_user.words.create(word_params)
     # word = Word.find_or_create_by(word_params) # Cant do this way because every word is unique
-    # even if word is same letters, the created_at times are different
+    # even if word is same litters, the created_at times are different
     # use part of speech gem here
     # use callback for next line?
     respond_to do |format|
