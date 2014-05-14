@@ -12,16 +12,30 @@
     <span id="interim_span"></span>
   </div>
 </div>
-
+<!--
 <div id="search">
   <input id="search-input" >
-</div>
+</div> -->
 
 
 <div id="main-container">
 
     <div id="word-chart">
-      <div style="margin-left: 50px;"><input type="button" id ="datepicker" class="datepicker"></div>
+
+    <!--   Calendar -->
+  <div id="calendar" class="container">
+    <div class="row">
+        <div id="calendar-slider" class='col-sm-3'>
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>`
       <div id="chart_container"></div>
       <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" style=" margin-left: 40px; width: 900px;">
         <div id ="range-slider"class="ui-slider-range ui-widget-header" style="left: 0%; width: 100%;"></div>
@@ -29,6 +43,8 @@
         <a id="right-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%; border: 1px solid black;"></a>
       </div>
     </div>
+ <!--  <div class="toggle-close"><i id="treemap-toggle" class="fa fa-arrows-v toggle-icon"></i></div> -->
   <div id="treemap"></div>
+  <!-- <div class="toggle-close"><i id="google-toggle" class="fa fa-arrows-v toggle-icon"></i></div> -->
   <div id="google-results"></div>
 </div>

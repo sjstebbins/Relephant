@@ -321,7 +321,7 @@
         legend: false,
         legendLabels: ['Low', 'High'],
         legendPosition: 'bottom',
-        width: 500,
-        height: 300
+        width: 1200,
+        height: 400
     };
 }(jQuery, window, document));

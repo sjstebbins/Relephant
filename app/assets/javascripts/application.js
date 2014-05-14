@@ -25,6 +25,9 @@ function ready() {
   $('nav').on("mouseleave", function(){
     $('#user-name').fadeOut('slow');
   });
+  $('#treemap-toggle').click(function(){
+  $('#treemap').slideToggle();
+});
 }
 
 $(document).ready(ready);
@@ -36,7 +39,7 @@ $(window).scroll(function(){
       var navHeight = $("#navbar").height();
       var resultsMargin = $("#results").css('margin-top');
       $("#navbar").css('height', (navHeight * .97));
-      $("#results").css('margin-top', (resultsMargin *.97));
+      // $("#results").css('margin-top', (resultsMargin *.97));
       $("#navbar").css('background-color', 'rgba(255,255,255,.8)');
 
     }

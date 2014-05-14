@@ -9,11 +9,12 @@
  * compiled file so the styles you add here take precedence over styles defined in any styles
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
- *
  *= require rickshaw
  *= require jquery.ui.slider
- *= require_tree .
+  *= require bootstrap-datetimepicker
+  *= require_tree .
  *= require_self
+
  */
 #main-container{
 }
@@ -104,3 +105,29 @@ li{
   margin-left: 20px;
   color: rgba(0,0,0,.4);
 }
+#calendar{
+  margin-left: 30px;
+}
+/*.toggle-close{
+  width: 40px;
+  height: 30px;
+  border: 1px solid rgba(0,0,0,.3);
+  border-radius: 5px;
+  background: rgba(0,0,0,.05);
+  margin-left: 1220px
+}
+.toggle-open{
+  width: 40px;
+  height: 30px;
+  margin-left: 1220px;
+  border: 1px solid rgba(0,0,0,.05);
+  border-radius: 5px;
+  background: rgba(0,0,0,.1);
+}
+.toggle-icon{
+  padding:10px;
+  font-size: 20px;
+  padding: 5px;
+  margin-left: 1230px;
+  color: rgba(0,0,0,.4);
+}*/

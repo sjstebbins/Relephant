@@ -79,7 +79,6 @@ var WordListView = Backbone.View.extend({
   initializeChart: function(lineDataArray){
     this.$('#chart_container').prepend("<div id='chart'>");
     this.$('#chart_container').prepend("<div id='y_axis'>");
-    this.$('.datepicker').datepicker();
 
     graph = new Rickshaw.Graph({
       element: document.querySelector("#chart"),
@@ -153,7 +152,7 @@ var WordListView = Backbone.View.extend({
     });
   },
   setStartDate: function(){
-    var selectedDate = $('.datepicker').val();
+    var selectedDate = $('.form-control').val();
     var startDate = new Date(selectedDate).getTime();
     return startDate;
   },
