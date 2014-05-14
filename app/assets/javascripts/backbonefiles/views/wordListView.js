@@ -52,11 +52,12 @@ var WordListView = Backbone.View.extend({
       },
       dataType: 'json'
     }).done(function(data){
-    console.log('');
+
      var entities = _.map(data.entities, function(entity){
-        var value = parseFloat(entity["relevance"]);
+          console.log(entity["sentiment"]["score"]);
+          var value = parseFloat(entity["relevance"]);
         var sentiment = parseFloat(entity["sentiment"]["score"]);
-        return {"label": entity["text"], "value": (value * 100) };
+        return {"label": entity["text"], "value": (value * 100), "sentiment": sentiment};
     });
       this.treemap(entities);
    }.bind(this));
@@ -158,7 +159,7 @@ var WordListView = Backbone.View.extend({
                   legendLabels: ['Negative', 'Positive'],
                   width: 1080,
                   click: function (node, event) {
-                    var entity = node.val();
+                    var entity = node.innerHtml();
                     $('<h3>'+ entity + '</h3>').appendTo('#treemap');
                   }
                 });
