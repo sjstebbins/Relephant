@@ -81,5 +81,7 @@ test:
 production:
   <<: *default
   database: Rephanto_production
-  username: Rephanto
-  password: <%= ENV['REPHANTO_DATABASE_PASSWORD'] %>
+  username:
+  password:
+  # username: Rephanto
+  # password: <%= ENV['REPHANTO_DATABASE_PASSWORD'] %>
