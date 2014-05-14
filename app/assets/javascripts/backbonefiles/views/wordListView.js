@@ -83,8 +83,8 @@ var WordListView = Backbone.View.extend({
 
     graph = new Rickshaw.Graph({
       element: document.querySelector("#chart"),
-      width: 1080,
-      height: 480,
+      width: 1200,
+      height: 400,
       series: [{
         data: dataArray,
         color: 'steelblue'
