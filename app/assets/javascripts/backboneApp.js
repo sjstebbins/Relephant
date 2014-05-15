@@ -15,16 +15,10 @@ var rephantoRouter;
 function backboneReady(){
   rephantoRouter = new RephantoRouter();
   rephantoRouter.start();
-
-  setDate();
 }
 
-function setDate() {
-  var today = new Date();
-  var year = "" + today.getYear();
-  var month = "" + today.getMonth() + 1;
-  var day = "" + today.getDate();
-  $('#datetimepicker1').datetimepicker();
+function prettyDateTime(dateTime) {
+  return dateTime.toDateString() + " at " + dateTime.toLocaleTimeString();
 }
 
 $(document).ready(backboneReady);

@@ -192,20 +192,13 @@ var WordListView = Backbone.View.extend({
     var hoverDetail = new Rickshaw.Graph.HoverDetail( {
       graph: graph,
       formatter: function(series, x, y) {
-        var date = '<span class="time">' + new Date(x * 1000).toString() + '</span>';
-        if ( (parseInt(y) >= 0) ) {
-          $('.detail').css("visibility", "visible");
-          var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
-        //Need to change the parseInt(y) to be the array of words and the Date function work properly
-      } else {
-        $('.detail').css("visibility", "hidden");
-        var swatch = '<span class="detail_swatch" style="background-color: rgba(0,0,0,0)"></span>';
-      }
-      var content = swatch + date  + '<br>' + parseInt(y);
-        // I THINK it would be nicer if on hover over the words of the array were displayed horizontally like on the legend here: http://code.shutterstock.com/rickshaw/examples/hover.html //
-
-        return content;
-      }
+        var wordDataPoint = _.filter(this.graphObjectArray, function(dataPoint, index){
+          return dataPoint['x'] === x;
+        }.bind(this));
+        var words = _.map(wordDataPoint[0]['y'], function(wordModel, index){ return wordModel.get('letters'); });
+        $('#legend-datetime').text(prettyDateTime(new Date(x * 1000)));
+        $('#legend-words').text(words.join(", "));
+      }.bind(this)
     });
   },
 
