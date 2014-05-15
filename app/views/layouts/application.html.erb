@@ -13,10 +13,11 @@
 <body>
 
   <%= render 'layouts/navbar' %>
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
-
   <%= yield %>
+  <div class="devise-alerts">
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+  </div>
 
 </body>
 </html>
