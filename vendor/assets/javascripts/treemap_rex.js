@@ -86,7 +86,7 @@
                 // Create treemap with nodes represented by colored div elements
                 for(i = 0, n = nodes.length, min = nodes[n-1].value, max = nodes[0].value; i < n; ++i) {
                     node = nodes[i];
-                    $node = $('<div/>').addClass('treemap-node');
+                    $node = $('<div/>').addClass('treemap-node').attr('id',i);
                     if(node.id) { $node.attr('id', node.id); }
                     if(node['class']) { $node.addClass(node['class']); }
                     $node.html(node.label);

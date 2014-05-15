@@ -5,8 +5,8 @@ var WordListView = Backbone.View.extend({
   el: '#word-chart',
   events: {
     'change #datepicker': 'render',
-    'mouseover .ui-slider-handle': 'setUpAlchemy',
-    'click .treemap-node': 'googleResults'
+    'click #alchemy': 'setUpAlchemy',
+    'click div.treemap-node': 'googleResults'
   },
 
   initialize: function(){
@@ -54,10 +54,10 @@ var WordListView = Backbone.View.extend({
       dataType: 'json'
     }).done(function(data){
      var entities = _.map(data.entities, function(entity){
-          var value = parseFloat(entity["relevance"]);
-        return {"label": entity["text"], "value": (value * 100), "type": entity["type"]};
+      var value = parseFloat(entity["relevance"]);
+      return {"label": entity["text"], "value": (value * 100), "type": entity["type"]};
     });
-      this.treemap(entities);
+     this.treemap(entities);
    }.bind(this));
   },
 
@@ -69,7 +69,7 @@ var WordListView = Backbone.View.extend({
       //smooth out graph on no talking
       var yVal = this.tempWordStorage.length === 0 ? curGraphData[curGraphData.length - 1]['y'] / this.SMOOTHING : this.tempWordStorage.length;
       graph.series[0].data.push({x: baseTimeInSeconds + (this.TICKSECONDS * counter),
-                                 y: yVal});
+       y: yVal});
       this.tempWordStorage = [];
       graph.render();
       counter++;
@@ -83,20 +83,20 @@ var WordListView = Backbone.View.extend({
     graph = new Rickshaw.Graph({
       element: document.querySelector("#chart"),
       renderer: 'multi',
-      width: 1080,
-      height: 480,
+      width: 1100,
+      height: 400,
       series: [
-                {
-                  data: lineDataArray,
-                  renderer: 'line',
-                  color: 'steelblue'
-                },
-                {
-                  data: lineDataArray,
-                  renderer: 'scatterplot',
-                  color: 'red'
-                }
-              ]
+      {
+        data: lineDataArray,
+        renderer: 'line',
+        color: 'steelblue'
+      },
+      {
+        data: lineDataArray,
+        renderer: 'scatterplot',
+        color: 'red'
+      }
+      ]
     });
 
     var x_axis = new Rickshaw.Graph.Axis.Time({
@@ -119,14 +119,14 @@ var WordListView = Backbone.View.extend({
           $('.detail').css("visibility", "visible");
           var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
         //Need to change the parseInt(y) to be the array of words and the Date function work properly
-        } else {
-          $('.detail').css("visibility", "hidden");
-          var swatch = '<span class="detail_swatch" style="background-color: rgba(0,0,0,0)"></span>';
-        }
-        var content = swatch + date  + '<br>' + parseInt(y);
+      } else {
+        $('.detail').css("visibility", "hidden");
+        var swatch = '<span class="detail_swatch" style="background-color: rgba(0,0,0,0)"></span>';
+      }
+      var content = swatch + date  + '<br>' + parseInt(y);
         // I THINK it would be nicer if on hover over the words of the array were displayed horizontally like on the legend here: http://code.shutterstock.com/rickshaw/examples/hover.html //
 
-          return content;
+        return content;
       }
     });
   },
@@ -159,15 +159,18 @@ var WordListView = Backbone.View.extend({
 
   treemap: function(entities){
     // $('#treemap').remove();
-                $("#treemap").treemap({data: entities,
-                  colors: ['#990000', '#002BD7'],
-                  width: 1080,
-                });
+    $("#treemap").treemap({data: entities,
+      colors: ['#2B44FF', '#75AAFF'],
+      width: 1100,
+      height: 300,
+    });
   },
   displayError: function(){
     $('<div id="RelephantError">RelephantError: Search query too large.</div>').appendTo('#word-chart');
   },
   googleResults: function(entity){
+    var resultsToPass;
+    var entity = entity.target.innerText.replace(' ','+');
     $.ajax({
       url: '/google_search',
       method: 'get',
@@ -176,23 +179,21 @@ var WordListView = Backbone.View.extend({
       },
       dataType: 'json'
     }).done(function(data){
-        var results = data.items;
-    });
-      this.googleResultsRender(results);
-   }.bind(this),
+      resultsToPass = data.items;
 
-  googleResultsRender: function(result){
+    $(entity.target).css('background','red');
+    this.googleResultsRender(resultsToPass);
+}.bind(this));
+    },
 
-    _.each(results){
-      var image = result["image"];
-      var link = result["link"];
+  googleResultsRender: function(results){
+
+    _.each(results, function(result, index){
       var title = result["title"];
       var snippet = result["snippet"];
-      $('<div>
-        <img src="' + image + '"><a href="' + link + '"><h3>'+ title +'</h3></a><br>
-        <p>'+ snippet + '</p>'
-      ).appendTo('#google-results');
-    }
+      var link = result["link"];
+      $('<div id="google-result"><a href="' + link + '"><h3>' +title + '</h3></a><br><p>' + snippet + '</p></div>').appendTo('#google-results');
+    });
   }
 
 });
