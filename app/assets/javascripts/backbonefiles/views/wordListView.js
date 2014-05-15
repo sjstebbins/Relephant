@@ -1,16 +1,16 @@
 var graph;
 var stringToQuery;
-
 var WordListView = Backbone.View.extend({
   el: '#word-chart',
   events: {
     'change #datepicker': 'render',
-    'mouseover .ui-slider-handle': 'setUpAlchemy',
-    'click .treemap-node': 'googleResults'
+    'click .ui-slider-handle': 'setUpAlchemy',
+    'click .treemap-node': 'googleResults',
+    'click button#word-search': 'wordSearch',
   },
 
   initialize: function(){
-    this.DEFAULTHOURSPAST = .25;
+    this.DEFAULTHOURSPAST = 0.25;
     this.XINTERVAL = 1;
     this.TICKSECONDS = 1;
     this.SMOOTHING = 1.01;
@@ -21,8 +21,10 @@ var WordListView = Backbone.View.extend({
     this.collection.fetch();
     this.listenTo(this.collection, 'add', this.addToTempStorage);
     // this.listenTo(this.collection, 'reset', this.render);
-    this.lineDataArray = this.queryDBforGraphData(this.XINTERVAL);
-    this.initializeChart(this.lineDataArray);
+    this.graphObjectArray = this.queryDBforGraphData(this.XINTERVAL);
+    this.lineDataArray = this.getLineDataArray(this.graphObjectArray);
+    this.scatterDataArray = [{x: this.startDate/1000, y: 0}];
+    this.initializeChart();
     this.render();
   },
 
@@ -30,6 +32,26 @@ var WordListView = Backbone.View.extend({
     graph.render();
     this.setSlider();
     this.setTickInterval();
+  },
+
+  getLineDataArray: function(graphDataObject) {
+    return _.map(graphDataObject, function(dataPoint, index) {
+      return { x: dataPoint['x'], y: dataPoint['y'].length };
+    });
+  },
+
+  wordSearch: function(){
+    var query = $('#search-input').val();
+    _.each(this.graphObjectArray, function(dataPoint, index){
+      if (dataPoint['y'].length > 0) {
+        _.each(dataPoint['y'], function(wordModel, index, list){
+          if (wordModel.get('letters').toLowerCase() === query.toLowerCase()) {
+            this.scatterDataArray.push({ x: dataPoint['x'], y: list.length });
+          }
+        }.bind(this));
+      }
+    }.bind(this));
+    graph.render();
   },
   setUpAlchemy: function(){
     //get left slider val in seconds
@@ -43,6 +65,7 @@ var WordListView = Backbone.View.extend({
     var stringToQuery = this.collection.alchemyQueryString(leftDateTime, rightDateTime);
     this.renderAlchemy(stringToQuery);
   },
+
   renderAlchemy: function(stringToQuery){
     //assume at this point we have alchemyQueryString
     $.ajax({
@@ -68,18 +91,17 @@ var WordListView = Backbone.View.extend({
       var curGraphData = this.lineDataArray;
       //smooth out graph on no talking
       var yVal = this.tempWordStorage.length === 0 ? curGraphData[curGraphData.length - 1]['y'] / this.SMOOTHING : this.tempWordStorage.length;
-      graph.series[0].data.push({x: baseTimeInSeconds + (this.TICKSECONDS * counter),
-                                 y: yVal});
+      this.lineDataArray.push({x: baseTimeInSeconds + (this.TICKSECONDS * counter),
+                               y: yVal});
       this.tempWordStorage = [];
       graph.render();
       counter++;
     }.bind(this), this.TICKSECONDS * 1000);
   },
 
-  initializeChart: function(lineDataArray){
+  initializeChart: function(){
     this.$('#chart_container').prepend("<div id='chart'>");
     this.$('#chart_container').prepend("<div id='y_axis'>");
-
     graph = new Rickshaw.Graph({
       element: document.querySelector("#chart"),
       renderer: 'multi',
@@ -87,12 +109,12 @@ var WordListView = Backbone.View.extend({
       height: 480,
       series: [
                 {
-                  data: lineDataArray,
+                  data: this.lineDataArray,
                   renderer: 'line',
                   color: 'steelblue'
                 },
                 {
-                  data: lineDataArray,
+                  data: this.scatterDataArray,
                   renderer: 'scatterplot',
                   color: 'red'
                 }

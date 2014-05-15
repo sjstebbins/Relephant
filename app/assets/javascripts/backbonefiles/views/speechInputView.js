@@ -46,6 +46,6 @@ var SpeechInputView = Backbone.View.extend({
         this.collection.create(newWord, {wait: true});
       }.bind(this));
       this.wordStorage = [];
-    }.bind(this), 5000);
+    }.bind(this), 3000);
   }
 });

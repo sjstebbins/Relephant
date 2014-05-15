@@ -7,7 +7,7 @@ var WordCollection = Backbone.Collection.extend({
     return "/users/" + curUserID + "/words";
   },
 
-  //All date args and returns should be in seconds since epoch
+  // All date args and returns should be in seconds since epoch
 
   graphObjectInDateTimeRange: function(startDateTimeSeconds, endDateTimeSeconds, interval) {
     var result = [];
@@ -15,7 +15,7 @@ var WordCollection = Backbone.Collection.extend({
     for (var i = 0; i < timeIntervals.length; i++) {
       var filteredWordArray = this.wordModelsFromStartToEnd(timeIntervals[i], timeIntervals[i+1]);
       //Rickshaw needs time in seconds
-      result.push({x: timeIntervals[i], y: filteredWordArray.length});
+      result.push({x: timeIntervals[i], y: filteredWordArray});
     }
     return result;
   },
