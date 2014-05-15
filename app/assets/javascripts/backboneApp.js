@@ -15,6 +15,11 @@ var rephantoRouter;
 function backboneReady(){
   rephantoRouter = new RephantoRouter();
   rephantoRouter.start();
+  setDate();
+}
+
+function setDate() {
+  $('#datetimepicker1').datetimepicker();
 }
 
 function prettyDateTime(dateTime) {

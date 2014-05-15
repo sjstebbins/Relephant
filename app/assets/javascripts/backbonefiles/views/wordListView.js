@@ -30,7 +30,7 @@ var WordListView = Backbone.View.extend({
 
   render: function(){
     this.lineDataArray = this.getLineDataArray(this.graphObjectArray);
-    this.scatterDataArray = [{x: this.startDate/1000, y: 0}];
+    // this.scatterDataArray = [{x: this.startDate/1000, y: 0}];
     this.initializeChart();
     graph.render();
     this.setSlider();
@@ -83,16 +83,24 @@ var WordListView = Backbone.View.extend({
   },
 
   wordSearch: function(){
+    var scatterDataArray = [{x: this.startDate/1000, y: 0}];
     var query = $('#search-input').val();
     _.each(this.graphObjectArray, function(dataPoint, index){
       if (dataPoint['y'].length > 0) {
         _.each(dataPoint['y'], function(wordModel, index, list){
           if (wordModel.get('letters').toLowerCase() === query.toLowerCase()) {
-            this.scatterDataArray.push({ x: dataPoint['x'], y: list.length });
+            scatterDataArray.push({ x: dataPoint['x'], y: list.length });
           }
         }.bind(this));
       }
     }.bind(this));
+    var r = Math.floor(Math.random() * 255);
+    var g = Math.floor(Math.random() * 255);
+    var b = Math.floor(Math.random() * 255);
+    var color = 'rgb(' + r + ',' + g + ',' + b + ')';
+    var count = scatterDataArray.length - 1;
+    graph.series.push({ data: scatterDataArray, renderer: 'scatterplot', color: color });
+    $('#legend').append("<div class='search-term' style='background: " + color + ";'><span class='search-count'>(" + count + ")</span> " + query + "</div>");
     graph.render();
   },
 
@@ -147,7 +155,7 @@ var WordListView = Backbone.View.extend({
     } else {
       var startDate = new Date(selectedDate).getTime();
       if (startDate > new Date().getTime()) {
-        $('.form-control').css("border-color", "red")
+        $('.form-control').css("border-color", "red");
         $('#tick-interval').parent().append("<p>Time cannot be in the future</p>");
         startDate = new Date().getTime() - (this.DEFAULTHOURSPAST*60*60*1000);
       }
@@ -168,11 +176,6 @@ var WordListView = Backbone.View.extend({
                   data: this.lineDataArray,
                   renderer: 'line',
                   color: 'steelblue'
-                },
-                {
-                  data: this.scatterDataArray,
-                  renderer: 'scatterplot',
-                  color: 'red'
                 }
               ]
     });
