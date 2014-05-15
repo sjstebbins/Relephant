@@ -6,8 +6,9 @@ var WordListView = Backbone.View.extend({
   events: {
     'click button#word-search': 'wordSearch',
     'click button#datetimebutton': 'resetTime',
-    'click #alchemy': 'setUpAlchemy',
-    'click div.treemap-node': 'googleResults'
+    'click button#alchemy': 'setUpAlchemy',
+    'click div.treemap-node': 'googleResults',
+    'click button#transcript': 'generateTranscript'
   },
 
   initialize: function(){
@@ -17,8 +18,8 @@ var WordListView = Backbone.View.extend({
     this.listenTo(this.collection, 'add', this.addToTempStorage);
 
     this.DEFAULTHOURSPAST = 1;
-    this.XINTERVALSECONDS = 1;
-    this.TICKSECONDS = 1;
+    this.XINTERVALSECONDS = 30;
+    this.TICKSECONDS = 30;
     this.SMOOTHING = 1.01;
     this.tempWordStorage = [];
 
@@ -35,6 +36,19 @@ var WordListView = Backbone.View.extend({
     graph.render();
     this.setSlider();
     this.setTickInterval();
+  },
+
+  generateTranscript: function(){
+    var graphIntervalSeconds = new Date() - this.startDate; // total seconds length of line
+    var leftSliderPct =  parseFloat(document.getElementById('left-slider').style.left)/100; //left slider %
+    var rightSliderPct =  parseFloat(document.getElementById('right-slider').style.left)/100; //right slider %
+    var leftDateTime = (leftSliderPct * graphIntervalSeconds + this.startDate)/1000;
+    var rightDateTime = (rightSliderPct * graphIntervalSeconds + this.startDate)/1000;
+    var transcript = this.collection.alchemyQueryString(leftDateTime, rightDateTime).split("+").join(" ");
+    $('#transcript-box').empty();
+    $('#transcript-box').append("<h4 id=transcript-title>Trancript from " + new Date(leftDateTime*1000).toString() + " to " + new Date(rightDateTime*1000).toString() + ":</h4>");
+    $('#transcript-box').append("<p id=transcript-content>" + transcript + "</p>");
+
   },
 
   resetTime: function(){
@@ -215,7 +229,7 @@ var WordListView = Backbone.View.extend({
 
   googleResults: function(entity){
     var resultsToPass;
-    var entity = entity.target.innerText.replace(' ','+');
+    var entity = entity.target.innerText.split(" ").join("+");
     $.ajax({
       url: '/google_search',
       method: 'get',
@@ -228,7 +242,7 @@ var WordListView = Backbone.View.extend({
     $(entity.target).css('background','red');
       this.googleResultsRender(resultsToPass);
     }.bind(this));
-    },
+  },
 
   googleResultsRender: function(results){
     $("#google-results").empty();
@@ -239,5 +253,4 @@ var WordListView = Backbone.View.extend({
       $('<div id="google-result"><a href="' + link + '"><h3>' + title + '</h3></a><br><p>' + snippet + '</p></div>').appendTo('#google-results');
     });
   }
-
 });
