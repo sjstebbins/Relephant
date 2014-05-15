@@ -16,8 +16,21 @@
 //= require treemap_rex
 
 // move to separate file
-function ready() {
+function ready(){
+  // Loader
   $(".loader").fadeOut(3000);
+  // Scroller
+  $("#scroller").hide();
+  $("#scroller").click(function(){
+    var body = $("body");
+    var top = body.scrollTop();
+    if (top != 0) {
+      body.animate({
+        scrollTop: 0
+      }, '500');
+    };
+  });
+
   $('#user-name').hide();
   $('nav').on("mouseenter", function(){
     $('#user-name').fadeIn('slow');
@@ -25,28 +38,36 @@ function ready() {
   $('nav').on("mouseleave", function(){
     $('#user-name').fadeOut('slow');
   });
-  $('#treemap-toggle').click(function(){
-  $('#treemap').slideToggle();
-});
+
+  $(window).scroll(function(){
+    currentoffset = $(this).scrollTop();
+    if (currentoffset > 100) {
+      // Nav and mic animation
+      var navHeight = $("#navbar").height();
+      // var resultsMargin = $("#results").css('margin-top');
+      $("#navbar").css('height', (navHeight * 0.97));
+      // $("#results").css('margin-top', (resultsMargin *.97));
+      $("#navbar").css('background-color', 'rgba(255,255,255,.8)');
+    }
+
+      // Scroller
+    if (currentoffset > 100) {
+      $("#scroller").fadeIn();
+    } else {
+      $('#scroller').fadeOut();
+    }
+    // if (currentoffset < 150) {
+    //   $("#microphone").css('padding',(this.scrollTop * 1.1));
+    // }  // $('#logo-text').text().css('left', (currentoffset/200) + 'px');
+
+  });
 }
+// End Documenet ready
 
 $(document).ready(ready);
 $(document).on('page:load', ready);
 
-$(window).scroll(function(){
-    currentoffset = $(this).scrollTop();
-    if (currentoffset>100) {
-      var navHeight = $("#navbar").height();
-      var resultsMargin = $("#results").css('margin-top');
-      $("#navbar").css('height', (navHeight * .97));
-      // $("#results").css('margin-top', (resultsMargin *.97));
-      $("#navbar").css('background-color', 'rgba(255,255,255,.8)');
-
-    }
-      // $('#logo-text').text().css('left', (currentoffset/200) + 'px');
-
-
-});
+// Scroll Related Animations
 
 
 

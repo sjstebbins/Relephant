@@ -20,7 +20,7 @@ class WordsController < ApplicationController
     end
   end
 
-  def gooogle_search
+  def google_search
     entity = params[:entity]
     response = GoogleSearch::fetch_results(entity)
     respond_to do |format|
