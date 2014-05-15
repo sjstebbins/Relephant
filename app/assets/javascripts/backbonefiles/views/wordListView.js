@@ -100,6 +100,7 @@ var WordListView = Backbone.View.extend({
         var value = parseFloat(entity["relevance"]);
         return {"label": entity["text"], "value": (value * 100), "type": entity["type"]};
       });
+        console.log(entities);
       this.treemap(entities);
    }.bind(this));
   },

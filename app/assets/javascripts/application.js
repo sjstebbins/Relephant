@@ -41,13 +41,18 @@ function ready(){
 
   $(window).scroll(function(){
     currentoffset = $(this).scrollTop();
+    var navHeight = $("#navbar").height();
     if (currentoffset > 100) {
       // Nav and mic animation
-      var navHeight = $("#navbar").height();
-      // var resultsMargin = $("#results").css('margin-top');
-      $("#navbar").css('height', (navHeight * 0.97));
-      // $("#results").css('margin-top', (resultsMargin *.97));
+      // // var resultsMargin = $("#results").css('margin-top');
+      // $("#navbar").css('height', (navHeight * 0.97));
+      $("#navbar").animate({height: '50px'}, 3000);
       $("#navbar").css('background-color', 'rgba(255,255,255,.8)');
+
+      // $("#results").css('margin-top', (resultsMargin *.97));
+    } else {
+      $("#navbar").animate({height: '80px'}, 3000);
+      $("#navbar").css('background-color', 'white');
     }
 
       // Scroller

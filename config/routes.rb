@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
+  get '/welcome', to: 'welcome#welcome'
   post '/alchemy_search', to: 'words#alchemy_search'
   get '/google_search', to: 'words#google_search'
   post '/words', to: "words#create"
@@ -8,7 +9,7 @@ Rails.application.routes.draw do
     resources :words, shallow: true, only: [:index, :show]
   end
   resources :searches, only: [:show]
-  root to: "welcome#index"
+  root to: "welcome#homepage"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
