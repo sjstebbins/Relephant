@@ -20,9 +20,7 @@ var WordListView = Backbone.View.extend({
     this.TICKSECONDS = 1;
     this.SMOOTHING = 1.01;
     this.tempWordStorage = [];
-    this.currentInterval;
 
-    // this.startDate = new Date().getTime() - this.DEFAULTHOURSPAST*60*60*1000;
     this.startDate = this.setStartDate();
     this.endDate = new Date().getTime(); //current time
     this.graphObjectArray = this.queryDBforGraphData(this.XINTERVALSECONDS);
@@ -65,8 +63,6 @@ var WordListView = Backbone.View.extend({
   },
 
   setUpAlchemy: function(){
-    //get left slider val in seconds
-    //get right slider val in seconds
     var graphIntervalSeconds = new Date() - this.startDate; // total seconds length of line
     var leftSliderPct =  parseFloat(document.getElementById('left-slider').style.left)/100; //left slider %
     var rightSliderPct =  parseFloat(document.getElementById('right-slider').style.left)/100; //right slider %
