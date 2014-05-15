@@ -68,14 +68,12 @@ var WordListView = Backbone.View.extend({
     var leftSliderPct =  parseFloat(document.getElementById('left-slider').style.left)/100; //left slider %
     var rightSliderPct =  parseFloat(document.getElementById('right-slider').style.left)/100; //right slider %
     var leftDateTime = (leftSliderPct * graphIntervalSeconds + this.startDate)/1000;
-    // is this just Date.now?
     var rightDateTime = (rightSliderPct * graphIntervalSeconds + this.startDate)/1000;
     var stringToQuery = this.collection.alchemyQueryString(leftDateTime, rightDateTime);
     this.renderAlchemy(stringToQuery);
   },
 
   renderAlchemy: function(stringToQuery){
-    //assume at this point we have alchemyQueryString
     $.ajax({
       url: '/alchemy_search',
       method: 'post',
@@ -84,11 +82,11 @@ var WordListView = Backbone.View.extend({
       },
       dataType: 'json'
     }).done(function(data){
-     var entities = _.map(data.entities, function(entity){
-      var value = parseFloat(entity["relevance"]);
-      return {"label": entity["text"], "value": (value * 100), "type": entity["type"]};
-    });
-     this.treemap(entities);
+      var entities = _.map(data.entities, function(entity){
+        var value = parseFloat(entity["relevance"]);
+        return {"label": entity["text"], "value": (value * 100), "type": entity["type"]};
+      });
+      this.treemap(entities);
    }.bind(this));
   },
 
@@ -198,16 +196,21 @@ var WordListView = Backbone.View.extend({
   },
 
   treemap: function(entities){
-    // $('#treemap').remove();
-    $("#treemap").treemap({data: entities,
-      colors: ['#2B44FF', '#75AAFF'],
-      width: 1100,
-      height: 300,
-    });
+    $("#treemap").remove();
+    $("<div id='treemap'>").insertBefore("#google-results");
+    if (entities.length > 0) {
+      $("#treemap").treemap({data: entities,
+        colors: ['#2B44FF', '#75AAFF'],
+        width: 1100,
+        height: 300,
+      });
+    } else {
+      this.displayRelephantError();
+    }
   },
 
-  displayError: function(){
-    $('<div id="RelephantError">RelephantError: Search query too large.</div>').appendTo('#word-chart');
+  displayRelephantError: function(){
+    $('<div id="RelephantError">RelephantError: No concepts found. Try adjusting your search window or recording more conversations.</div>').appendTo('#treemap');
   },
 
   googleResults: function(entity){
@@ -228,11 +231,12 @@ var WordListView = Backbone.View.extend({
     },
 
   googleResultsRender: function(results){
+    $("#google-results").empty();
     _.each(results, function(result, index){
       var title = result["title"];
       var snippet = result["snippet"];
       var link = result["link"];
-      $('<div id="google-result"><a href="' + link + '"><h3>' +title + '</h3></a><br><p>' + snippet + '</p></div>').appendTo('#google-results');
+      $('<div id="google-result"><a href="' + link + '"><h3>' + title + '</h3></a><br><p>' + snippet + '</p></div>').appendTo('#google-results');
     });
   }
 
