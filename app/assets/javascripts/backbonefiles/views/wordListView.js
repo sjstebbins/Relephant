@@ -3,35 +3,45 @@ var stringToQuery;
 var WordListView = Backbone.View.extend({
   el: '#word-chart',
   events: {
-    'change #datepicker': 'render',
     'click .ui-slider-handle': 'setUpAlchemy',
     'click .treemap-node': 'googleResults',
     'click button#word-search': 'wordSearch',
+    'click button#datetimebutton': 'resetTime'
   },
 
   initialize: function(){
-    this.DEFAULTHOURSPAST = 0.25;
-    this.XINTERVAL = 1;
+    this.$('#chart_container').remove();
+    $("<div id=chart_container></div>").insertBefore('#slider-range');
+    this.collection.fetch();
+    this.listenTo(this.collection, 'add', this.addToTempStorage);
+
+    this.DEFAULTHOURSPAST = 1;
+    this.XINTERVALSECONDS = 1;
     this.TICKSECONDS = 1;
     this.SMOOTHING = 1.01;
     this.tempWordStorage = [];
-    // set start date using function instead of using following line
-    this.startDate = new Date().getTime() - this.DEFAULTHOURSPAST*60*60*1000; // in milliseconds
-    this.endDate = new Date().getTime();
-    this.collection.fetch();
-    this.listenTo(this.collection, 'add', this.addToTempStorage);
-    // this.listenTo(this.collection, 'reset', this.render);
-    this.graphObjectArray = this.queryDBforGraphData(this.XINTERVAL);
-    this.lineDataArray = this.getLineDataArray(this.graphObjectArray);
-    this.scatterDataArray = [{x: this.startDate/1000, y: 0}];
-    this.initializeChart();
+    this.currentInterval;
+
+    // this.startDate = new Date().getTime() - this.DEFAULTHOURSPAST*60*60*1000;
+    this.startDate = this.setStartDate();
+    this.endDate = new Date().getTime(); //current time
+    this.graphObjectArray = this.queryDBforGraphData(this.XINTERVALSECONDS);
     this.render();
   },
 
   render: function(){
+    this.lineDataArray = this.getLineDataArray(this.graphObjectArray);
+    this.scatterDataArray = [{x: this.startDate/1000, y: 0}];
+    this.initializeChart();
     graph.render();
     this.setSlider();
     this.setTickInterval();
+  },
+
+  resetTime: function(){
+    this.startDate = this.setStartDate();
+    clearInterval(this.currentInterval);
+    this.initialize();
   },
 
   getLineDataArray: function(graphDataObject) {
@@ -53,6 +63,7 @@ var WordListView = Backbone.View.extend({
     }.bind(this));
     graph.render();
   },
+
   setUpAlchemy: function(){
     //get left slider val in seconds
     //get right slider val in seconds
@@ -87,7 +98,7 @@ var WordListView = Backbone.View.extend({
   setTickInterval: function(){
     var baseTimeInSeconds = this.endDate / 1000;
     var counter = 1;
-    var interval = setInterval(function(){
+    this.currentInterval = setInterval(function(){
       var curGraphData = this.lineDataArray;
       //smooth out graph on no talking
       var yVal = this.tempWordStorage.length === 0 ? curGraphData[curGraphData.length - 1]['y'] / this.SMOOTHING : this.tempWordStorage.length;
@@ -99,9 +110,22 @@ var WordListView = Backbone.View.extend({
     }.bind(this), this.TICKSECONDS * 1000);
   },
 
+  setStartDate: function(){
+    var selectedDate = $('.form-control').val();
+    if (selectedDate === "") {
+      return new Date().getTime() - (this.DEFAULTHOURSPAST*60*60*1000);
+    } else {
+      var startDate = new Date(selectedDate).getTime();
+      if (startDate > new Date().getTime()) {
+        startDate = new Date().getTime();
+      }
+      return startDate;
+    }
+  },
+
   initializeChart: function(){
-    this.$('#chart_container').prepend("<div id='chart'>");
-    this.$('#chart_container').prepend("<div id='y_axis'>");
+    $('#chart_container').prepend("<div id='chart'>");
+    $('#chart_container').prepend("<div id='y_axis'>");
     graph = new Rickshaw.Graph({
       element: document.querySelector("#chart"),
       renderer: 'multi',
@@ -164,20 +188,18 @@ var WordListView = Backbone.View.extend({
     var graphDataArray = this.collection.graphObjectInDateTimeRange(leftDateTime, rightDateTime, interval);
     return graphDataArray;
   },
+
   addToTempStorage: function(newWord){
     this.tempWordStorage.push(newWord.get('letters'));
   },
+
   setSlider: function(){
     var slider = new Rickshaw.Graph.RangeSlider( {
       graph: graph,
       element: document.querySelector('#slider-range')
     });
   },
-  setStartDate: function(){
-    var selectedDate = $('.form-control').val();
-    var startDate = new Date(selectedDate).getTime();
-    return startDate;
-  },
+
 
   treemap: function(entities){
     // $('#treemap').remove();
@@ -186,9 +208,11 @@ var WordListView = Backbone.View.extend({
                   width: 1080,
                 });
   },
+
   displayError: function(){
     $('<div id="RelephantError">RelephantError: Search query too large.</div>').appendTo('#word-chart');
   },
+
   googleResults: function(entity){
     $.ajax({
       url: '/google_search',
