@@ -13,7 +13,7 @@
       <% if user_signed_in? %>
        <a id="logo-text" class="navbar-brand" href="/users/<%= current_user.id %>"><%= image_tag('logo.png', id: "logo") %>ELEPHANT</a>
       <% else %>
-      <li><a class="navbar-brand" href="/"><%= image_tag('logo.png', id: "logo") %>ELEPHANT</a></li>
+      <a class="navbar-brand" href="/"><%= image_tag('logo.png', id: "logo") %>ELEPHANT</a>
       <% end %>
     </div><!-- end brand header-->
 

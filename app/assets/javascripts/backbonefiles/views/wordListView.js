@@ -179,17 +179,20 @@ var WordListView = Backbone.View.extend({
         var results = data.items;
     });
       this.googleResultsRender(results);
-   }.bind(this)
+   }.bind(this),
 
-  // googleResultsRender: function(result){
+  googleResultsRender: function(result){
 
-  //   _.each(results){
-  //     var image = result["image"];
-  //     var link = result["link"];
-  //     var title = result["title"];
-  //     var snippet = result["snippet"];
-  //     $('<div><img src="' + image + '"><a href="' + link + '"><h3>'+ title +'</h3></a><br><p>'+ snippet + '</p>').appendTo('#google-results');
-  //   }
-  // }
+    _.each(results){
+      var image = result["image"];
+      var link = result["link"];
+      var title = result["title"];
+      var snippet = result["snippet"];
+      $('<div>
+        <img src="' + image + '"><a href="' + link + '"><h3>'+ title +'</h3></a><br>
+        <p>'+ snippet + '</p>'
+      ).appendTo('#google-results');
+    }
+  }
 
 });
