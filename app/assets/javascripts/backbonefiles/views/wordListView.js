@@ -18,14 +18,13 @@ var WordListView = Backbone.View.extend({
     this.listenTo(this.collection, 'add', this.addToTempStorage);
 
     this.DEFAULTHOURSPAST = 1;
-    this.XINTERVALSECONDS = 30;
-    this.TICKSECONDS = 30;
     this.SMOOTHING = 1.01;
     this.tempWordStorage = [];
 
     this.startDate = this.setStartDate();
     this.endDate = new Date().getTime(); //current time
-    this.graphObjectArray = this.queryDBforGraphData(this.XINTERVALSECONDS);
+    this.xIntervalSeconds = this.setIntervalSeconds((this.endDate - this.startDate)/1000);
+    this.graphObjectArray = this.queryDBforGraphData(this.xIntervalSeconds);
     this.render();
   },
 
@@ -36,6 +35,26 @@ var WordListView = Backbone.View.extend({
     graph.render();
     this.setSlider();
     this.setTickInterval();
+  },
+
+  setIntervalSeconds: function(range){ //takes graph range in seconds
+    var result;
+    var seconds_in_hour = 60 * 60;
+    if (range < 2 * seconds_in_hour) {
+      result = 1;
+    } else if (range < 24 * seconds_in_hour) {
+      result = 5;
+    } else if (range < 84 * seconds_in_hour) { // half a week
+      result = 10;
+    } else if (range < 168 * seconds_in_hour) { // one week
+      result = 30;
+    } else if (range < 720 * seconds_in_hour) { // one month
+      result = 150;
+    } else {
+      result = 1200;
+    }
+    $('#tick-interval').text(result + " seconds");
+    return result;
   },
 
   generateTranscript: function(){
@@ -111,22 +130,26 @@ var WordListView = Backbone.View.extend({
       var curGraphData = this.lineDataArray;
       //smooth out graph on no talking
       var yVal = this.tempWordStorage.length === 0 ? curGraphData[curGraphData.length - 1]['y'] / this.SMOOTHING : this.tempWordStorage.length;
-      this.lineDataArray.push({x: baseTimeInSeconds + (this.TICKSECONDS * counter),
+      this.lineDataArray.push({x: baseTimeInSeconds + (this.xIntervalSeconds * counter),
                                y: yVal});
       this.tempWordStorage = [];
       graph.render();
       counter++;
-    }.bind(this), this.TICKSECONDS * 1000);
+    }.bind(this), this.xIntervalSeconds * 1000);
   },
 
   setStartDate: function(){
+    $('.form-control').css("border-color", "#ddd");
+    $('#tick-interval').parent().find('p').remove();
     var selectedDate = $('.form-control').val();
     if (selectedDate === "") {
       return new Date().getTime() - (this.DEFAULTHOURSPAST*60*60*1000);
     } else {
       var startDate = new Date(selectedDate).getTime();
       if (startDate > new Date().getTime()) {
-        startDate = new Date().getTime();
+        $('.form-control').css("border-color", "red")
+        $('#tick-interval').parent().append("<p>Time cannot be in the future</p>");
+        startDate = new Date().getTime() - (this.DEFAULTHOURSPAST*60*60*1000);
       }
       return startDate;
     }
