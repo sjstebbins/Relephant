@@ -9,7 +9,7 @@ var WordListView = Backbone.View.extend({
     'click button#alchemy': 'setUpAlchemy',
     'click div.treemap-node': 'googleResults',
     'click button#transcript': 'generateTranscript',
-    'click button#live': "startLiveChart"
+    'click button#live': "startLiveChart",
   },
 
   initialize: function(){
@@ -36,6 +36,10 @@ var WordListView = Backbone.View.extend({
     graph.render();
     this.setSlider();
     this.setTickInterval();
+  },
+
+  updateSliderInterval: function(){
+    console.log('hi');
   },
 
   startLiveChart: function(){
@@ -245,7 +249,7 @@ var WordListView = Backbone.View.extend({
           $('#legend-datetime').text(prettyDateTime(new Date(x * 1000)));
           $('#legend-words').text(words.join(" "));
         }
-        return 'word count: ' + y;
+        return wordDataPoint[0]['y'].length > 0 ? 'word count: ' + y : 'word count: 0';
       }.bind(this)
     });
   },
