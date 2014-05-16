@@ -14,13 +14,14 @@
 </div>
 
 <div id="main-container">
+<i id="search-icon" class="fa fa-search"></i>
 
   <div id="word-chart">
 
       <br>
       <div id="search">
-        <input type="text" id="search-input" >
-        <button id="word-search">Search</button>
+        <input type="text" placeholder="Search" id="search-input" >
+        <button id="word-search"><i class="fa fa-search"></i></button>
       </div>
       <br>
       <button id="live">Live</button>
@@ -49,16 +50,21 @@
     <a id="left-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%; border: 1px solid black;"></a>
     <a id="right-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%; border: 1px solid black;"></a>
 </div>
+
 <div id="legend">
   <p>DateTime: <span id="legend-datetime"></span></p>
   <p>Spoken Words: <span id="legend-words"></span></p>
   <ul id="queries"></ul>
 </div>
-<button id="alchemy">Search Conversation For Concepts</button>
-<button id="transcript">Generate Transcript</button>
+
+<div id="extra-menu"><button id="alchemy">Search Speech For Concepts</button>
+<button id="transcript">Generate Transcript</button></div>
+
 
     <!--  <div class="toggle-close"><i id="treemap-toggle" class="fa fa-arrows-v toggle-icon"></i></div> -->
-    <div id="transcript-box"></div>
+    <div class="col-m-3"id="transcript-box">
+
+    </div>
     <div id="treemap"></div>
     <!-- <div class="toggle-close"><i id="google-toggle" class="fa fa-arrows-v toggle-icon"></i></div> -->
     <div id="google-results"></div>

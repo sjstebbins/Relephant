@@ -17,10 +17,11 @@
 
  */
 #main-container{
+
 }
 #profile-photo{
   border-radius: 45px;
-  padding: 10px
+  padding: 10px;
 }
 
 #user-name{
@@ -32,7 +33,6 @@
   font-weight: bold;
   border-bottom:1px solid #ddd;
   margin-bottom: 10px;
-  padding: ;
   text-align: left;
   vertical-align: text-top;
   min-height: 50px;
@@ -52,7 +52,9 @@
   width: 60px;
   margin: 0px;
   margin-top: -10px;
+  z-index: 100;
 }
+
 li{
   text-decoration: none
 }
@@ -61,9 +63,10 @@ li{
   border: 1px solid grey;
   position: fixed;
   width: 100%;
-  margin-top: -20px;
-  height: 100px;
+  /*margin-top: -20px;*/
+  height: 80px;
   border-top: none;
+
 }
 #treemap{
   margin-left: 40px
@@ -103,10 +106,11 @@ li{
   background-color: black;
 }
 #welcome{
-  margin-top: 60px;
+  margin-top: 130px;
   margin-left: 20px;
   color: rgba(0,0,0,.4);
 }
+
 #calendar{
   margin-left: 30px;
 }
@@ -116,6 +120,10 @@ li{
   height:100%;
   background: url('http://mediad.publicbroadcasting.net/p/kuow/files/201311/elephant-herd.jpg') no-repeat;
   background-size: 100%;
+}
+.devise-alerts {
+  position:  fixed;
+  margin-left: 30px;
 }
 #scroller-icon{
   font-size: 35px;
@@ -136,19 +144,35 @@ li{
 #google-result{
   border-bottom: 1px solid #ddd;
   width: 1100px;
-  margin:10px
+  margin: 10px;
 }
 #alchemy{
   margin: 10px;
-  margin-left: 450px;
+  margin-left: 350px;
   border-radius: 5px;
   background: white;
+   font-family: "Lucida Grande";
 }
-#alchemy :hover{
-  background: 'red';
+#datetimebutton{
+  margin: 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+  background: white;
+   font-family: "Lucida Grande";
 }
-div.detail .x_label .left {
-  /*visibility: hidden;*/
+#transcript{
+  margin: 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+  background: white;
+   font-family: "Lucida Grande";
+}
+#transcript-box{
+  margin: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 10px;
+  margin-left: 30px;
 }
 .search-term {
   display: inline-block;
@@ -162,6 +186,52 @@ div.detail .x_label .left {
 }
 button#live {
   background: red;
+}
+.close{
+  color: rgba(0,0,0,.4);
+  margin: 20px;
+}
+.close :hover{
+  color: "red";
+}
+#search-icon{
+  font-size: 20px;
+  color: rgba(0,0,0,.3);
+  position: fixed;
+  margin-left:60%;
+  margin-top: -70px;
+}
+#search{
+  margin-left:55%;
+  background: rgba(255,255,255,.4);
+  width: 60%;
+  margin-top: -180px;
+  position:fixed;
+  box-shadow: 5px 5px 5px rgba(68,68,68,0.6);
+}
+#word-search{
+  margin: 2px;
+  width:50px;
+  margin:15px;
+  background: white;
+  border: 1px solid #ddd;
+  position: absolute;
+  border-radius: 90px;
+}
+#word-search :hover{
+  background: 'red'
+}
+#search-input{
+  border: none;
+  margin-left: 40px;
+  color: rgba(0,0,0,.5);
+  width: 55%;
+  height: 60px;
+  background: rgba(255,255,255,.4);
+  font-family: "Lucida Grande";
+}
+#extra-menu{
+  display: inline;
 }
 
 /*.toggle-close{

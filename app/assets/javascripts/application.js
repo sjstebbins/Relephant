@@ -13,12 +13,40 @@
 //= httparty
 //= require jquery
 //= require jquery_ujs
-//= require treemap_rex
 
 // move to separate file
 function ready(){
   // Loader
   $(".loader").fadeOut(3000);
+  // Search
+  $("#search-icon").on('mouseover', function(){
+    $('#search').fadeIn();
+    $('#search').animate({"margin-top": "-110px"}, 1000);
+  });
+  $("#search-icon").on('click', function(){
+    $('#search').fadeIn();
+    $('#search').animate({"margin-top": "-110px"}, 1000);
+  });
+  $("#word-search").on('click', function(){
+   $('#search').animate({"margin-top": "-180px"}, 1000);
+  $('#search').fadeOut();
+   });
+  $('#search-input').keypress(function(e){
+        if(e.which === 13 || e.which === 27){//Enter key pressed
+            $('#word-search').click();//Trigger search button click event
+            $('#search').animate({"margin-top": "-180px"}, 1000);
+            $('#search').fadeOut();
+             }
+    });
+  // $('#word-chart').on('click', function(){
+  //   $('#search').animate({"margin-top": "-180px"}, 1000);
+  //   $('#search').fadeOut();
+  // });
+
+
+
+  // Transcript
+  $('#transcript-box').hide();
   // Scroller
   $("#scroller").hide();
   $("#scroller").click(function(){
@@ -41,13 +69,20 @@ function ready(){
 
   $(window).scroll(function(){
     currentoffset = $(this).scrollTop();
-    if (currentoffset > 100) {
+    var navHeight = $("#navbar").height();
+    if (currentoffset > 50) {
       // Nav and mic animation
-      var navHeight = $("#navbar").height();
-      // var resultsMargin = $("#results").css('margin-top');
-      $("#navbar").css('height', (navHeight * 0.97));
-      // $("#results").css('margin-top', (resultsMargin *.97));
+      // // var resultsMargin = $("#results").css('margin-top');
+      // $("#navbar").css('height', (navHeight * 0.97));
+      $("#navbar").animate({height: '65px'}, 3000);
+      $("#search-icon").animate({"margin-top": '-90px'}, 1000);
       $("#navbar").css('background-color', 'rgba(255,255,255,.8)');
+
+      // $("#results").css('margin-top', (resultsMargin *.97));
+    } else {
+      $("#navbar").animate({height: '80px'}, 3000);
+      $("#search-icon").animate({"margin-top": '-70px'}, 1000);
+      $("#navbar").css('background-color', 'white');
     }
 
       // Scroller
