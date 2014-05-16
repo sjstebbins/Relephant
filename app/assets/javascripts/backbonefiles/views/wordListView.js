@@ -160,7 +160,8 @@ var WordListView = Backbone.View.extend({
       });
       var entities = _.map(data.entities, function(entity){
         var value = parseFloat(entity["relevance"]);
-        return {"id": (entity["text"] +" - "+entity["type"]), "size": [value/sum], "color": [value] };
+        var color = Math.random();
+        return {"id": (entity["text"] +" - "+entity["type"]), "size": [value/sum], "color": [color] };
       });
 
       this.treemap(entities);
