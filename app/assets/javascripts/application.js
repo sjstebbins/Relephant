@@ -55,7 +55,7 @@ function ready(){
       body.animate({
         scrollTop: 100
       }, '500');
-    };
+    }
   });
 
   $('#user-name').hide();
