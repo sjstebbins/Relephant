@@ -8,7 +8,8 @@ var WordListView = Backbone.View.extend({
     'click button#datetimebutton': 'resetTime',
     'click button#alchemy': 'setUpAlchemy',
     'click div.treemap-node': 'googleResults',
-    'click button#transcript': 'generateTranscript'
+    'click button#transcript': 'generateTranscript',
+    'click button#live': "startLiveChart"
   },
 
   initialize: function(){
@@ -18,7 +19,7 @@ var WordListView = Backbone.View.extend({
     this.listenTo(this.collection, 'add', this.addToTempStorage);
 
     this.DEFAULTHOURSPAST = 1;
-    this.SMOOTHING = 1.01;
+    this.SMOOTHING = 1.001;
     this.tempWordStorage = [];
 
     this.startDate = this.setStartDate();
@@ -30,11 +31,22 @@ var WordListView = Backbone.View.extend({
 
   render: function(){
     this.lineDataArray = this.getLineDataArray(this.graphObjectArray);
-    // this.scatterDataArray = [{x: this.startDate/1000, y: 0}];
     this.initializeChart();
     graph.render();
     this.setSlider();
     this.setTickInterval();
+  },
+
+  startLiveChart: function(){
+    clearInterval(this.currentInterval);
+    this.$('#chart_container').remove();
+    $("<div id=chart_container></div>").insertBefore('#slider-range');
+    this.collection.fetch();
+    this.startDate = new Date().getTime() - 2*60*1000;
+    this.endDate = new Date().getTime();
+    this.xIntervalSeconds = 0.1;
+    this.graphObjectArray = this.queryDBforGraphData(this.xIntervalSeconds);
+    this.render();
   },
 
   setIntervalSeconds: function(range){ //takes graph range in seconds
@@ -198,9 +210,12 @@ var WordListView = Backbone.View.extend({
         var wordDataPoint = _.filter(this.graphObjectArray, function(dataPoint, index){
           return dataPoint['x'] === x;
         }.bind(this));
-        var words = _.map(wordDataPoint[0]['y'], function(wordModel, index){ return wordModel.get('letters'); });
-        $('#legend-datetime').text(prettyDateTime(new Date(x * 1000)));
-        $('#legend-words').text(words.join(", "));
+        if (wordDataPoint.length > 0) {
+          var words = _.map(wordDataPoint[0]['y'], function(wordModel, index){ return wordModel.get('letters'); });
+          $('#legend-datetime').text(prettyDateTime(new Date(x * 1000)));
+          $('#legend-words').text(words.join(", "));
+        }
+        return 'word count: ' + y;
       }.bind(this)
     });
   },
