@@ -23,13 +23,13 @@ function ready(){
   $('#search').animate({"margin-top": "-90px"}, 5000);
   $('#results').fadeIn(5000);
   $('#results').animate({"margin-top": "70px"}, 5000);
-  $('#search-input').keypress(function(e){
-        if(e.which === 13 || e.which === 27){//Enter key pressed
-            $('#word-search').click();//Trigger search button click event
-            $('#search').animate({"margin-top": "-180px"}, 1000);
-            $('#search').fadeOut();
-          }
-        });
+  // $('#search-input').keypress(function(e){
+        // if (e.which === 13 || e.which === 27) {//Enter key pressed
+            // $('#word-search').click();//Trigger search button click event
+            // $('#search').animate({"margin-top": "-180px"}, 1000);
+            // $('#search').fadeOut();
+          // }
+        // });
 
 
     // Set Time
