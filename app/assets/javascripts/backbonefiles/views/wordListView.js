@@ -134,8 +134,8 @@ var WordListView = Backbone.View.extend({
     $('#legend').append("<div class='search-term' style='background: " + color + ";'><span class='search-count'>(" + count + ")</span> " + query + "</div>");
     graph.render();
     $('html, body').animate({
-            scrollTop: $('body').offset().top +100
-      }, 400);
+      scrollTop: $('body').offset().top +100
+    }, 400);
   },
 
   setUpAlchemy: function(){
@@ -165,9 +165,9 @@ var WordListView = Backbone.View.extend({
 
       this.treemap(entities);
       $('html, body').animate({
-            scrollTop: $('#treemap').offset().top -80
+        scrollTop: $('#treemap').offset().top -80
       }, 400);
-   }.bind(this));
+    }.bind(this));
   },
 
   setTickInterval: function(){
@@ -218,12 +218,12 @@ var WordListView = Backbone.View.extend({
       width: 1100,
       height: 400,
       series: [
-                {
-                  data: this.lineDataArray,
-                  renderer: 'line',
-                  color: 'steelblue'
-                }
-              ]
+      {
+        data: this.lineDataArray,
+        renderer: 'line',
+        color: 'steelblue'
+      }
+      ]
     });
 
     var x_axis = new Rickshaw.Graph.Axis.Time({
@@ -280,8 +280,8 @@ var WordListView = Backbone.View.extend({
       $("#treemap").treemap({
         "nodeData": {
           "id": "group 1", "children": entities
-         }
-       }).bind('treemapclick', this.mouseclickhandler);
+        }
+      }).bind('treemapclick', this.mouseclickhandler);
     } else {
       this.displayRelephantError();
     }
@@ -315,7 +315,7 @@ var WordListView = Backbone.View.extend({
       // $(".loader").fadeOut(3000);
       this.googleResultsRender(resultsToPass);
       $('html, body').animate({
-            scrollTop: $('#google-results').offset().top -80
+        scrollTop: $('#google-results').offset().top -80
       }, 400);
       $(scrollTop());
     }.bind(this));
