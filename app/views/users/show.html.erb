@@ -1,28 +1,27 @@
 <%= javascript_include_tag 'backboneApp' %>
 
 <div class="loader"></div>
+<!-- Speach Input Stuff -->
 
-<div id="speech-input">
   <button id="microphone">
     <%= image_tag('mic.gif', alt: 'Start', id: 'status_img') %>
   </button>
   <div id="results">
-    <div id="status"></div>
-    <span id="final_span"></span>
-    <span id="interim_span"></span>
+    <div style="margin-left: 30px; margin-top: 15px"id="status"></div>
+    <span style="margin-left: 30px" id="final_span"></span>
+    <span style="margin-left: 30px" id="interim_span"></span>
   </div>
-</div>
+
 
 <div id="main-container">
-<i id="search-icon" class="fa fa-search"></i>
 
   <div id="word-chart">
-
-      <br>
-      <div id="search">
-        <input type="text" placeholder="Search" id="search-input" >
-        <button id="word-search"><i class="fa fa-search"></i></button>
-      </div>
+<!-- Search -->
+    <br>
+    <div id="search">
+      <input type="text" placeholder="Search" id="search-input" >
+      <button id="word-search"><i class="fa fa-search"></i></button>
+    </div>
 
 
 
@@ -33,11 +32,11 @@
 
           <div class="form-group">
             <div class='input-group date' id='datetimepicker1'>
-              <input type='text' class="form-control" />
+              <input type='text' placeholder="Input Graph Start Date" class="form-control" />
               <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-              </span>
+            </span>
           </div>
-          <p>Current interval: <span id="tick-interval"></span></p>
+          <p style="margin:10px">Update Interval: <span id="tick-interval"></span></p>
         </div>
       </div><button id="datetimebutton">Set Time</button><button id="live">Live</button>
     </div>
@@ -48,16 +47,16 @@
     <div id ="range-slider"class="ui-slider-range ui-widget-header" style="left: 0%; width: 100%;"></div>
     <a id="left-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%; border: 1px solid black;"></a>
     <a id="right-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%; border: 1px solid black;"></a>
-</div>
+  </div>
 
-<div id="legend">
-  <p>DateTime: <span id="legend-datetime"></span></p>
-  <p>Spoken Words: <span id="legend-words"></span></p>
-  <ul id="queries"></ul>
-</div>
+<!-- Legend -->
+  <div id="legend">
+    <h4 style="font-weight: bold;">DateTime: <span id="legend-datetime"></span></h4> <h5>Spoken Words: <span id="legend-words">""</span></h5>
+    <ul id="queries"></ul>
+  </div>
 
-<div id="extra-menu"><button id="alchemy">Search Speech For Concepts</button>
-<button id="transcript">Generate Transcript</button></div>
+  <div id="extra-menu"><button id="alchemy">Search Speech For Concepts</button>
+    <button id="transcript">Generate Transcript</button></div>
 
 
     <!--  <div class="toggle-close"><i id="treemap-toggle" class="fa fa-arrows-v toggle-icon"></i></div> -->

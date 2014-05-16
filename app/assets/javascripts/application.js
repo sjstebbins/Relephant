@@ -19,21 +19,24 @@ function ready(){
   // Loader
   $(".loader").fadeOut(3000);
   // Search
- $('#search').fadeIn(3000);
-  $('#search').animate({"margin-top": "-110px"}, 3000);
+  $('#search').fadeIn(5000);
+  $('#search').animate({"margin-top": "-90px"}, 5000);
+  $('#results').fadeIn(5000);
+  $('#results').animate({"margin-top": "70px"}, 5000);
   $('#search-input').keypress(function(e){
         if(e.which === 13 || e.which === 27){//Enter key pressed
             $('#word-search').click();//Trigger search button click event
             $('#search').animate({"margin-top": "-180px"}, 1000);
             $('#search').fadeOut();
-             }
-    });
+          }
+        });
+
 
     // Set Time
     $('#datetimebutton').on('click', function(){
-    $(".loader").show();
-    $(".loader").fadeOut(3000);
-  });
+      $(".loader").show();
+      $(".loader").fadeOut(3000);
+    });
   // $('#word-chart').on('click', function(){
   //   $('#search').animate({"margin-top": "-180px"}, 1000);
   //   $('#search').fadeOut();
@@ -66,30 +69,27 @@ function ready(){
   $(window).scroll(function(){
     currentoffset = $(this).scrollTop();
     var navHeight = $("#navbar").height();
-    if (currentoffset > 50) {
+    if (currentoffset > 30) {
       // Nav and mic animation
-      // // var resultsMargin = $("#results").css('margin-top');
-      // $("#navbar").css('height', (navHeight * 0.97));
-      $("#navbar").animate({height: '65px'}, 3000);
-      $("#search-icon").animate({"margin-top": '-90px'}, 1000);
-      $("#navbar").css('background-color', 'rgba(255,255,255,.8)');
 
-      // $("#results").css('margin-top', (resultsMargin *.97));
+      $("#navbar").animate({height: '65px'}, 3000);
+      $("#navbar").css('background-color', 'rgba(255,255,255,.8)');
+      $('#search').css('box-shadow', '5px 5px 5px rgba(68,68,68,0.8)');
+
     } else {
       $("#navbar").animate({height: '80px'}, 3000);
-      $("#search-icon").animate({"margin-top": '-70px'}, 1000);
       $("#navbar").css('background-color', 'white');
+      $('#search').removeAttr('box-shadow');
+
     }
 
       // Scroller
-    if (currentoffset > 100) {
-      $("#scroller").fadeIn();
-    } else {
-      $('#scroller').fadeOut();
-    }
-    // if (currentoffset < 150) {
-    //   $("#microphone").css('padding',(this.scrollTop * 1.1));
-    // }  // $('#logo-text').text().css('left', (currentoffset/200) + 'px');
+      if (currentoffset > 100) {
+        $("#scroller").fadeIn();
+      } else {
+        $('#scroller').fadeOut();
+      }
+
 
   });
 }
