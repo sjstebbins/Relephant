@@ -24,7 +24,7 @@ var WordListView = Backbone.View.extend({
     this.tempWordStorage = [];
 
     this.startDate = this.setStartDate();
-    this.endDate = new Date().getTime(); //current time
+    this.endDate = new Date().getTime();
     this.xIntervalSeconds = this.setIntervalSeconds((this.endDate - this.startDate)/1000);
     this.graphObjectArray = this.queryDBforGraphData(this.xIntervalSeconds);
     this.render();
@@ -79,12 +79,11 @@ var WordListView = Backbone.View.extend({
     var transcript = this.collection.alchemyQueryString(leftDateTime, rightDateTime).split("+").join(" ");
     $('#transcript-box').empty();
     $('#transcript-box').slideDown();
-    $('#transcript-box').append("<h4 id=transcript-title>Trancript from " + new Date(leftDateTime*1000).toString() + " to " + new Date(rightDateTime*1000).toString() + ":</h4>");
+    $('#transcript-box').append("<h4 id=transcript-title>Trancript from " + prettyDateTime(new Date(leftDateTime*1000)) + " to " + prettyDateTime(new Date(rightDateTime*1000)) + ":</h4>");
     $('#transcript-box').append("<p id=transcript-content>" + transcript + "</p>");
     $('html, body').animate({
             scrollTop: $('#transcript-box').offset().top -80
       }, 400);
-
   },
 
   resetTime: function(){
@@ -160,14 +159,21 @@ var WordListView = Backbone.View.extend({
   },
 
   setTickInterval: function(){
-    var baseTimeInSeconds = this.endDate / 1000;
     var counter = 1;
+    var baseTimeInSeconds = this.endDate / 1000;
     this.currentInterval = setInterval(function(){
+      var curLogTime = baseTimeInSeconds + (this.xIntervalSeconds * counter);
       var curGraphData = this.lineDataArray;
-      //smooth out graph on no talking
+      // construct dummy "models" to use for legend, hover, search
+      var wordModels = _.map(this.tempWordStorage, function(letters, index){
+        return new WordModel({letters: letters});
+      });
+      // smooth out gaps between not talking
       var yVal = this.tempWordStorage.length === 0 ? curGraphData[curGraphData.length - 1]['y'] / this.SMOOTHING : this.tempWordStorage.length;
-      this.lineDataArray.push({x: baseTimeInSeconds + (this.xIntervalSeconds * counter),
-                               y: yVal});
+      // push to array that graph uses for series data
+      this.lineDataArray.push({x: curLogTime, y: yVal});
+      // push to graph object used for legend, hover, search
+      this.graphObjectArray.push({x: curLogTime, y: wordModels});
       this.tempWordStorage = [];
       graph.render();
       counter++;
@@ -229,7 +235,7 @@ var WordListView = Backbone.View.extend({
         if (wordDataPoint.length > 0) {
           var words = _.map(wordDataPoint[0]['y'], function(wordModel, index){ return wordModel.get('letters'); });
           $('#legend-datetime').text(prettyDateTime(new Date(x * 1000)));
-          $('#legend-words').text(words.join(", "));
+          $('#legend-words').text(words.join(" "));
         }
         return 'word count: ' + y;
       }.bind(this)
@@ -303,7 +309,7 @@ var WordListView = Backbone.View.extend({
       $('html, body').animate({
             scrollTop: $('#google-results').offset().top -80
       }, 400);
-      $(scrollTop())
+      $(scrollTop());
     }.bind(this));
   },
 

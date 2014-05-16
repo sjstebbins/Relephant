@@ -8,8 +8,8 @@ class WelcomeController < ApplicationController
       redirect_to( welcome_path )
     end
   end
-  def welcome
 
+  def welcome
   end
 
 end
