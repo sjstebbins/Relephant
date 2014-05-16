@@ -7,11 +7,11 @@ var WordListView = Backbone.View.extend({
     'click button#word-search': 'wordSearch',
     'click button#datetimebutton': 'resetTime',
     'click button#alchemy': 'setUpAlchemy',
-    'click div.treemap-node': 'googleResults',
     'click button#transcript': 'generateTranscript'
   },
 
   initialize: function(){
+    self = this;
     this.$('#chart_container').remove();
     $("<div id=chart_container></div>").insertBefore('#slider-range');
     this.collection.fetch();
@@ -46,6 +46,7 @@ var WordListView = Backbone.View.extend({
     var rightDateTime = (rightSliderPct * graphIntervalSeconds + this.startDate)/1000;
     var transcript = this.collection.alchemyQueryString(leftDateTime, rightDateTime).split("+").join(" ");
     $('#transcript-box').empty();
+    $('#transcript-box').slideDown();
     $('#transcript-box').append("<h4 id=transcript-title>Trancript from " + new Date(leftDateTime*1000).toString() + " to " + new Date(rightDateTime*1000).toString() + ":</h4>");
     $('#transcript-box').append("<p id=transcript-content>" + transcript + "</p>");
 
@@ -96,12 +97,19 @@ var WordListView = Backbone.View.extend({
       },
       dataType: 'json'
     }).done(function(data){
+      var sum = 0;
+      _.each(data.entities, function(entity){
+        sum += parseFloat(entity["relevance"]);
+      });
       var entities = _.map(data.entities, function(entity){
         var value = parseFloat(entity["relevance"]);
-        return {"label": entity["text"], "value": (value * 100), "type": entity["type"]};
+        return {"id": (entity["text"] +" - "+entity["type"]), "size": [value/sum], "color": [value] };
       });
-        console.log(entities);
+
       this.treemap(entities);
+      $('html, body').animate({
+            scrollTop: $('#treemap').offset().top -80
+      }, 400);
    }.bind(this));
   },
 
@@ -214,11 +222,11 @@ var WordListView = Backbone.View.extend({
     $("#treemap").remove();
     $("<div id='treemap'>").insertBefore("#google-results");
     if (entities.length > 0) {
-      $("#treemap").treemap({data: entities,
-        colors: ['#2B44FF', '#75AAFF'],
-        width: 1100,
-        height: 300,
-      });
+      $("#treemap").treemap({
+        "nodeData": {
+          "id": "group 1", "children": entities
+         }
+       }).bind('treemapclick', this.mouseclickhandler);
     } else {
       this.displayRelephantError();
     }
@@ -228,9 +236,17 @@ var WordListView = Backbone.View.extend({
     $('<div id="RelephantError">RelephantError: No concepts found. Try adjusting your search window or recording more conversations.</div>').appendTo('#treemap');
   },
 
+  mouseclickhandler: function(e, data){
+    var nodes = data.nodes;
+    var ids = data.ids;
+    var type = ids[0].split(' - ')[1];
+    var entity = ids[0].split(' - ')[0];
+    self.googleResults(entity.toLowerCase().split(" ").join("+"));
+  },
+
   googleResults: function(entity){
+    console.log(entity);
     var resultsToPass;
-    var entity = entity.target.innerText.split(" ").join("+");
     $.ajax({
       url: '/google_search',
       method: 'get',
@@ -240,8 +256,13 @@ var WordListView = Backbone.View.extend({
       dataType: 'json'
     }).done(function(data){
       resultsToPass = data.items;
-    $(entity.target).css('background','red');
+       $(".loader").show();
+      $(".loader").fadeOut(3000);
       this.googleResultsRender(resultsToPass);
+      $('html, body').animate({
+            scrollTop: $('#google-results').offset().top -80
+      }, 400);
+      $(scrollTop())
     }.bind(this));
   },
 
