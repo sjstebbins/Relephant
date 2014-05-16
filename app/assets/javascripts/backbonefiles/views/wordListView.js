@@ -81,6 +81,9 @@ var WordListView = Backbone.View.extend({
     $('#transcript-box').slideDown();
     $('#transcript-box').append("<h4 id=transcript-title>Trancript from " + new Date(leftDateTime*1000).toString() + " to " + new Date(rightDateTime*1000).toString() + ":</h4>");
     $('#transcript-box').append("<p id=transcript-content>" + transcript + "</p>");
+    $('html, body').animate({
+            scrollTop: $('#transcript-box').offset().top -80
+      }, 400);
 
   },
 
@@ -116,6 +119,9 @@ var WordListView = Backbone.View.extend({
     graph.series.push({ data: scatterDataArray, renderer: 'scatterplot', color: color });
     $('#legend').append("<div class='search-term' style='background: " + color + ";'><span class='search-count'>(" + count + ")</span> " + query + "</div>");
     graph.render();
+    $('html, body').animate({
+            scrollTop: $('body').offset().top +100
+      }, 400);
   },
 
   setUpAlchemy: function(){
@@ -291,8 +297,8 @@ var WordListView = Backbone.View.extend({
       dataType: 'json'
     }).done(function(data){
       resultsToPass = data.items;
-       $(".loader").show();
-      $(".loader").fadeOut(3000);
+       // $(".loader").show();
+      // $(".loader").fadeOut(3000);
       this.googleResultsRender(resultsToPass);
       $('html, body').animate({
             scrollTop: $('#google-results').offset().top -80

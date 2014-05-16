@@ -19,18 +19,8 @@ function ready(){
   // Loader
   $(".loader").fadeOut(3000);
   // Search
-  $("#search-icon").on('mouseover', function(){
-    $('#search').fadeIn();
-    $('#search').animate({"margin-top": "-110px"}, 1000);
-  });
-  $("#search-icon").on('click', function(){
-    $('#search').fadeIn();
-    $('#search').animate({"margin-top": "-110px"}, 1000);
-  });
-  $("#word-search").on('click', function(){
-   $('#search').animate({"margin-top": "-180px"}, 1000);
-  $('#search').fadeOut();
-   });
+ $('#search').fadeIn(3000);
+  $('#search').animate({"margin-top": "-110px"}, 3000);
   $('#search-input').keypress(function(e){
         if(e.which === 13 || e.which === 27){//Enter key pressed
             $('#word-search').click();//Trigger search button click event
@@ -38,6 +28,12 @@ function ready(){
             $('#search').fadeOut();
              }
     });
+
+    // Set Time
+    $('#datetimebutton').on('click', function(){
+    $(".loader").show();
+    $(".loader").fadeOut(3000);
+  });
   // $('#word-chart').on('click', function(){
   //   $('#search').animate({"margin-top": "-180px"}, 1000);
   //   $('#search').fadeOut();
@@ -54,7 +50,7 @@ function ready(){
     var top = body.scrollTop();
     if (top != 0) {
       body.animate({
-        scrollTop: 0
+        scrollTop: 100
       }, '500');
     };
   });
