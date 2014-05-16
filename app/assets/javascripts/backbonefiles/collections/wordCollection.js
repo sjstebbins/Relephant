@@ -46,7 +46,7 @@ var WordCollection = Backbone.Collection.extend({
     return (new Date(Date.parse(firstWord.get('created_at'))).getTime() / 1000);
   },
 
-  alchemyQueryString: function(startDateTimeInSeconds, endDateTimeInSeconds){
+  wordString: function(startDateTimeInSeconds, endDateTimeInSeconds){
     var arrayOfModels = this.wordModelsFromStartToEnd(startDateTimeInSeconds, endDateTimeInSeconds);
     var results = _.map(arrayOfModels, function(wordModel){
                     return wordModel.get('letters');

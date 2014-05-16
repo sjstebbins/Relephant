@@ -43,7 +43,7 @@ var WordListView = Backbone.View.extend({
     this.$('#chart_container').remove();
     $("<div id=chart_container></div>").insertBefore('#slider-range');
     this.collection.fetch();
-    this.startDate = new Date().getTime() - 2*60*1000;
+    this.startDate = new Date().getTime() - 1*60*1000;
     this.endDate = new Date().getTime();
     this.xIntervalSeconds = 0.1;
     this.graphObjectArray = this.queryDBforGraphData(this.xIntervalSeconds);
@@ -71,19 +71,26 @@ var WordListView = Backbone.View.extend({
   },
 
   generateTranscript: function(){
-    var graphIntervalSeconds = new Date() - this.startDate; // total seconds length of line
-    var leftSliderPct =  parseFloat(document.getElementById('left-slider').style.left)/100; //left slider %
-    var rightSliderPct =  parseFloat(document.getElementById('right-slider').style.left)/100; //right slider %
-    var leftDateTime = (leftSliderPct * graphIntervalSeconds + this.startDate)/1000;
-    var rightDateTime = (rightSliderPct * graphIntervalSeconds + this.startDate)/1000;
-    var transcript = this.collection.alchemyQueryString(leftDateTime, rightDateTime).split("+").join(" ");
+    leftSliderDateTime = this.sliderDateTimes()[0];
+    rightSliderDateTime = this.sliderDateTimes()[1];
+    var transcript = this.collection.wordString(leftSliderDateTime, rightSliderDateTime).split("+").join(" ");
     $('#transcript-box').empty();
     $('#transcript-box').slideDown();
-    $('#transcript-box').append("<h4 id=transcript-title>Trancript from " + prettyDateTime(new Date(leftDateTime*1000)) + " to " + prettyDateTime(new Date(rightDateTime*1000)) + ":</h4>");
+    $('#transcript-box').append("<h4 id=transcript-title>Trancript from " + prettyDateTime(new Date(leftSliderDateTime*1000)) + " to " + prettyDateTime(new Date(rightSliderDateTime*1000)) + ":</h4>");
     $('#transcript-box').append("<p id=transcript-content>" + transcript + "</p>");
     $('html, body').animate({
             scrollTop: $('#transcript-box').offset().top -80
       }, 400);
+  },
+
+  // returns [leftSliderEpochTime, rightSliderEpochTime] both in seconds
+  sliderDateTimes: function(){
+    var graphDuration = new Date() - this.startDate;
+    var leftSliderPct = parseFloat(document.getElementById('left-slider').style.left)/100;
+    var rightSliderPct = parseFloat(document.getElementById('right-slider').style.left)/100;
+    var leftDateTime = (leftSliderPct * graphDuration + this.startDate)/1000;
+    var rightDateTime = (rightSliderPct * graphDuration + this.startDate)/1000;
+    return [leftDateTime, rightDateTime];
   },
 
   resetTime: function(){
@@ -101,11 +108,15 @@ var WordListView = Backbone.View.extend({
   wordSearch: function(){
     var scatterDataArray = [{x: this.startDate/1000, y: 0}];
     var query = $('#search-input').val();
+    var leftSliderDateTime = this.sliderDateTimes()[0];
+    var rightSliderDateTime = this.sliderDateTimes()[1];
     _.each(this.graphObjectArray, function(dataPoint, index){
       if (dataPoint['y'].length > 0) {
         _.each(dataPoint['y'], function(wordModel, index, list){
           if (wordModel.get('letters').toLowerCase() === query.toLowerCase()) {
-            scatterDataArray.push({ x: dataPoint['x'], y: list.length });
+            if (dataPoint['x'] > leftSliderDateTime && dataPoint['x'] < rightSliderDateTime) {
+              scatterDataArray.push({ x: dataPoint['x'], y: list.length });
+            }
           }
         }.bind(this));
       }
@@ -124,12 +135,9 @@ var WordListView = Backbone.View.extend({
   },
 
   setUpAlchemy: function(){
-    var graphIntervalSeconds = new Date() - this.startDate; // total seconds length of line
-    var leftSliderPct =  parseFloat(document.getElementById('left-slider').style.left)/100; //left slider %
-    var rightSliderPct =  parseFloat(document.getElementById('right-slider').style.left)/100; //right slider %
-    var leftDateTime = (leftSliderPct * graphIntervalSeconds + this.startDate)/1000;
-    var rightDateTime = (rightSliderPct * graphIntervalSeconds + this.startDate)/1000;
-    var stringToQuery = this.collection.alchemyQueryString(leftDateTime, rightDateTime);
+    leftSliderDateTime = this.sliderDateTimes()[0];
+    rightSliderDateTime = this.sliderDateTimes()[1];
+    var stringToQuery = this.collection.wordString(leftSliderDateTime, rightSliderDateTime);
     this.renderAlchemy(stringToQuery);
   },
 
@@ -244,13 +252,9 @@ var WordListView = Backbone.View.extend({
 
   queryDBforGraphData: function(interval){
     var dataArray = [];
-    var graphIntervalSeconds = new Date() - this.startDate; // total seconds length of line
-    var leftSliderPct =  parseFloat(document.getElementById('left-slider').style.left)/100; //left slider %
-    var rightSliderPct =  parseFloat(document.getElementById('right-slider').style.left)/100; //right slider %
-    var leftDateTime = (leftSliderPct * graphIntervalSeconds + this.startDate)/1000;
-    // is this just Date.now?
-    var rightDateTime = (rightSliderPct * graphIntervalSeconds + this.startDate)/1000;
-    var graphDataArray = this.collection.graphObjectInDateTimeRange(leftDateTime, rightDateTime, interval);
+    leftSliderDateTime = this.sliderDateTimes()[0];
+    rightSliderDateTime = this.sliderDateTimes()[1];
+    var graphDataArray = this.collection.graphObjectInDateTimeRange(leftSliderDateTime, rightSliderDateTime, interval);
     return graphDataArray;
   },
 
