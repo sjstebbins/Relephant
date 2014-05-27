@@ -1,4 +1,3 @@
-
   /*
  * jQuery Foundation Joyride Plugin 2.1
  * http://foundation.zurb.com
@@ -11,7 +10,6 @@
 
 ;(function ($, window, undefined) {
   'use strict';
-console.log('in jquery joyride');
 
   var defaults = {
       'version'              : '2.1',
