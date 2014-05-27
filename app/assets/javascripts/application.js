@@ -16,6 +16,11 @@
 
 // move to separate file
 function ready(){
+  //prevent facebook omniauth from appending fragements to redirect uri
+  if (window.location.hash.search('#_') >= 0) {
+    window.location.hash = '';
+  }
+
   // Loader
   $(".loader").fadeOut(3000);
   // Search
