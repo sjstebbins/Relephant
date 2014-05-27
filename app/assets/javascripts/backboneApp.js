@@ -5,6 +5,7 @@
 //= require jquery.ui.slider
 //= require webspeech
 //= require treemap
+//= require jquery.joyride-2.1
 //= require_tree ./backbonefiles/models
 //= require_tree ./backbonefiles/collections
 //= require_tree ./backbonefiles/views
@@ -16,6 +17,7 @@ function backboneReady(){
   rephantoRouter = new RephantoRouter();
   rephantoRouter.start();
   setDate();
+  runJoyride();
 }
 
 function setDate() {
@@ -24,6 +26,15 @@ function setDate() {
 
 function prettyDateTime(dateTime) {
   return dateTime.toDateString() + " at " + dateTime.toLocaleTimeString();
+}
+
+function runJoyride() {
+  $("#joyRideTipContent").joyride({
+    'nextButton': true,              // true/false for next button visibility
+    'tipAnimation': 'pop',           // 'pop' or 'fade' in each tip
+    'cookieMonster': true,           // true/false for whether cookies are used
+    'cookieName': 'JoyRide',         // choose your own cookie name
+  });
 }
 
 $(document).ready(backboneReady);

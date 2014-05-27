@@ -12,6 +12,7 @@
  *= require rickshaw
  *= require jquery.ui.slider
   *= require bootstrap-datetimepicker
+  *= require joyride-2.1
   *= require_tree .
  *= require_self
 
@@ -55,7 +56,7 @@ margin-left: 30px;
   width: 60px;
   margin: 0px;
   margin-top: -10px;
-  z-index: 100;
+  z-index: 99;
 }
 
 li{
@@ -162,6 +163,13 @@ li{
   background: white;
    font-family: "Lucida Grande";
 }
+#tooltip {
+  border-radius: 5px;
+  background: white;
+  float: right;
+  font-family: "Lucida Grande";
+  margin: 5px 20px 0 0;
+}
 #transcript{
   margin: 10px;
   margin-left: 10px;
@@ -248,26 +256,3 @@ li{
   margin-left: 100px;
   margin-top: 100px;
 }
-/*.toggle-close{
-  width: 40px;
-  height: 30px;
-  border: 1px solid rgba(0,0,0,.3);
-  border-radius: 5px;
-  background: rgba(0,0,0,.05);
-  margin-left: 1220px
-}
-.toggle-open{
-  width: 40px;
-  height: 30px;
-  margin-left: 1220px;
-  border: 1px solid rgba(0,0,0,.05);
-  border-radius: 5px;
-  background: rgba(0,0,0,.1);
-}
-.toggle-icon{
-  padding:10px;
-  font-size: 20px;
-  padding: 5px;
-  margin-left: 1230px;
-  color: rgba(0,0,0,.4);
-}*/

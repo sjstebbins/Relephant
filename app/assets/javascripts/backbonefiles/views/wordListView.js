@@ -10,6 +10,7 @@ var WordListView = Backbone.View.extend({
     'click div.treemap-node': 'googleResults',
     'click button#transcript': 'generateTranscript',
     'click button#live': "startLiveChart",
+    'click button#tooltip': 'startGuide'
   },
 
   initialize: function(){
@@ -38,8 +39,8 @@ var WordListView = Backbone.View.extend({
     this.setTickInterval();
   },
 
-  updateSliderInterval: function(){
-    console.log('hi');
+  startGuide: function(){
+    runJoyride();
   },
 
   startLiveChart: function(){
