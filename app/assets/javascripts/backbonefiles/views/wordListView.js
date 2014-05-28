@@ -3,10 +3,11 @@ var stringToQuery;
 
 var WordListView = Backbone.View.extend({
   el: '#word-chart',
+
   events: {
     'click button#word-search': 'wordSearch',
     'click button#datetimebutton': 'resetTime',
-    'click button#alchemy': 'setUpAlchemy',
+    'click button#alchemy': 'renderAlchemyResults',
     'click div.treemap-node': 'googleResults',
     'click button#transcript': 'generateTranscript',
     'click button#live': "startLiveChart",
@@ -15,18 +16,26 @@ var WordListView = Backbone.View.extend({
 
   initialize: function(){
     self = this;
-    this.$('#chart_container').remove();
-    $("<div id=chart_container></div>").insertBefore('#slider-range');
-    this.collection.fetch();
+
+    // set up listeners
     this.listenTo(this.collection, 'add', this.addToTempStorage);
 
+    // set up defaults, constants, and dummy vars
     this.DEFAULTHOURSPAST = 1;
     this.SMOOTHING = 1.001;
     this.tempWordStorage = [];
 
+    // clear any existing graph and fetch updated collection
+    this.$('#chart_container').remove();
+    $("<div id=chart_container></div>").insertBefore('#slider-range');
+    this.collection.fetch();
+
+    // set graph date range and tick interval
     this.startDate = this.setStartDate();
     this.endDate = new Date().getTime();
     this.xIntervalSeconds = this.setIntervalSeconds((this.endDate - this.startDate)/1000);
+
+    // render graph
     this.graphObjectArray = this.queryDBforGraphData(this.xIntervalSeconds);
     this.render();
   },
@@ -44,6 +53,7 @@ var WordListView = Backbone.View.extend({
   },
 
   startLiveChart: function(){
+    // a custom 'intialize' function with specific parameters for time range and tick interval
     clearInterval(this.currentInterval);
     this.$('#chart_container').remove();
     $("<div id=chart_container></div>").insertBefore('#slider-range');
@@ -56,6 +66,7 @@ var WordListView = Backbone.View.extend({
   },
 
   setIntervalSeconds: function(range){ //takes graph range in seconds
+    // adjusts graph's tick interval based on graph range
     var result;
     var seconds_in_hour = 60 * 60;
     if (range < 2 * seconds_in_hour) {
@@ -105,6 +116,8 @@ var WordListView = Backbone.View.extend({
   },
 
   getLineDataArray: function(graphDataObject) {
+    // returns an array of objects of the form { x: integer, y: integer }
+    // where x is seconds since epoch and y is length of the word array
     return _.map(graphDataObject, function(dataPoint, index) {
       return { x: dataPoint['x'], y: dataPoint['y'].length };
     });
@@ -126,50 +139,25 @@ var WordListView = Backbone.View.extend({
         }.bind(this));
       }
     }.bind(this));
-    var r = Math.floor(Math.random() * 255);
-    var g = Math.floor(Math.random() * 255);
-    var b = Math.floor(Math.random() * 255);
+    var r = Math.floor(Math.random() * 150);
+    var g = Math.floor(Math.random() * 150);
+    var b = Math.floor(Math.random() * 150);
     var color = 'rgb(' + r + ',' + g + ',' + b + ')';
     var count = scatterDataArray.length - 1;
     graph.series.push({ data: scatterDataArray, renderer: 'scatterplot', color: color });
     $('#legend').append("<div class='search-term' style='background: " + color + ";'><span class='search-count'>(" + count + ")</span> " + query + "</div>");
     graph.render();
     $('html, body').animate({
-      scrollTop: $('body').offset().top +100
+      scrollTop: $('body').offset().top + 100
     }, 400);
   },
 
-  setUpAlchemy: function(){
+  renderAlchemyResults: function(){
     leftSliderDateTime = this.sliderDateTimes()[0];
     rightSliderDateTime = this.sliderDateTimes()[1];
     var stringToQuery = this.collection.wordString(leftSliderDateTime, rightSliderDateTime);
-    this.renderAlchemy(stringToQuery);
-  },
-
-  renderAlchemy: function(stringToQuery){
-    $.ajax({
-      url: '/alchemy_search',
-      method: 'post',
-      data: {
-        words: stringToQuery
-      },
-      dataType: 'json'
-    }).done(function(data){
-      var sum = 0;
-      _.each(data.entities, function(entity){
-        sum += parseFloat(entity["relevance"]);
-      });
-      var entities = _.map(data.entities, function(entity){
-        var value = parseFloat(entity["relevance"]);
-        var color = Math.random();
-        return {"id": (entity["text"] +" - "+entity["type"]), "size": [value/sum], "color": [color] };
-      });
-
-      this.treemap(entities);
-      $('html, body').animate({
-        scrollTop: $('#treemap').offset().top -80
-      }, 400);
-    }.bind(this));
+    this.$('#alchemy-results-view').empty();
+    new alchemyResultsView({stringToQuery: stringToQuery});
   },
 
   setTickInterval: function(){
@@ -273,24 +261,6 @@ var WordListView = Backbone.View.extend({
       graph: graph,
       element: document.querySelector('#slider-range')
     });
-  },
-
-  treemap: function(entities){
-    $("#treemap").remove();
-    $("<div id='treemap'>").insertBefore("#google-results");
-    if (entities.length > 0) {
-      $("#treemap").treemap({
-        "nodeData": {
-          "id": "group 1", "children": entities
-        }
-      }).bind('treemapclick', this.mouseclickhandler);
-    } else {
-      this.displayRelephantError();
-    }
-  },
-
-  displayRelephantError: function(){
-    $('<div id="RelephantError">RelephantError: No concepts found. Try adjusting your search window or recording more conversations.</div>').appendTo('#treemap');
   },
 
   mouseclickhandler: function(e, data){

@@ -1,8 +1,8 @@
 <%= javascript_include_tag 'backboneApp' %>
 
 <div class="loader"></div>
-<!-- Speach Input Stuff -->
 
+<!-- Speech Input-->
 <div id="speech-input">
   <button id="microphone">
     <%= image_tag('mic.gif', alt: 'Start', id: 'status_img') %>
@@ -15,66 +15,77 @@
 </div>
 
 <div id="main-container">
-
   <div id="word-chart">
-<!-- Search -->
+
+    <!-- Search Input-->
     <br>
     <div id="search">
       <input type="text" placeholder="Search" id="search-input" >
       <button id="word-search"><i class="fa fa-search"></i></button>
     </div>
 
+    <!-- Tooltip Start Button -->
     <button id="tooltip">Start the guide</button>
-
-
 
     <!--   Calendar -->
     <div id="calendar" class="container">
       <div class="row">
         <div id="calendar-slider" class='col-sm-3'>
-
           <div class="form-group">
             <div class='input-group date' id='datetimepicker1'>
               <input type='text' placeholder="Input Graph Start Date" class="form-control" />
-              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-            </span>
+              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div>
+            <p style="margin:10px">Update Interval: <span id="tick-interval"></span></p>
           </div>
-          <p style="margin:10px">Update Interval: <span id="tick-interval"></span></p>
         </div>
-      </div><button id="datetimebutton">Set Time</button><button id="live">Live</button>
+        <button id="datetimebutton">Set Time</button>
+        <button id="live">Live</button>
+      </div>
     </div>
-  </div>
 
-  <div id="chart_container"></div>
-  <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" style=" margin-left: 40px; width: 900px;">
-    <div id ="range-slider"class="ui-slider-range ui-widget-header" style="left: 0%; width: 100%;"></div>
-    <a id="left-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%; border: 1px solid black;"></a>
-    <a id="right-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%; border: 1px solid black;"></a>
-  </div>
+    <!-- Chart -->
+    <div id="chart_container"></div>
 
-<!-- Legend -->
-  <div id="legend">
-    <h4 style="font-weight: bold;">DateTime: <span id="legend-datetime"></span></h4> <h5>Spoken Words: <span id="legend-words">""</span></h5>
-    <ul id="queries"></ul>
-  </div>
+    <!-- Sliders -->
+    <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" style=" margin-left: 40px; width: 900px;">
+      <div id ="range-slider"class="ui-slider-range ui-widget-header" style="left: 0%; width: 100%;"></div>
+      <a id="left-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%; border: 1px solid black;"></a>
+      <a id="right-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%; border: 1px solid black;"></a>
+    </div>
 
-  <div id="extra-menu"><button id="alchemy">Search Speech For Concepts</button>
-    <button id="transcript">Generate Transcript</button></div>
+    <!-- Legend -->
+    <div id="legend">
+      <h4 style="font-weight: bold;">DateTime: <span id="legend-datetime"></span></h4>
+      <h5>Spoken Words: <span id="legend-words">""</span></h5>
+      <ul id="queries"></ul>
+    </div>
 
-
+    <!-- Alchemy / Transcript buttons -->
+    <div id="extra-menu">
+      <button id="alchemy">Search Speech For Concepts</button>
+      <button id="transcript">Generate Transcript</button>
+    </div>
     <!--  <div class="toggle-close"><i id="treemap-toggle" class="fa fa-arrows-v toggle-icon"></i></div> -->
-    <div class="col-m-3"id="transcript-box">
 
+    <!-- Transcript Box -->
+    <div class="col-m-3"id="transcript-box"></div>
+
+    <!-- Alchemy Treemap Box -->
+    <div id="alchemy-results-view">
+      <div id="treemap"></div>
     </div>
-    <div id="treemap"></div>
     <!-- <div class="toggle-close"><i id="google-toggle" class="fa fa-arrows-v toggle-icon"></i></div> -->
-    <div id="google-results"></div>
 
+    <!-- Google Results Box -->
+    <div id="google-results"></div>
   </div>
 </div>
 
+<!-- Scroll to top button -->
 <div id="scroller"><i id="scroller-icon" class="fa fa-caret-square-o-up"></i></div>
 
+<!-- Tooltip Guide Content -->
 <ol id="joyRideTipContent" data-joyride>
   <li>Welcome to Relephant. Your persistent memory personal assistant. This guide will show you how to use the basic functionality of Relephant.</li>
   <li data-id="status_img">To begin recording a conversation, click the microphone button. Click the microphone again to end your recording.</li>
@@ -83,10 +94,4 @@
   <li data-id="datetimepicker1">Select a past date and click "Set Time" to view previously recorded conversations.</li>
   <li data-id="left-slider">Use the sliders to narrow your view.</li>
   <li data-id="alchemy">Once you've recorded a full conversation and have it in view, try searching for the most relevant concepts. Once generated, click a concept for more information.</li>
-
-  <!-- /* using 'data-button' lets you have custom button text */ -->
-  <!-- <li data-class="parent-element-class" data-options="tipLocation:top;tipAnimation:fade" data-button="Second Button">Content...</li> -->
-
-  <!-- /* you can put a class for custom styling */ -->
-  <!-- <li data-id="parentElementID" class="custom-class">Content...</li> -->
 </ol>
