@@ -54,6 +54,15 @@ var alchemyResultsView = Backbone.View.extend({
     }, 400);
   },
 
+  mouseclickhandler: function(e, data){
+    var nodes = data.nodes;
+    var ids = data.ids;
+    var type = ids[0].split(' - ')[1];
+    var entity = ids[0].split(' - ')[0];
+    var query = entity.toLowerCase().split(" ").join("+");
+    new GoogleResultsView({query: query});
+  },
+
   displayRelephantError: function(){
     $('#treemap').append('<div id="RelephantError">RelephantError: No concepts found. Try adjusting your search window or recording more conversations.</div>');
   },

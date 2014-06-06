@@ -261,45 +261,5 @@ var WordListView = Backbone.View.extend({
       graph: graph,
       element: document.querySelector('#slider-range')
     });
-  },
-
-  mouseclickhandler: function(e, data){
-    var nodes = data.nodes;
-    var ids = data.ids;
-    var type = ids[0].split(' - ')[1];
-    var entity = ids[0].split(' - ')[0];
-    self.googleResults(entity.toLowerCase().split(" ").join("+"));
-  },
-
-  googleResults: function(entity){
-    console.log(entity);
-    var resultsToPass;
-    $.ajax({
-      url: '/google_search',
-      method: 'get',
-      data: {
-        entity: entity
-      },
-      dataType: 'json'
-    }).done(function(data){
-      resultsToPass = data.items;
-       // $(".loader").show();
-      // $(".loader").fadeOut(3000);
-      this.googleResultsRender(resultsToPass);
-      $('html, body').animate({
-        scrollTop: $('#google-results').offset().top -80
-      }, 400);
-      $(scrollTop());
-    }.bind(this));
-  },
-
-  googleResultsRender: function(results){
-    $("#google-results").empty();
-    _.each(results, function(result, index){
-      var title = result["title"];
-      var snippet = result["snippet"];
-      var link = result["link"];
-      $('<div id="google-result"><a href="' + link + '"><h3>' + title + '</h3></a><br><p>' + snippet + '</p></div>').appendTo('#google-results');
-    });
   }
 });
