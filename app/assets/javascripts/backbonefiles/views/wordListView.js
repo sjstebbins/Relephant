@@ -15,8 +15,6 @@ var WordListView = Backbone.View.extend({
   },
 
   initialize: function(){
-    self = this;
-
     // set up listeners
     this.listenTo(this.collection, 'add', this.addToTempStorage);
 
