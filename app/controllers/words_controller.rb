@@ -1,5 +1,4 @@
 class WordsController < ApplicationController
-
   # Need authentication here for security?
 
   def index
@@ -13,7 +12,7 @@ class WordsController < ApplicationController
   def alchemy_search
     words = params[:words]
     words.gsub!("+", " ")
-    response = AlchemySearch::fetch_entities(words);
+    response = AlchemySearch.fetch_entities(words);
     respond_to do |format|
       format.html { }
       format.json { render json: response.to_json }
@@ -22,7 +21,7 @@ class WordsController < ApplicationController
 
   def google_search
     entity = params[:entity]
-    response = GoogleSearch::fetch_results(entity)
+    response = GoogleSearch.fetch_results(entity)
     respond_to do |format|
       format.html { }
       format.json { render json: response.to_json }
