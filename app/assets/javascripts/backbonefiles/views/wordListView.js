@@ -1,5 +1,4 @@
 var graph;
-var stringToQuery;
 
 var WordListView = Backbone.View.extend({
   el: '#word-chart',
