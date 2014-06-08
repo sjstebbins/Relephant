@@ -20,7 +20,7 @@ var GoogleResultsView = Backbone.View.extend({
       resultsToPass = data.items;
       this.renderResults(resultsToPass);
       $('html, body').animate({
-        scrollTop: $('#google-results-view').offset().top - 80
+        scrollTop: $('#entity-based-results-view').offset().top - 80
       }, 400);
     }.bind(this));
   },

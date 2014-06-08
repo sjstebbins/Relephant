@@ -14,7 +14,6 @@
 //= require jquery
 //= require jquery_ujs
 
-// move to separate file
 function ready(){
   // Loader
   $(".loader").fadeOut(3000);
@@ -37,10 +36,6 @@ function ready(){
       $(".loader").show();
       $(".loader").fadeOut(3000);
     });
-  // $('#word-chart').on('click', function(){
-  //   $('#search').animate({"margin-top": "-180px"}, 1000);
-  //   $('#search').fadeOut();
-  // });
 
 
 
@@ -51,7 +46,7 @@ function ready(){
   $("#scroller").click(function(){
     var body = $("body");
     var top = body.scrollTop();
-    if (top != 0) {
+    if (top !== 0) {
       body.animate({
         scrollTop: 100
       }, '500');
@@ -93,15 +88,6 @@ function ready(){
 
   });
 }
-// End Documenet ready
 
 $(document).ready(ready);
 $(document).on('page:load', ready);
-
-// Scroll Related Animations
-
-
-
- // thisoffset = currentoffset - 50*(currentoffset/200);
-      // scale = (currentoffset*(.001)) +1;
-      // $("#navbar").css({top:thisoffset,transform:"scale("+scale+")"});

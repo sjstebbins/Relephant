@@ -37,6 +37,16 @@ function runJoyride() {
   });
 }
 
+function relephantViewPicker(entityType, query) {
+  $('#entity-based-results-view').empty();
+  if (entityType === 'city' || entityType === 'continent' || entityType === 'country' || entityType === 'facility' || entityType === 'geographicfeature' || entityType === 'region' || entityType === 'stateorcounty') {
+    $('#entity-based-results-view').append('<div id="google-maps-view">');
+    var zoomLevel = 8;
+    if (entityType === 'country' || entityType === 'continent') { zoomLevel = 4; }
+    new googleMapsView({googleMapsQuery: query, zoomLevel: zoomLevel});
+  }
+}
+
 $(document).ready(backboneReady);
 $(document).on('page:load', function(){
   Backbone.history.stop();

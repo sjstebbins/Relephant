@@ -57,10 +57,11 @@ var alchemyResultsView = Backbone.View.extend({
   mouseclickhandler: function(e, data){
     var nodes = data.nodes;
     var ids = data.ids;
-    var type = ids[0].split(' - ')[1];
     var entity = ids[0].split(' - ')[0];
+    var type = ids[0].split(' - ')[1].toLowerCase();
     var query = entity.toLowerCase().split(" ").join("+");
     new GoogleResultsView({query: query});
+    relephantViewPicker(type, query);
   },
 
   displayRelephantError: function(){

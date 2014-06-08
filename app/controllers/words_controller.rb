@@ -1,5 +1,4 @@
 class WordsController < ApplicationController
-  # Need authentication here for security?
 
   def index
     words = current_user.words
@@ -38,10 +37,6 @@ class WordsController < ApplicationController
 
   def create
     word = current_user.words.create(word_params)
-    # word = Word.find_or_create_by(word_params) # Cant do this way because every word is unique
-    # even if word is same litters, the created_at times are different
-    # use part of speech gem here
-    # use callback for next line?
     respond_to do |format|
       format.html { }
       format.json { render json: word.to_json}
