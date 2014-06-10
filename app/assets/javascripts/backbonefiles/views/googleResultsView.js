@@ -19,9 +19,11 @@ var GoogleResultsView = Backbone.View.extend({
     }).done(function(data){
       resultsToPass = data.items;
       this.renderResults(resultsToPass);
-      $('html, body').animate({
-        scrollTop: $('#entity-based-results-view').offset().top - 80
-      }, 400);
+      if (!this.options.liveMode) {
+        $('html, body').animate({
+          scrollTop: $('#entity-based-results-view').offset().top - 80
+        }, 400);
+      }
     }.bind(this));
   },
 

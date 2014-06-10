@@ -9,8 +9,10 @@ var alchemyResultsView = Backbone.View.extend({
     // set passed in options
     this.options = options || {};
 
-    // query API for relevant concepts
-    this.queryAlchemy(this.options.stringToQuery);
+    // query API for relevant concepts if there is a string to query
+    if (this.options.stringToQuery !== '') {
+      this.queryAlchemy(this.options.stringToQuery);
+    }
   },
 
   queryAlchemy: function(stringToQuery){
@@ -31,9 +33,7 @@ var alchemyResultsView = Backbone.View.extend({
         var color = Math.random();
         return {"id": (entity["text"] + " - " + entity["type"]), "size": [value/sum], "color": [color] };
       });
-
       this.renderTreemap(entities);
-
     }.bind(this));
   },
 
@@ -46,12 +46,24 @@ var alchemyResultsView = Backbone.View.extend({
           "id": "group 1", "children": entities
         }
       }).bind('treemapclick', this.mouseclickhandler);
+      if (this.options.liveMode) {
+        // entitySelection should be based on most relevant result
+        // since all relevnace values are equal, we use random index number
+        var entitySelection = Math.floor(Math.random() * entities.length);
+
+        var entity = entities[entitySelection].id.split(' - ')[0];
+        var type = entities[0].id.split(' - ')[1].toLowerCase();
+        var query = entity.toLowerCase().split(" ").join("+");
+        new GoogleResultsView({query: query, liveMode: this.options.liveMode});
+        relephantViewPicker(type, query);
+      } else {
+        $('html, body').animate({
+          scrollTop: $('#treemap').offset().top - 80
+        }, 400);
+      }
     } else {
       this.displayRelephantError();
     }
-    $('html, body').animate({
-      scrollTop: $('#treemap').offset().top - 80
-    }, 400);
   },
 
   mouseclickhandler: function(e, data){

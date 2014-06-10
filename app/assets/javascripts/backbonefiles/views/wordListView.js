@@ -21,6 +21,8 @@ var WordListView = Backbone.View.extend({
     this.DEFAULTHOURSPAST = 1;
     this.SMOOTHING = 1.001;
     this.tempWordStorage = [];
+    this.previousAlchemyQuery;
+    this.currentAlchemyInterval;
 
     // clear any existing graph and fetch updated collection
     this.$('#chart_container').remove();
@@ -60,6 +62,14 @@ var WordListView = Backbone.View.extend({
     this.xIntervalSeconds = 0.1;
     this.graphObjectArray = this.queryDBforGraphData(this.xIntervalSeconds);
     this.render();
+    this.initializeLiveAlchemy();
+  },
+
+  initializeLiveAlchemy: function(){
+    clearInterval(this.currentAlchemyInterval);
+    this.currentAlchemyInterval = setInterval(function(){
+      this.renderAlchemyResults(true);
+    }.bind(this), 10000);
   },
 
   setIntervalSeconds: function(range){ //takes graph range in seconds
@@ -92,7 +102,7 @@ var WordListView = Backbone.View.extend({
     $('#transcript-box').append("<h4 id=transcript-title>Trancript from " + prettyDateTime(new Date(leftSliderDateTime*1000)) + " to " + prettyDateTime(new Date(rightSliderDateTime*1000)) + ":</h4>");
     $('#transcript-box').append("<p id=transcript-content>" + transcript + "</p>");
     $('html, body').animate({
-            scrollTop: $('#transcript-box').offset().top -80
+            scrollTop: $('#transcript-box').offset().top - 80
       }, 400);
   },
 
@@ -109,6 +119,7 @@ var WordListView = Backbone.View.extend({
   resetTime: function(){
     this.startDate = this.setStartDate();
     clearInterval(this.currentInterval);
+    clearInterval(this.currentAlchemyInterval);
     this.initialize();
   },
 
@@ -149,12 +160,17 @@ var WordListView = Backbone.View.extend({
     }, 400);
   },
 
-  renderAlchemyResults: function(){
+  renderAlchemyResults: function(boolOrEvent){
+    var liveMode = boolOrEvent === true ? true : false // comes in as event if button was clicked
     leftSliderDateTime = this.sliderDateTimes()[0];
     rightSliderDateTime = this.sliderDateTimes()[1];
     var stringToQuery = this.collection.wordString(leftSliderDateTime, rightSliderDateTime);
-    this.$('#alchemy-results-view').empty();
-    new alchemyResultsView({stringToQuery: stringToQuery});
+    // to avoid querying same string in alchemy
+    if (this.previousAlchemyQuery !== stringToQuery) {
+      this.$('#alchemy-results-view').empty();
+      this.previousAlchemyQuery = stringToQuery;
+      new alchemyResultsView({stringToQuery: stringToQuery, liveMode: liveMode});
+    }
   },
 
   setTickInterval: function(){

@@ -21,14 +21,14 @@ var SpeechInputView = Backbone.View.extend({
       var interim_transcript = '';
       // Process all new results, both final and interim.
       for (var i = event.resultIndex; i < event.results.length; ++i) {
-          if (event.results[i].isFinal) {
-            var indivWords = event.results[i][0].transcript.trim().split(" ");
-            _.each(indivWords, function(word, index){
-              this.wordStorage.push(word);
-            }.bind(this));
-          } else {
-            interim_transcript += event.results[i][0].transcript;
-          }
+        if (event.results[i].isFinal) {
+          var indivWords = event.results[i][0].transcript.trim().split(" ");
+          _.each(indivWords, function(word, index){
+            this.wordStorage.push(word);
+          }.bind(this));
+        } else {
+          interim_transcript += event.results[i][0].transcript;
+        }
         }
       document.getElementById('interim_span').innerHTML = interim_transcript;
     }.bind(this);
