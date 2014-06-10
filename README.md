@@ -20,5 +20,5 @@ APIs used:
 
 Contributors:
 
-Spencer Stebbins and Jesse Sessler
+Spencer Stebbins and [Jesse Sessler](https://github.com/jemise111)
 
