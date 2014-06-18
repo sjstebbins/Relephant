@@ -31,7 +31,9 @@ var alchemyResultsView = Backbone.View.extend({
       var entities = _.map(data.entities, function(entity){
         var value = parseFloat(entity["relevance"]);
         var color = Math.random();
-        return {"id": (entity["text"] + " - " + entity["type"]), "size": [value/sum], "color": [color] };
+        // Use following line in place of line above to have color match relevance number
+        // var color = parseFloat(entity["relevance"]);
+        return {"id": (entity["text"] + " - " + entity["type"]), "size": [value/sum], "color": [color], "relevance": value };
       });
       this.renderTreemap(entities);
     }.bind(this));
@@ -47,11 +49,9 @@ var alchemyResultsView = Backbone.View.extend({
         }
       }).bind('treemapclick', this.mouseclickhandler);
       if (this.options.liveMode) {
-        // entitySelection should be based on most relevant result
-        // since all relevnace values are equal, we use random index number
-        var entitySelection = Math.floor(Math.random() * entities.length);
-
-        var entity = entities[entitySelection].id.split(' - ')[0];
+        // var entitySelectionIndex = Math.floor(Math.random() * entities.length);
+        var firstEntitySelectionIndex = 0;
+        var entity = entities[firstEntitySelectionIndex].id.split(' - ')[0];
         var type = entities[0].id.split(' - ')[1].toLowerCase();
         var query = entity.toLowerCase().split(" ").join("+");
         new GoogleResultsView({query: query, liveMode: this.options.liveMode});

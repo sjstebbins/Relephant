@@ -41,6 +41,10 @@ var SpeechInputView = Backbone.View.extend({
   },
   listenForWords: function(){
     var interval = setInterval(function(){
+      // add period to last word in block of words for alchemy recognition purposes
+      if (this.wordStorage.length > 0) {
+        this.wordStorage[this.wordStorage.length - 1] += ".";
+      }
       for (var i = 0; i < this.wordStorage.length; i++) {
         var newWord = {letters: this.wordStorage[i]};
         this.collection.create(newWord);

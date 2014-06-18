@@ -102,7 +102,7 @@ var WordListView = Backbone.View.extend({
     $('#transcript-box').append("<h4 id=transcript-title>Trancript from " + prettyDateTime(new Date(leftSliderDateTime*1000)) + " to " + prettyDateTime(new Date(rightSliderDateTime*1000)) + ":</h4>");
     $('#transcript-box').append("<p id=transcript-content>" + transcript + "</p>");
     $('html, body').animate({
-            scrollTop: $('#transcript-box').offset().top - 80
+        scrollTop: $('#transcript-box').offset().top - 80
       }, 400);
   },
 
