@@ -14,6 +14,12 @@ var WordListView = Backbone.View.extend({
   },
 
   initialize: function(){
+    this.viewInitializer();
+    this.startLiveChart();
+  },
+
+  //need a custom initializer to differentiate initial page view vs resetting time
+  viewInitializer: function(){
     // set up listeners
     this.listenTo(this.collection, 'add', this.addToTempStorage);
 
@@ -61,6 +67,9 @@ var WordListView = Backbone.View.extend({
     this.endDate = new Date().getTime();
     this.xIntervalSeconds = 0.1;
     this.graphObjectArray = this.queryDBforGraphData(this.xIntervalSeconds);
+    this.$('#chart-to-hide').hide();
+    $("<div id='relephant-placeholder'><img src='/assets/logo.png'><h3>Speak</h3></div>").insertAfter(this.$('#chart-to-hide'));
+    $('#status_img').click(); //auto start the microphone
     this.render();
     this.initializeLiveAlchemy();
   },
@@ -68,6 +77,9 @@ var WordListView = Backbone.View.extend({
   initializeLiveAlchemy: function(){
     clearInterval(this.currentAlchemyInterval);
     this.currentAlchemyInterval = setInterval(function(){
+      if ($('#relephant-placeholder').size() > 0) {
+        $('#relephant-placeholder').remove();
+      }
       this.renderAlchemyResults(true);
     }.bind(this), 10000);
   },
@@ -120,7 +132,7 @@ var WordListView = Backbone.View.extend({
     this.startDate = this.setStartDate();
     clearInterval(this.currentInterval);
     clearInterval(this.currentAlchemyInterval);
-    this.initialize();
+    this.viewInitializer();
   },
 
   getLineDataArray: function(graphDataObject) {
@@ -165,6 +177,10 @@ var WordListView = Backbone.View.extend({
     leftSliderDateTime = this.sliderDateTimes()[0];
     rightSliderDateTime = this.sliderDateTimes()[1];
     var stringToQuery = this.collection.wordString(leftSliderDateTime, rightSliderDateTime);
+    if (stringToQuery === '') {
+      var errorContent = "RelephantError: No concepts found. Try adjusting your search window or recording more conversations.";
+      displayRelephantError(errorContent);
+    }
     // to avoid querying same string in alchemy
     if (this.previousAlchemyQuery !== stringToQuery) {
       this.$('#alchemy-results-view').empty();

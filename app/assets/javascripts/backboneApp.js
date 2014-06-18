@@ -47,6 +47,11 @@ function relephantViewPicker(entityType, query) {
   }
 }
 
+function displayRelephantError(content) {
+  $('#RelephantError').remove();
+  $('#alchemy-results-view').append('<div id="RelephantError">' + content + '</div>');
+}
+
 $(document).ready(backboneReady);
 $(document).on('page:load', function(){
   Backbone.history.stop();

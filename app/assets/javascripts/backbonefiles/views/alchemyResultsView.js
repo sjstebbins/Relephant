@@ -25,7 +25,8 @@ var alchemyResultsView = Backbone.View.extend({
       dataType: 'json'
     }).done(function(data){
       var sum = 0;
-      _.each(data.entities, function(entity){
+      // limit to first 10 entities
+      _.each(data.entities.slice(0, 10), function(entity){
         sum += parseFloat(entity["relevance"]);
       });
       var entities = _.map(data.entities, function(entity){
@@ -62,7 +63,7 @@ var alchemyResultsView = Backbone.View.extend({
         }, 400);
       }
     } else {
-      this.displayRelephantError();
+      this.renderRelephantError();
     }
   },
 
@@ -76,7 +77,12 @@ var alchemyResultsView = Backbone.View.extend({
     relephantViewPicker(type, query);
   },
 
-  displayRelephantError: function(){
-    $('#treemap').append('<div id="RelephantError">RelephantError: No concepts found. Try adjusting your search window or recording more conversations.</div>');
+  renderRelephantError: function(){
+    if (this.options.liveMode) {
+      var errorContent = "Speak More";
+    } else {
+      var errorContent = "RelephantError: No concepts found. Try adjusting your search window or recording more conversations.";
+    }
+    displayRelephantError(errorContent);
   },
 });

@@ -16,66 +16,65 @@
 
 <div id="main-container">
   <div id="word-chart">
-
-    <!-- Search Input-->
-    <br>
-    <div id="search">
-      <input type="text" placeholder="Search" id="search-input" >
-      <button id="word-search"><i class="fa fa-search"></i></button>
-    </div>
-
-    <!-- Tooltip Start Button -->
-    <button id="tooltip">Start the guide</button>
-
-    <!--   Calendar -->
-    <div id="calendar" class="container">
-      <div class="row">
-        <div id="calendar-slider" class='col-sm-3'>
-          <div class="form-group">
-            <div class='input-group date' id='datetimepicker1'>
-              <input type='text' placeholder="Input Graph Start Date" class="form-control" />
-              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-            </div>
-            <p style="margin:10px">Update Interval: <span id="tick-interval"></span></p>
-          </div>
-        </div>
-        <button id="datetimebutton">Set Time</button>
-        <button id="live">Live</button>
+    <div id="chart-to-hide">
+      <!-- Search Input-->
+      <br>
+      <div id="search">
+        <input type="text" placeholder="Search" id="search-input" >
+        <button id="word-search"><i class="fa fa-search"></i></button>
       </div>
+
+      <!-- Tooltip Start Button -->
+      <button id="tooltip">Start the guide</button>
+
+      <!--   Calendar -->
+      <div id="calendar" class="container">
+        <div class="row">
+          <div id="calendar-slider" class='col-sm-3'>
+            <div class="form-group">
+              <div class='input-group date' id='datetimepicker1'>
+                <input type='text' placeholder="Input Graph Start Date" class="form-control" />
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+              </div>
+              <p style="margin:10px">Update Interval: <span id="tick-interval"></span></p>
+            </div>
+          </div>
+          <button id="datetimebutton">Set Time</button>
+          <button id="live">Live</button>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div id="chart_container"></div>
+
+      <!-- Sliders -->
+      <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" style=" margin-left: 40px; width: 900px;">
+        <div id ="range-slider"class="ui-slider-range ui-widget-header" style="left: 0%; width: 100%;"></div>
+        <a id="left-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%; border: 1px solid black;"></a>
+        <a id="right-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%; border: 1px solid black;"></a>
+      </div>
+
+      <!-- Legend -->
+      <div id="legend">
+        <h4 style="font-weight: bold;">DateTime: <span id="legend-datetime"></span></h4>
+        <h5>Spoken Words: <span id="legend-words">""</span></h5>
+        <ul id="queries"></ul>
+      </div>
+
+      <!-- Alchemy / Transcript buttons -->
+      <div id="extra-menu">
+        <button id="alchemy">Search Speech For Concepts</button>
+        <button id="transcript">Generate Transcript</button>
+      </div>
+
+      <!-- Transcript Box -->
+      <div class="col-m-3"id="transcript-box"></div>
     </div>
-
-    <!-- Chart -->
-    <div id="chart_container"></div>
-
-    <!-- Sliders -->
-    <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" style=" margin-left: 40px; width: 900px;">
-      <div id ="range-slider"class="ui-slider-range ui-widget-header" style="left: 0%; width: 100%;"></div>
-      <a id="left-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%; border: 1px solid black;"></a>
-      <a id="right-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%; border: 1px solid black;"></a>
-    </div>
-
-    <!-- Legend -->
-    <div id="legend">
-      <h4 style="font-weight: bold;">DateTime: <span id="legend-datetime"></span></h4>
-      <h5>Spoken Words: <span id="legend-words">""</span></h5>
-      <ul id="queries"></ul>
-    </div>
-
-    <!-- Alchemy / Transcript buttons -->
-    <div id="extra-menu">
-      <button id="alchemy">Search Speech For Concepts</button>
-      <button id="transcript">Generate Transcript</button>
-    </div>
-    <!--  <div class="toggle-close"><i id="treemap-toggle" class="fa fa-arrows-v toggle-icon"></i></div> -->
-
-    <!-- Transcript Box -->
-    <div class="col-m-3"id="transcript-box"></div>
 
     <!-- Alchemy Treemap Box -->
     <div id="alchemy-results-view">
       <div id="treemap"></div>
     </div>
-    <!-- <div class="toggle-close"><i id="google-toggle" class="fa fa-arrows-v toggle-icon"></i></div> -->
 
     <!-- Google Results Box -->
     <div id="entity-based-results-view"></div>
