@@ -17,6 +17,8 @@
 function ready(){
   // Loader
   $(".loader").fadeOut(3000);
+
+
   // Search
   $('#search').fadeIn(5000);
   $('#search').animate({"margin-top": "-90px"}, 5000);
@@ -37,10 +39,9 @@ function ready(){
       $(".loader").fadeOut(3000);
     });
 
-
-
   // Transcript
   $('#transcript-box').hide();
+
   // Scroller
   $("#scroller").hide();
   $("#scroller").click(function(){
@@ -68,7 +69,7 @@ function ready(){
       // Nav and mic animation
 
       $("#navbar").animate({height: '65px'}, 3000);
-      $("#navbar").css('background-color', 'rgba(255,255,255,.8)');
+      $("#navbar").css('background-color', 'rgba(255,255,255,1)');
       $('#search').css('box-shadow', '5px 5px 5px rgba(68,68,68,0.8)');
 
     } else {

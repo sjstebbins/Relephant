@@ -17,18 +17,12 @@
  *= require_self
 
  */
-#main-container{
-margin-left: 30px;
 
-}
 #profile-photo{
   border-radius: 45px;
   padding: 10px;
 }
 
-#user-name{
-  margin-top: 20px;
-}
 
 #results {
   font-size: 14px;
@@ -58,7 +52,10 @@ margin-left: 30px;
   margin-top: -10px;
   z-index: 99;
 }
-
+.nav-item{
+  margin-top: 20px;
+  margin-left: 10px
+}
 li{
   text-decoration: none
 }
@@ -67,7 +64,6 @@ li{
   border: 1px solid grey;
   position: fixed;
   width: 100%;
-  /*margin-top: -20px;*/
   height: 80px;
   border-top: none;
 
@@ -164,13 +160,7 @@ li{
   background: white;
    font-family: "Lucida Grande";
 }
-#tooltip {
-  border-radius: 5px;
-  background: white;
-  float: right;
-  font-family: "Lucida Grande";
-  margin: 5px 20px 0 0;
-}
+
 #transcript{
   margin: 10px;
   margin-left: 10px;
@@ -192,6 +182,7 @@ li{
   padding: 10px;
   border-radius: 10px;
   margin-left: 30px;
+  width: 90%
 }
 .search-term {
   display: inline-block;
@@ -199,6 +190,7 @@ li{
   padding: 5px;
   color: white;
   margin-right: 5px;
+  margin-left: 30px;
 }
 .search-count {
   font-size: 18px;
@@ -220,7 +212,7 @@ li{
 }
 #search{
   margin-left:55%;
-  background: rgba(255,255,255,.4);
+  background: rgba(255,255,255,1);
   width: 60%;
   margin-top: -180px;
   position:fixed;
@@ -279,4 +271,14 @@ li{
 #relephant-placeholder img {
   margin-top: 100px;
   opacity: .7;
+}
+
+#email{
+  margin: 20px;
+  padding: 10px;
+  position: absolute;
+  font-size: 20px;
+  margin-left: 80%;
+  color: black;
+  text-decoration: none
 }

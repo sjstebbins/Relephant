@@ -1,7 +1,8 @@
 <%= javascript_include_tag 'backboneApp' %>
 
 <div class="loader"></div>
-
+<div id="main-container">
+<%= render 'layouts/navbar' %>
 <!-- Speech Input-->
 <div id="speech-input">
   <button id="microphone">
@@ -14,7 +15,7 @@
   </div>
 </div>
 
-<div id="main-container">
+
   <div id="word-chart">
     <div id="chart-to-hide">
       <!-- Search Input-->
@@ -24,8 +25,6 @@
         <button id="word-search"><i class="fa fa-search"></i></button>
       </div>
 
-      <!-- Tooltip Start Button -->
-      <button id="tooltip">Start the guide</button>
 
       <!--   Calendar -->
       <div id="calendar" class="container">
@@ -40,7 +39,6 @@
             </div>
           </div>
           <button id="datetimebutton">Set Time</button>
-          <button id="live">Live</button>
         </div>
       </div>
 
@@ -68,9 +66,9 @@
       </div>
 
       <!-- Transcript Box -->
-      <div class="col-m-3"id="transcript-box"></div>
+      <div class="col-m-3"id="transcript-box">
+      </div>
     </div>
-
     <!-- Alchemy Treemap Box -->
     <div id="alchemy-results-view">
       <div id="treemap"></div>

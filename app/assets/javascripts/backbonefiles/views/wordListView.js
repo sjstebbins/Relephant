@@ -1,7 +1,7 @@
 var graph;
 
 var WordListView = Backbone.View.extend({
-  el: '#word-chart',
+  el: '#main-container',
 
   events: {
     'click button#word-search': 'wordSearch',
@@ -9,8 +9,9 @@ var WordListView = Backbone.View.extend({
     'click button#alchemy': 'renderAlchemyResults',
     'click div.treemap-node': 'googleResults',
     'click button#transcript': 'generateTranscript',
-    'click button#live': "startLiveChart",
-    'click button#tooltip': 'startGuide'
+    'click #live-mode': "startLiveChart",
+    'click #tooltip': 'startGuide',
+    'click #history': 'resetTime'
   },
 
   initialize: function(){
@@ -68,7 +69,11 @@ var WordListView = Backbone.View.extend({
     this.xIntervalSeconds = 0.1;
     this.graphObjectArray = this.queryDBforGraphData(this.xIntervalSeconds);
     this.$('#chart-to-hide').hide();
+    if ($('#relephant-placeholder').length === 0) {
     $("<div id='relephant-placeholder'><img src='/assets/logo.png'><h3>Speak</h3></div>").insertAfter(this.$('#chart-to-hide'));
+    }
+    $("#chart-to-hide").slideUp();
+    $('#relephant-placeholder').fadeIn();
     $('#status_img').click(); //auto start the microphone
     this.render();
     this.initializeLiveAlchemy();
@@ -111,8 +116,11 @@ var WordListView = Backbone.View.extend({
     var transcript = this.collection.wordString(leftSliderDateTime, rightSliderDateTime).split("+").join(" ");
     $('#transcript-box').empty();
     $('#transcript-box').slideDown();
-    $('#transcript-box').append("<h4 id=transcript-title>Trancript from " + prettyDateTime(new Date(leftSliderDateTime*1000)) + " to " + prettyDateTime(new Date(rightSliderDateTime*1000)) + ":</h4>");
+    $('#transcript-box').append("<h4 id=transcript-title>Transcript from " + prettyDateTime(new Date(leftSliderDateTime*1000)) + " to " + prettyDateTime(new Date(rightSliderDateTime*1000)) + ":</h4>");
     $('#transcript-box').append("<p id=transcript-content>" + transcript + "</p>");
+    $('#transcript-box').append('<div id="email"><a href="mailto:'  + '@? subject=Transcript%20from%20' + prettyDateTime(new Date(leftSliderDateTime*1000)) + '%20to%20' + prettyDateTime(new Date(rightSliderDateTime*1000)) + '&body=' + transcript + '">Email <i class="fa fa-share"></i></a></div>');
+
+    // "<div id='email'><a href='mailto:" + user_name +"@? subject= Transcript from " + prettyDateTime(new Date(leftSliderDateTime*1000)) + " to " + prettyDateTime(new Date(rightSliderDateTime*1000)) + "&body=" + transcript + "'><i class='fa fa-paper-plane'></i></a></div>"
     $('html, body').animate({
         scrollTop: $('#transcript-box').offset().top - 80
       }, 400);
@@ -133,6 +141,8 @@ var WordListView = Backbone.View.extend({
     clearInterval(this.currentInterval);
     clearInterval(this.currentAlchemyInterval);
     this.viewInitializer();
+    $("#chart-to-hide").slideDown();
+    $('#relephant-placeholder').slideUp();
   },
 
   getLineDataArray: function(graphDataObject) {
