@@ -68,6 +68,11 @@ li{
   border-top: none;
 
 }
+
+#navbar a{
+  cursor: pointer;
+}
+
 #treemap{
   margin-left: 40px
 }
@@ -137,16 +142,7 @@ li{
   margin: 50px;
   z-index: 10000;
 }
-.red{
-}
-#google-results{
-  margin-left: 30px;
-}
-#google-result{
-  border-bottom: 1px solid #ddd;
-  width: 1100px;
-  margin: 10px;
-}
+
 #alchemy{
   margin: 10px;
   border-radius: 5px;
@@ -250,18 +246,6 @@ li{
   margin-top: 100px;
 }
 
-#google-maps-view{
-  margin-left: 40px;
-  height: 500px;
-  width: 1080px;
-}
-
-#map-canvas{
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
 #relephant-placeholder {
   font-size: 36px;
   height: 300px;
@@ -281,4 +265,45 @@ li{
   margin-left: 80%;
   color: black;
   text-decoration: none
+}
+
+#entity-results {
+  text-align: center;
+}
+
+.entity-item-view>div {
+  border: 1px solid black;
+  border-radius: 10px;
+  display: inline-block;
+  height: 400px;
+  margin: 0 20px;
+  width: 40%;
+  min-width: 400px;
+}
+
+.google-results-view {
+  overflow-y: scroll;
+  padding: 10px;
+  text-align: left;
+}
+
+.google-result-description {
+  font-size: 12px;
+}
+
+.map-canvas{
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border-radius: 10px;
+}
+
+.crunchbase-view {
+  overflow-y: scroll;
+  padding: 10px;
+  text-align: left;
+}
+
+.crunch-bold {
+  font-weight: bold;
 }

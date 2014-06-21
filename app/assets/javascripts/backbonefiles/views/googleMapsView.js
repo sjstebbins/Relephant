@@ -1,5 +1,6 @@
-var googleMapsView = Backbone.View.extend({
-  el: 'div#google-maps-view',
+var GoogleMapsView = Backbone.View.extend({
+  tagName: 'div',
+  className: 'google-maps-view',
 
   initialize: function(options){
     this.options = options || {};
@@ -18,13 +19,15 @@ var googleMapsView = Backbone.View.extend({
   },
 
   initializeMap: function(lat, lon){
-    $('#google-maps-view').append('<div class="map-canvas" id="map-canvas"></div>');
+    var randomID = '' + Math.random();
+    this.$el.html('<div class="map-canvas" id="' + randomID + '"></div>');
     var centerPoint = new google.maps.LatLng(lat, lon);
     var mapOptions = {
       zoom: this.options.zoomLevel,
-      center: centerPoint
+      center: centerPoint,
+      scrollwheel: false
     };
-    var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    var map = new google.maps.Map(document.getElementById(randomID), mapOptions);
     var marker = new google.maps.Marker({
       position: centerPoint,
       map: map

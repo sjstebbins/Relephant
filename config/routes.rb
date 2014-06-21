@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get '/welcome', to: 'welcome#welcome'
   post '/alchemy_search', to: 'words#alchemy_search'
   get '/google_search', to: 'words#google_search'
+  get '/crunchbase_search', to: 'words#crunchbase_search'
   post '/words', to: "words#create"
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   resources :users, only: [:show] do
