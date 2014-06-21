@@ -27,6 +27,15 @@ class WordsController < ApplicationController
     end
   end
 
+  def crunchbase_search
+    query = params[:query]
+    response = CrunchbaseSearch.fetch_results(query)
+    respond_to do |format|
+      format.html { }
+      format.json { render json: response.to_json }
+    end
+  end
+
   def show
     word = Word.find(params[:id])
     respond_to do |format|

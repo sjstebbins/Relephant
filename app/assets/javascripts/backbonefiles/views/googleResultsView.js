@@ -1,6 +1,6 @@
 var GoogleResultsView = Backbone.View.extend({
-
-  el: '#google-results-view',
+  tagName: 'div',
+  className: 'google-results-view',
 
   initialize: function(options){
     this.options = options || {};
@@ -18,22 +18,21 @@ var GoogleResultsView = Backbone.View.extend({
       dataType: 'json'
     }).done(function(data){
       resultsToPass = data.items;
-      this.renderResults(resultsToPass);
+      this.render(resultsToPass);
       if (!this.options.liveMode) {
         $('html, body').animate({
-          scrollTop: $('#entity-based-results-view').offset().top - 80
+          scrollTop: $('.entity-item-view').eq(0).offset().top - 80
         }, 400);
       }
     }.bind(this));
   },
 
-  renderResults: function(results){
-    this.$el.empty();
+  render: function(results){
     _.each(results, function(result, index){
-      var title = result["title"];
-      var snippet = result["snippet"];
-      var link = result["link"];
-      this.$el.append($('<div id="google-result"><a href="' + link + '"><h3>' + title + '</h3></a><br><p>' + snippet + '</p></div>'));
+      var title = result.title;
+      var snippet = result.snippet;
+      var link = result.link;
+      this.$el.append($('<div class="google-result-item"><a class="google-result-link" href="' + link + '">' + title + '</a><p class="google-result-description">' + snippet + '</p></div>'));
     }.bind(this));
   }
 

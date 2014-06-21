@@ -50,13 +50,17 @@ var alchemyResultsView = Backbone.View.extend({
         }
       }).bind('treemapclick', this.mouseclickhandler);
       if (this.options.liveMode) {
-        // var entitySelectionIndex = Math.floor(Math.random() * entities.length);
-        var firstEntitySelectionIndex = 0;
-        var entity = entities[firstEntitySelectionIndex].id.split(' - ')[0];
-        var type = entities[0].id.split(' - ')[1].toLowerCase();
-        var query = entity.toLowerCase().split(" ").join("+");
-        new GoogleResultsView({query: query, liveMode: this.options.liveMode});
-        relephantViewPicker(type, query);
+        $('#entity-results').empty();
+        //entities are sorted by relevance, display top 3 entities
+        for (var i = 0; i < 3; i++) {
+          if (entities[i] !== undefined) {
+            var entity = entities[i].id.split(' - ')[0];
+            var type = entities[i].id.split(' - ')[1].toLowerCase();
+            var query = entity.toLowerCase().split(" ").join("+");
+            var entityItem = new EntityItemView({type: type, query: query, liveMode: this.options.liveMode});
+            $('#entity-results').append(entityItem.$el);
+          }
+        }
       } else {
         $('html, body').animate({
           scrollTop: $('#treemap').offset().top - 80
@@ -73,15 +77,16 @@ var alchemyResultsView = Backbone.View.extend({
     var entity = ids[0].split(' - ')[0];
     var type = ids[0].split(' - ')[1].toLowerCase();
     var query = entity.toLowerCase().split(" ").join("+");
-    new GoogleResultsView({query: query});
-    relephantViewPicker(type, query);
+    var entityItem = new EntityItemView({type: type, query: query});
+    $('#entity-results').append(entityItem.$el);
   },
 
   renderRelephantError: function(){
+    var errorContent;
     if (this.options.liveMode) {
-      var errorContent = "Speak More";
+      errorContent = "Speak More";
     } else {
-      var errorContent = "RelephantError: No concepts found. Try adjusting your search window or recording more conversations.";
+      errorContent = "RelephantError: No concepts found. Try adjusting your search window or recording more conversations.";
     }
     displayRelephantError(errorContent);
   },
