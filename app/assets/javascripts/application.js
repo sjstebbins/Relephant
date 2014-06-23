@@ -70,7 +70,7 @@ function ready(){
 
       $("#navbar").animate({height: '65px'}, 3000);
       $("#navbar").css('background-color', 'rgba(255,255,255,1)');
-      $('#search').css('box-shadow', '5px 5px 5px rgba(68,68,68,0.8)');
+      $('#search').css('box-shadow', '0px 0px 5px 5px rgba(68,68,68,0.2)');
 
     } else {
       $("#navbar").animate({height: '80px'}, 3000);
