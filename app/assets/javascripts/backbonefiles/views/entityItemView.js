@@ -3,6 +3,8 @@ var EntityItemView = Backbone.View.extend({
   className: 'entity-item-view',
   initialize: function(options){
     this.options = options || {};
+    var entity = (this.options.query).split('+').join(' ');
+    this.$el.append('<h3 class="entity-title">'+ entity + '</h3>');
     googleResultBox = new GoogleResultsView({query: this.options.query, liveMode: this.options.liveMode});
     var specialBox = this.specialBox();
     this.$el.append(googleResultBox.el);
