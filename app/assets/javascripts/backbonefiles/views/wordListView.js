@@ -69,7 +69,7 @@ var WordListView = Backbone.View.extend({
     this.graphObjectArray = this.queryDBforGraphData(this.xIntervalSeconds);
     this.$('#chart-to-hide').hide();
     if ($('#relephant-placeholder').length === 0) {
-    $("<div id='relephant-placeholder'><img src='/assets/logo.png'><h3>Speak</h3></div>").insertAfter(this.$('#chart-to-hide'));
+    $("<div id='relephant-placeholder'><h3>Speak</h3></div>").insertAfter(this.$('#chart-to-hide'));
     }
     $("#chart-to-hide").slideUp();
     $('#relephant-placeholder').fadeIn();
