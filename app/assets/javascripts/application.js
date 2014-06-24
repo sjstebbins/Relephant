@@ -17,6 +17,8 @@
 function ready(){
   // Loader
   $(".loader").fadeOut(3000);
+  //Hide Treemap
+  $('#treemap').hide();
 
 
   // Search

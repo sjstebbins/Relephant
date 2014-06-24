@@ -2,7 +2,7 @@ var alchemyResultsView = Backbone.View.extend({
   el: '#alchemy-results-view',
 
   events: {
-
+    'click#treemap-button': 'hideTranscript'
   },
 
   initialize: function(options){
@@ -90,4 +90,14 @@ var alchemyResultsView = Backbone.View.extend({
     }
     displayRelephantError(errorContent);
   },
+
+  hideTranscript: function(){
+  if ($('#treemap-button').text() == "Show Treemap") {
+        $('#treemap-button').text("Hide Treemap");
+        $('#treemap').slideDown();
+      } else {
+       $('#treemap-button').text("Show Treemap");
+       $('#treemap').slideUp();
+     }
+  }
 });
