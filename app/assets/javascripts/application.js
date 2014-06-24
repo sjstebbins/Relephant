@@ -54,14 +54,6 @@ function ready(){
     }
   });
 
-  $('#user-name').hide();
-  $('nav').on("mouseenter", function(){
-    $('#user-name').fadeIn('slow');
-  });
-  $('nav').on("mouseleave", function(){
-    $('#user-name').fadeOut('slow');
-  });
-
   $(window).scroll(function(){
     currentoffset = $(this).scrollTop();
     var navHeight = $("#navbar").height();
@@ -85,7 +77,6 @@ function ready(){
       } else {
         $('#scroller').fadeOut();
       }
-
 
   });
 }
