@@ -28,6 +28,14 @@ var GoogleResultsView = Backbone.View.extend({
   },
 
   render: function(results){
+ // this.$el.append($('<a class="reveal" href="#" data-reveal-id="myModal"><i class="fa fa-expand"></i></a><div id="myModal" class="reveal-modal" data-reveal><h2>Google Results</h2><a class="close-reveal-modal">&#215;</a></div>')
+    //     _.each(results, function(result, index){
+    //       var title = result.title;
+    //       var snippet = result.snippet;
+    //       var link = result.link;
+    //       this.$el.append($('<div class="google-result-item"><a class="google-result-link" href="' + link + '">' + title + '</a><p class="google-result-description">' + snippet + '</p></div>'));
+    //       });
+    //     );
     _.each(results, function(result, index){
       var title = result.title;
       var snippet = result.snippet;
@@ -39,11 +47,3 @@ var GoogleResultsView = Backbone.View.extend({
 });
 
 
- // this.$el.append($('<a class="reveal" href="#" data-reveal-id="myModal"><i class="fa fa-expand"></i></a><div id="myModal" class="reveal-modal" data-reveal><h2>Google Results</h2><a class="close-reveal-modal">&#215;</a></div>')
-    //     _.each(results, function(result, index){
-    //       var title = result.title;
-    //       var snippet = result.snippet;
-    //       var link = result.link;
-    //       this.$el.append($('<div class="google-result-item"><a class="google-result-link" href="' + link + '">' + title + '</a><p class="google-result-description">' + snippet + '</p></div>'));
-    //       });
-    //     );
