@@ -67,7 +67,8 @@ var alchemyResultsView = Backbone.View.extend({
         }, 400);
       }
     } else {
-      this.renderRelephantError();
+      var errorContent = "No concepts found";
+      displayRelephantError(errorContent);
     }
   },
 
@@ -79,16 +80,6 @@ var alchemyResultsView = Backbone.View.extend({
     var query = entity.toLowerCase().split(" ").join("+");
     var entityItem = new EntityItemView({type: type, query: query});
     $('#entity-results').append(entityItem.$el);
-  },
-
-  renderRelephantError: function(){
-    var errorContent;
-    if (this.options.liveMode) {
-      errorContent = "Speak More";
-    } else {
-      errorContent = "RelephantError: No concepts found. Try adjusting your search window or recording more conversations.";
-    }
-    displayRelephantError(errorContent);
   },
 
   hideTranscript: function(){

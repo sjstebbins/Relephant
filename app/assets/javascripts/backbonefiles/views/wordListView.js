@@ -61,8 +61,7 @@ var WordListView = Backbone.View.extend({
   startLiveChart: function(){
     // a custom 'intialize' function with specific parameters for time range and tick interval
     clearInterval(this.currentInterval);
-    this.$('#chart_container').remove();
-    $("<div id=chart_container></div>").insertBefore('#slider-range');
+    this.cleanDisplay();
     this.collection.fetch();
     this.startDate = new Date().getTime() - 1*60*1000;
     this.endDate = new Date().getTime();
@@ -79,14 +78,19 @@ var WordListView = Backbone.View.extend({
     this.initializeLiveAlchemy();
   },
 
+  cleanDisplay: function(){
+    this.$('#chart_container').remove();
+    $('#RelephantError').remove();
+    $("<div id=chart_container></div>").insertBefore('#slider-range');
+    $('#treemap').empty();
+    $('#entity-results').empty();
+  },
+
   initializeLiveAlchemy: function(){
     clearInterval(this.currentAlchemyInterval);
     this.currentAlchemyInterval = setInterval(function(){
-      if ($('#relephant-placeholder').size() > 0) {
-        $('#relephant-placeholder').remove();
-      }
       this.renderAlchemyResults(true);
-    }.bind(this), 10000);
+    }.bind(this), 5000);
   },
 
   setIntervalSeconds: function(range){ //takes graph range in seconds
@@ -189,20 +193,26 @@ var WordListView = Backbone.View.extend({
   },
 
   renderAlchemyResults: function(boolOrEvent){
-    var liveMode = boolOrEvent === true ? true : false // comes in as event if button was clicked
+    // remove relephant picture placeholder
+    var liveMode = boolOrEvent === true ? true : false; // comes in as event if button was clicked
     leftSliderDateTime = this.sliderDateTimes()[0];
     rightSliderDateTime = this.sliderDateTimes()[1];
     var stringToQuery = this.collection.wordString(leftSliderDateTime, rightSliderDateTime);
     if (stringToQuery === '') {
-      var errorContent = "RelephantError: No concepts found. Try adjusting your search window or recording more conversations.";
-      displayRelephantError(errorContent);
-      $('#relephant-placeholder h3').text('Speak More');
-    }
-    // to avoid querying same string in alchemy
-    if (this.previousAlchemyQuery !== stringToQuery) {
-      this.$('#alchemy-results-view').empty();
-      this.previousAlchemyQuery = stringToQuery;
-      new alchemyResultsView({stringToQuery: stringToQuery, liveMode: liveMode});
+      if ($('#relephant-placeholder').size() === 0) {
+        var errorContent = "No words detected. If you're in History Mode, you may need to adjust your view.";
+        displayRelephantError(errorContent);
+      }
+    } else {
+      if ($('#relephant-placeholder').size() > 0) {
+        $('#relephant-placeholder').remove();
+      }
+      // to avoid querying same string in alchemy
+      if (this.previousAlchemyQuery !== stringToQuery) {
+        this.$('#alchemy-results-view').empty();
+        this.previousAlchemyQuery = stringToQuery;
+        new alchemyResultsView({stringToQuery: stringToQuery, liveMode: liveMode});
+      }
     }
   },
 
