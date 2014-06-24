@@ -1,6 +1,6 @@
-var GoogleResultsView = Backbone.View.extend({
+var GoogleImagesView = Backbone.View.extend({
   tagName: 'div',
-  className: 'google-results-view',
+  className: 'google-images-view',
 
   initialize: function(options){
     this.options = options || {};
@@ -10,7 +10,7 @@ var GoogleResultsView = Backbone.View.extend({
   queryGoogle: function(entity){
     var resultsToPass;
     $.ajax({
-      url: '/google_search',
+      url: '/google_image_search',
       method: 'get',
       data: {
         entity: entity
@@ -24,10 +24,8 @@ var GoogleResultsView = Backbone.View.extend({
 
   render: function(results){
     _.each(results, function(result, index){
-      var title = result.title;
-      var snippet = result.snippet;
-      var link = result.link;
-      this.$el.append($('<div class="google-result-item"><a target="_blank" class="google-result-link" href="' + link + '">' + title + '</a><p class="google-result-description">' + snippet + '</p></div>'));
+      var imgURL = result.link;
+      this.$el.append('<a class="google-image-link" href="' + imgURL + '" target="_blank"><img class="google-image-image" src="' + imgURL + '"></a>');
     }.bind(this));
   }
 

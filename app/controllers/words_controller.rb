@@ -27,6 +27,15 @@ class WordsController < ApplicationController
     end
   end
 
+  def google_image_search
+    entity = params[:entity]
+    response = GoogleImageSearch.fetch_results(entity)
+    respond_to do |format|
+      format.html { }
+      format.json { render json: response.to_json }
+    end
+  end
+
   def crunchbase_search
     query = params[:query]
     response = CrunchbaseSearch.fetch_results(query)
