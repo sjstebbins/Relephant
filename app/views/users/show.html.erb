@@ -1,19 +1,17 @@
 <%= javascript_include_tag 'backboneApp' %>
 
-<div class="loader"></div>
 <div id="main-container">
-<%= render 'layouts/navbar' %>
-<!-- Speech Input-->
-<div id="speech-input">
-  <button id="microphone">
-    <%= image_tag('mic.gif', alt: 'Start', id: 'status_img') %>
-  </button>
-  <div id="results">
-    <div style="margin-left: 30px; margin-top: 15px"id="status"></div>
-    <span style="margin-left: 30px" id="final_span"></span>
-    <span style="margin-left: 30px" id="interim_span"></span>
+  <!-- Speech Input-->
+  <div id="speech-input">
+    <div id="results">
+      <div id="status"></div>
+      <span id="final_span"></span>
+      <span id="interim_span"></span>
+    </div>
+    <button id="microphone">
+      <%= image_tag('mic.gif', alt: 'Start', id: 'status_img') %>
+    </button>
   </div>
-</div>
 
 
   <div id="word-chart">

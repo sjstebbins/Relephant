@@ -73,7 +73,6 @@ var WordListView = Backbone.View.extend({
     }
     $("#chart-to-hide").slideUp();
     $('#relephant-placeholder').fadeIn();
-    $('#status_img').click(); //auto start the microphone
     this.render();
     this.initializeLiveAlchemy();
   },

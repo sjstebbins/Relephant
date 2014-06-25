@@ -1,20 +1,24 @@
+// Necessary to communicate with webspeech library
+var reco = new WebSpeechRecognition();
+
 var RephantoRouter = Backbone.Router.extend({
   routes: {
-    "":"show"
+    "":"live",
+    "history":"history"
   },
   initialize: function(){
     this.collection = new WordCollection();
+    this.speechInputView = new SpeechInputView({ collection: this.collection });
   },
   start: function(){
     Backbone.history.start();
   },
-  show: function(){
-    this.collection.fetch({
-      success: function(){
-        this.speechInputView = new SpeechInputView({ collection: this.collection });
-        this.wordListView = new WordListView({ collection: this.collection });
-      }.bind(this)
-    });
+  live: function(){
+    reco.start();
+  },
+  history: function(){
+    reco.stop();
+    this.wordListView = new WordListView({ collection: this.collection });
   }
 });
 

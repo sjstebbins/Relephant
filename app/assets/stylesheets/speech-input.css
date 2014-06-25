@@ -1,0 +1,32 @@
+#speech-input {
+  width: 100%;
+}
+
+#microphone {
+  position: fixed;
+  z-index: 1000;
+  background: white;
+  border-radius: 100%;
+  padding: 25px;
+  box-shadow: 5px 5px 5px rgba(68,68,68,0.3);
+  margin-top: -40px;
+}
+
+#microphone:focus {
+  outline: none;
+}
+
+#results {
+  color: rgba(0,0,0,.2);
+  font-family: "Lucida Grande";
+  box-shadow: 0px 0px 5px rgba(68,68,68,0.3);
+  font-size: 14px;
+  font-weight: bold;
+  border-bottom:1px solid #ddd;
+  text-align: left;
+  vertical-align: text-top;
+  min-height: 50px;
+  display: inline-block;
+  width: 45%;
+  overflow: hidden;
+}

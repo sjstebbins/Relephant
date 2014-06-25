@@ -1,15 +1,15 @@
-// Global namespace pollution?
-var reco = new WebSpeechRecognition();
-
 var SpeechInputView = Backbone.View.extend({
   el: '#speech-input',
+
   events: {
     'click button#microphone':'microphoneButton'
   },
-  initialize: function(){
+
+  initialize: function(options){
+    this.options = options || {};
     this.wordStorage = [];
 
-    //setup webspeech and custom listeners
+    //setup webspeech and webspeech listeners
     reco.statusText('status');
     reco.statusImage('status_img');
     reco.finalResults('final_span');
@@ -35,10 +35,13 @@ var SpeechInputView = Backbone.View.extend({
 
     //begin listening every for word additions
     this.listenForWords();
+    this.checkLiveMode();
   },
+
   microphoneButton: function(){
     reco.toggleStartStop();
   },
+
   listenForWords: function(){
     var interval = setInterval(function(){
       // add period to last word in block of words for alchemy recognition purposes
@@ -51,5 +54,11 @@ var SpeechInputView = Backbone.View.extend({
       }
       this.wordStorage = [];
     }.bind(this), 2000);
+  },
+
+  checkLiveMode: function(){
+    if (this.options.liveMode) {
+      // this.microphoneButton();
+    }
   }
 });

@@ -16,16 +16,16 @@
 
 function ready(){
   // Loader
-  $(".loader").fadeOut(3000);
+  // $(".loader").fadeOut(3000);
   //Hide Treemap
   $('#treemap').hide();
 
 
   // Search
-  $('#search').fadeIn(5000);
-  $('#search').animate({"margin-top": "-90px"}, 5000);
-  $('#results').fadeIn(5000);
-  $('#results').animate({"margin-top": "70px"}, 5000);
+  // $('#search').fadeIn(2000);
+  // $('#search').animate({"margin-top": "-90px"}, 2000);
+  // $('#results').fadeIn(2000);
+  // $('#results').animate({"margin-top": "70px"}, 2000);
   // $('#search-input').keypress(function(e){
         // if (e.which === 13 || e.which === 27) {//Enter key pressed
             // $('#word-search').click();//Trigger search button click event
@@ -36,10 +36,10 @@ function ready(){
 
 
     // Set Time
-    $('#datetimebutton').on('click', function(){
-      $(".loader").show();
-      $(".loader").fadeOut(3000);
-    });
+    // $('#datetimebutton').on('click', function(){
+    //   $(".loader").show();
+    //   $(".loader").fadeOut(3000);
+    // });
 
   // Transcript
   $('#transcript-box').hide();
@@ -78,12 +78,10 @@ function ready(){
     if (currentoffset > 30) {
       // Nav and mic animation
 
-      $("#navbar").animate({height: '65px'}, 3000);
       $("#navbar").css('background-color', 'rgba(255,255,255,1)');
       $('#search').css('box-shadow', '0px 0px 5px 5px rgba(68,68,68,0.2)');
 
     } else {
-      $("#navbar").animate({height: '80px'}, 3000);
       $("#navbar").css('background-color', 'white');
       $('#search').removeAttr('box-shadow');
 
