@@ -56,6 +56,22 @@ function ready(){
     }
   });
 
+  // Entity Nav Click
+    $('#entity-nav-image').on('click', function(){
+      $('#entity-nav-image').toggleClass('entity-nav-click');
+      $('.google-image-view').slideToggle();
+    });
+    $('#entity-nav-google').on('click', function(){
+      $('#entity-nav-google').toggleClass('entity-nav-click');
+      $('.google-results-view').slideToggle();
+    });
+    $('#entity-nav-map').on('click', function(){
+      $('#entity-nav-map').toggleClass('entity-nav-click');
+      $('.google-maps-view').slideToggle();
+    });
+
+
+
   $(window).scroll(function(){
     currentoffset = $(this).scrollTop();
     var navHeight = $("#navbar").height();
