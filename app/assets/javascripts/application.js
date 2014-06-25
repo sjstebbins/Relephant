@@ -53,6 +53,10 @@ function ready(){
       }, '500');
     }
   });
+  //Entity close
+  $('.entity-close').on('click', function(){
+        $(this).parent().remove();
+  });
 
   // Entity Nav Click
     $('#entity-nav-image').on('click', function(){

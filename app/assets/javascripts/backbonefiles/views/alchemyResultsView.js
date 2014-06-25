@@ -50,6 +50,7 @@ var alchemyResultsView = Backbone.View.extend({
         }
       }).bind('treemapclick', this.mouseclickhandler);
       if (this.options.liveMode) {
+        $('#entity-nav').show();
         $('#entity-results').empty();
         //entities are sorted by relevance, display top 3 entities
         for (var i = 0; i < 3; i++) {

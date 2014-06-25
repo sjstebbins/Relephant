@@ -4,7 +4,7 @@ var EntityItemView = Backbone.View.extend({
   initialize: function(options){
     this.options = options || {};
     var entity = (this.options.query).split('+').join(' ');
-    this.$el.append('<h3 class="entity-title">'+ entity + '</h3>');
+    this.$el.append('<h3 class="entity-title">'+ entity + '</h3><h5 class="entity-close">X</h5>');
     googleImagesBox = new GoogleImagesView({query: this.options.query, liveMode: this.options.liveMode});
     googleResultBox = new GoogleResultsView({query: this.options.query, liveMode: this.options.liveMode});
     var specialBox = this.specialBox();
