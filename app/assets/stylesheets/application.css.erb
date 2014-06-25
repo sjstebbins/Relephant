@@ -162,7 +162,7 @@ li{
 
 #transcript{
   margin: 10px;
-  margin-left: 5%;
+  margin-left: 10%;
   border-radius: 5px;
   background: white;
    font-family: "Lucida Grande";
@@ -180,7 +180,7 @@ li{
   border: 1px solid #ddd;
   padding: 10px;
   border-radius: 10px;
-  margin-left: 30px;
+  margin-left: 5%;
   width: 90%
 }
 .search-term {
@@ -374,13 +374,43 @@ li{
   text-align: center;
   width: 50%;
 }
-#entity-nav{
-  text-align: center
+.entity-nav-rel{
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  text-align: center;
+  height:60px;
+  width: 85%;
+  margin-top: 20px;
+  margin-left: 7%;
+  padding: 20px;
+  box-shadow: 0px 0px 5px 5px rgba(68,68,68,0.2);
+  border-radius: 5px
+}
+.entity-nav-fix{
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  position: fixed;
+  background: white;
+  width: 50%;
+  margin-left: 0px;
+  top: 50px;
+  border-radius: none;
+  text-align: left
+}
+#entity-nav ul{
+  list-style-type: none;
 }
 #entity-nav ul li{
-  color: 'light-blue';
+  display: inline;
+  margin: 15px
+}
+.entity-nav-unclick{
+color: rgba(50,120,255,.8);
 }
 .entity-nav-click{
-  color: rgba(0,0,0,.3);
+  color: rgba(0,0,0,.4);
 }
-

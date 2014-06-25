@@ -19,20 +19,18 @@ function ready(){
   $(".loader").fadeOut(3000);
   //Hide Treemap
   $('#treemap').hide();
-
+  $('#entity-nav').hide();
 
   // Search
   $('#search').fadeIn(5000);
   $('#search').animate({"margin-top": "-90px"}, 5000);
   $('#results').fadeIn(5000);
   $('#results').animate({"margin-top": "70px"}, 5000);
-  // $('#search-input').keypress(function(e){
-        // if (e.which === 13 || e.which === 27) {//Enter key pressed
-            // $('#word-search').click();//Trigger search button click event
-            // $('#search').animate({"margin-top": "-180px"}, 1000);
-            // $('#search').fadeOut();
-          // }
-        // });
+  $('#search-input').keypress(function(e){
+        if (e.which === 13 || e.which === 27) {//Enter key pressed
+            $('#word-search').click();//Trigger search button click event
+          }
+        });
 
 
     // Set Time
@@ -51,7 +49,7 @@ function ready(){
     var top = body.scrollTop();
     if (top !== 0) {
       body.animate({
-        scrollTop: 100
+        scrollTop: 50
       }, '500');
     }
   });
@@ -59,15 +57,19 @@ function ready(){
   // Entity Nav Click
     $('#entity-nav-image').on('click', function(){
       $('#entity-nav-image').toggleClass('entity-nav-click');
-      $('.google-image-view').slideToggle();
+      $('.google-images-view').fadeToggle();
     });
     $('#entity-nav-google').on('click', function(){
       $('#entity-nav-google').toggleClass('entity-nav-click');
-      $('.google-results-view').slideToggle();
+      $('.google-results-view').fadeToggle();
     });
     $('#entity-nav-map').on('click', function(){
       $('#entity-nav-map').toggleClass('entity-nav-click');
-      $('.google-maps-view').slideToggle();
+      $('.google-maps-view').fadeToggle();
+    });
+    $('#entity-nav-company').on('click', function(){
+      $('#entity-nav-company').toggleClass('entity-nav-click');
+      $('.crunchbase-view').fadeToggle();
     });
 
 
@@ -94,6 +96,16 @@ function ready(){
         $("#scroller").fadeIn();
       } else {
         $('#scroller').fadeOut();
+      }
+
+
+      // Entity Nav fixed
+      var bottom = $('#treemap').position().top+$('#treemap').outerHeight(true);
+      if (currentoffset > (bottom - 50) ) {
+        $('#entity-nav').addClass('entity-nav-fix');
+
+      } else {
+        $('#entity-nav').removeClass('entity-nav-fix');
       }
 
   });

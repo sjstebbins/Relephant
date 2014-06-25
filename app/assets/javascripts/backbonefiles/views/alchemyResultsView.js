@@ -2,7 +2,7 @@ var alchemyResultsView = Backbone.View.extend({
   el: '#alchemy-results-view',
 
   events: {
-    'click#treemap-button': 'hideTranscript'
+    'click#treemap-button': 'hideTreemap'
   },
 
   initialize: function(options){
@@ -79,10 +79,14 @@ var alchemyResultsView = Backbone.View.extend({
     var type = ids[0].split(' - ')[1].toLowerCase();
     var query = entity.toLowerCase().split(" ").join("+");
     var entityItem = new EntityItemView({type: type, query: query});
+    $('#entity-nav').show();
     $('#entity-results').append(entityItem.$el);
+    $('html, body').animate({
+          scrollTop: $(entityItem.$el).offset().top - 80
+        }, 400);
   },
 
-  hideTranscript: function(){
+  hideTreemap: function(){
   if ($('#treemap-button').text() == "Show Treemap") {
         $('#treemap-button').text("Hide Treemap");
         $('#treemap').slideDown();
