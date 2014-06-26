@@ -30,7 +30,7 @@
 
         <% if user_signed_in? %>
            <li id="history"><a href="#history">History</a></li>
-           <li id="live-mode"><a href = "/#">Live</a></li>
+           <li id="live-mode"><a href = "#">Live</a></li>
            <li id="tooltip"><a>Guide</a></li>
            <li><%= image_tag(current_user.image, id: "profile-photo") %></li>
           <li><%= link_to 'Sign out', destroy_user_session_path, method: :delete %></li>

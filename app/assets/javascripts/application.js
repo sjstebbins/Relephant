@@ -70,21 +70,15 @@ function ready(){
       $('.google-maps-view').slideToggle();
     });
 
-
-
   $(window).scroll(function(){
     currentoffset = $(this).scrollTop();
     var navHeight = $("#navbar").height();
     if (currentoffset > 30) {
       // Nav and mic animation
-
       $("#navbar").css('background-color', 'rgba(255,255,255,1)');
-      $('#search').css('box-shadow', '0px 0px 5px 5px rgba(68,68,68,0.2)');
-
     } else {
       $("#navbar").css('background-color', 'white');
       $('#search').removeAttr('box-shadow');
-
     }
 
       // Scroller

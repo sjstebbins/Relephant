@@ -1,26 +1,28 @@
 var graph;
 
 var WordListView = Backbone.View.extend({
-  el: '#main-container',
+  el: '#history-mode',
 
   events: {
-    'click button#word-search': 'wordSearch',
     'click button#datetimebutton': 'resetTime',
+    'click button#word-search': 'wordSearch',
+    'click button#transcript': 'generateTranscript',
     'click button#alchemy': 'renderAlchemyResults',
     'click div.treemap-node': 'googleResults',
-    'click button#transcript': 'generateTranscript',
-    'click #live-mode': "startLiveChart",
-    'click #tooltip': 'startGuide',
-    'click #history': 'resetTime',
   },
 
   initialize: function(){
+    this.template = _.template($('#word-chart-template').html());
+    this.$el.html(this.template);
     this.viewInitializer();
-    this.startLiveChart();
   },
 
   //need a custom initializer to differentiate initial page view vs resetting time
   viewInitializer: function(){
+
+    // setup bootstrap datetimepicker
+    $('#datetimepicker1').datetimepicker();
+
     // set up listeners
     this.listenTo(this.collection, 'add', this.addToTempStorage);
 
@@ -28,8 +30,6 @@ var WordListView = Backbone.View.extend({
     this.DEFAULTHOURSPAST = 1;
     this.SMOOTHING = 1.001;
     this.tempWordStorage = [];
-    this.previousAlchemyQuery;
-    this.currentAlchemyInterval;
 
     // clear any existing graph and fetch updated collection
     this.$('#chart_container').remove();
@@ -52,44 +52,6 @@ var WordListView = Backbone.View.extend({
     graph.render();
     this.setSlider();
     this.setTickInterval();
-  },
-
-  startGuide: function(){
-    runJoyride();
-  },
-
-  startLiveChart: function(){
-    // a custom 'intialize' function with specific parameters for time range and tick interval
-    clearInterval(this.currentInterval);
-    this.cleanDisplay();
-    this.collection.fetch();
-    this.startDate = new Date().getTime() - 1*60*1000;
-    this.endDate = new Date().getTime();
-    this.xIntervalSeconds = 0.1;
-    this.graphObjectArray = this.queryDBforGraphData(this.xIntervalSeconds);
-    this.$('#chart-to-hide').hide();
-    if ($('#relephant-placeholder').length === 0) {
-      $("<div id='relephant-placeholder'><h3>Speak</h3></div>").insertAfter(this.$('#chart-to-hide'));
-    }
-    $("#chart-to-hide").slideUp();
-    $('#relephant-placeholder').fadeIn();
-    this.render();
-    this.initializeLiveAlchemy();
-  },
-
-  cleanDisplay: function(){
-    this.$('#chart_container').remove();
-    $('#RelephantError').remove();
-    $("<div id=chart_container></div>").insertBefore('#slider-range');
-    $('#treemap').empty();
-    $('#entity-results').empty();
-  },
-
-  initializeLiveAlchemy: function(){
-    clearInterval(this.currentAlchemyInterval);
-    this.currentAlchemyInterval = setInterval(function(){
-      this.renderAlchemyResults(true);
-    }.bind(this), 5000);
   },
 
   setIntervalSeconds: function(range){ //takes graph range in seconds
@@ -128,7 +90,6 @@ var WordListView = Backbone.View.extend({
        $('#transcript-box').slideUp();
      }
 
-
     // "<div id='email'><a href='mailto:" + user_name +"@? subject= Transcript from " + prettyDateTime(new Date(leftSliderDateTime*1000)) + " to " + prettyDateTime(new Date(rightSliderDateTime*1000)) + "&body=" + transcript + "'><i class='fa fa-paper-plane'></i></a></div>"
     $('html, body').animate({
         scrollTop: $('#transcript-box').offset().top - 80
@@ -148,10 +109,7 @@ var WordListView = Backbone.View.extend({
   resetTime: function(){
     this.startDate = this.setStartDate();
     clearInterval(this.currentInterval);
-    clearInterval(this.currentAlchemyInterval);
     this.viewInitializer();
-    $("#chart-to-hide").slideDown();
-    $('#relephant-placeholder').slideUp();
   },
 
   getLineDataArray: function(graphDataObject) {
@@ -165,54 +123,52 @@ var WordListView = Backbone.View.extend({
   wordSearch: function(){
     var scatterDataArray = [{x: this.startDate/1000, y: 0}];
     var query = $('#search-input').val();
-    var leftSliderDateTime = this.sliderDateTimes()[0];
-    var rightSliderDateTime = this.sliderDateTimes()[1];
-    _.each(this.graphObjectArray, function(dataPoint, index){
-      if (dataPoint['y'].length > 0) {
-        _.each(dataPoint['y'], function(wordModel, index, list){
-          if (wordModel.get('letters').toLowerCase() === query.toLowerCase()) {
-            if (dataPoint['x'] > leftSliderDateTime && dataPoint['x'] < rightSliderDateTime) {
-              scatterDataArray.push({ x: dataPoint['x'], y: list.length });
+    if (query !== '') {
+      var leftSliderDateTime = this.sliderDateTimes()[0];
+      var rightSliderDateTime = this.sliderDateTimes()[1];
+      _.each(this.graphObjectArray, function(dataPoint, index){
+        if (dataPoint['y'].length > 0) {
+          _.each(dataPoint['y'], function(wordModel, index, list){
+            if (wordModel.get('letters').toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+              if (dataPoint['x'] > leftSliderDateTime && dataPoint['x'] < rightSliderDateTime) {
+                scatterDataArray.push({ x: dataPoint['x'], y: list.length });
+              }
             }
-          }
-        }.bind(this));
-      }
-    }.bind(this));
-    var r = Math.floor(Math.random() * 150);
-    var g = Math.floor(Math.random() * 150);
-    var b = Math.floor(Math.random() * 150);
-    var color = 'rgb(' + r + ',' + g + ',' + b + ')';
-    var count = scatterDataArray.length - 1;
-    graph.series.push({ data: scatterDataArray, renderer: 'scatterplot', color: color });
-    $('#legend').append("<div class='search-term' style='background: " + color + ";'><span class='search-count'>(" + count + ")</span> " + query + "</div>");
-    graph.render();
-    $('html, body').animate({
-      scrollTop: $('body').offset().top + 100
-    }, 400);
+          }.bind(this));
+        }
+      }.bind(this));
+      var r = Math.floor(Math.random() * 200);
+      var g = Math.floor(Math.random() * 200);
+      var b = Math.floor(Math.random() * 255);
+      var color = 'rgb(' + r + ',' + g + ',' + b + ')';
+      var count = scatterDataArray.length - 1;
+      graph.series.push({ data: scatterDataArray, renderer: 'scatterplot', color: color });
+      $('#legend').append("<div class='search-term' style='background: " + color + ";'><span class='search-count'>(" + count + ")</span> " + query + "</div>");
+      graph.render();
+      $('html, body').animate({
+        scrollTop: $('body').offset().top + 150
+      }, 400);
+    }
   },
 
-  renderAlchemyResults: function(boolOrEvent){
-    // remove relephant picture placeholder
-    var liveMode = boolOrEvent === true ? true : false; // comes in as event if button was clicked
+  renderAlchemyResults: function(){
     leftSliderDateTime = this.sliderDateTimes()[0];
     rightSliderDateTime = this.sliderDateTimes()[1];
     var stringToQuery = this.collection.wordString(leftSliderDateTime, rightSliderDateTime);
     if (stringToQuery === '') {
-      if ($('#relephant-placeholder').size() === 0) {
-        var errorContent = "No words detected. If you're in History Mode, you may need to adjust your view.";
-        displayRelephantError(errorContent);
-      }
+      this.displayNoWordsError();
+      $('html, body').animate({
+        scrollTop: $('#alchemy-results-view').offset().top + 100
+      }, 400);
     } else {
-      if ($('#relephant-placeholder').size() > 0) {
-        $('#relephant-placeholder').remove();
-      }
-      // to avoid querying same string in alchemy
-      if (this.previousAlchemyQuery !== stringToQuery) {
-        this.$('#alchemy-results-view').empty();
-        this.previousAlchemyQuery = stringToQuery;
-        new alchemyResultsView({stringToQuery: stringToQuery, liveMode: liveMode});
-      }
+      $('#alchemy-results-view').empty();
+      new AlchemyResultsView({stringToQuery: stringToQuery, liveMode: false});
     }
+  },
+
+  displayNoWordsError: function(){
+    $('#alchemy-results-view').empty();
+    this.$el.append('<div id="RelephantError">No words detected, please adjust your view</div>');
   },
 
   setTickInterval: function(){
@@ -238,8 +194,6 @@ var WordListView = Backbone.View.extend({
   },
 
   setStartDate: function(){
-    $('.form-control').css("border-color", "#ddd");
-    $('#tick-interval').parent().find('p').remove();
     var selectedDate = $('.form-control').val();
     if (selectedDate === "") {
       return new Date().getTime() - (this.DEFAULTHOURSPAST*60*60*1000);
@@ -247,7 +201,6 @@ var WordListView = Backbone.View.extend({
       var startDate = new Date(selectedDate).getTime();
       if (startDate > new Date().getTime()) {
         $('.form-control').css("border-color", "red");
-        $('#tick-interval').parent().append("<p>Time cannot be in the future</p>");
         startDate = new Date().getTime() - (this.DEFAULTHOURSPAST*60*60*1000);
       }
       return startDate;
@@ -260,7 +213,7 @@ var WordListView = Backbone.View.extend({
     graph = new Rickshaw.Graph({
       element: document.querySelector("#chart"),
       renderer: 'multi',
-      width: 1100,
+      width: window.innerWidth - 150,
       height: 400,
       series: [
       {
@@ -269,6 +222,15 @@ var WordListView = Backbone.View.extend({
         color: 'steelblue'
       }
       ]
+    });
+
+    // make width responsive
+    $(window).on('resize', function(){
+      graph.configure({
+        width: window.innerWidth - 150,
+      });
+      graph.render();
+      $('#slider-range').width(window.innerWidth - 150);
     });
 
     var x_axis = new Rickshaw.Graph.Axis.Time({
@@ -318,4 +280,8 @@ var WordListView = Backbone.View.extend({
     });
   },
 
+  close: function(){
+    clearInterval(this.currentInterval);
+    this.$el.empty();
+  }
 });

@@ -16,12 +16,8 @@ var rephantoRouter;
 function backboneReady(){
   rephantoRouter = new RephantoRouter();
   rephantoRouter.start();
-  setDate();
   runJoyride();
-}
-
-function setDate() {
-  $('#datetimepicker1').datetimepicker();
+  initializeToolTip();
 }
 
 function prettyDateTime(dateTime) {
@@ -37,9 +33,10 @@ function runJoyride() {
   });
 }
 
-function displayRelephantError(content) {
-  $('#RelephantError').remove();
-  $('#alchemy-results-view').append('<div id="RelephantError">' + content + '</div>');
+function initializeToolTip() {
+  $('#tooltip a').click(function(){
+    runJoyride();
+  });
 }
 
 $(document).ready(backboneReady);

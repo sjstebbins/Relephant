@@ -1,18 +1,12 @@
-var alchemyResultsView = Backbone.View.extend({
+var AlchemyResultsView = Backbone.View.extend({
   el: '#alchemy-results-view',
 
   events: {
-    'click#treemap-button': 'hideTranscript'
   },
 
   initialize: function(options){
-    // set passed in options
     this.options = options || {};
-
-    // query API for relevant concepts if there is a string to query
-    if (this.options.stringToQuery !== '') {
-      this.queryAlchemy(this.options.stringToQuery);
-    }
+    this.queryAlchemy(this.options.stringToQuery);
   },
 
   queryAlchemy: function(stringToQuery){
@@ -66,9 +60,12 @@ var alchemyResultsView = Backbone.View.extend({
           scrollTop: $('#treemap').offset().top - 80
         }, 400);
       }
+      $(window).on('resize', function(){
+        $('canvas').width(window.innerWidth - 100);
+      });
+      $('#entity-nav').show();
     } else {
-      var errorContent = "No concepts found";
-      displayRelephantError(errorContent);
+      this.displayNoEntitiesError();
     }
   },
 
@@ -79,7 +76,10 @@ var alchemyResultsView = Backbone.View.extend({
     var type = ids[0].split(' - ')[1].toLowerCase();
     var query = entity.toLowerCase().split(" ").join("+");
     var entityItem = new EntityItemView({type: type, query: query});
-    $('#entity-results').append(entityItem.$el);
+    $('#entity-results').prepend(entityItem.$el);
+    $('html, body').animate({
+      scrollTop: $('#entity-results').offset().top - 80
+    });
   },
 
   hideTranscript: function(){
@@ -90,5 +90,10 @@ var alchemyResultsView = Backbone.View.extend({
        $('#treemap-button').text("Show Treemap");
        $('#treemap').slideUp();
      }
+  },
+
+  displayNoEntitiesError: function(){
+    $('#RelephantError').remove();
+    this.$el.append('<div id="RelephantError">No entities were detected</div>');
   }
 });

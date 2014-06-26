@@ -8,17 +8,31 @@ var RephantoRouter = Backbone.Router.extend({
   },
   initialize: function(){
     this.collection = new WordCollection();
-    this.speechInputView = new SpeechInputView({ collection: this.collection });
   },
   start: function(){
     Backbone.history.start();
   },
   live: function(){
-    reco.start();
+    // remove history view if present
+    if (this.speechInputView !== undefined) { this.speechInputView.close(); }
+    if (this.wordListView !== undefined) { this.wordListView.close(); }
+    $('#alchemy-results-view').empty();
+    $('#entity-results').empty();
+
+    this.speechInputView = new SpeechInputView({ collection: this.collection, liveMode: true });
   },
   history: function(){
+    // remove live view if present
+    if (this.speechInputView !== undefined) { this.speechInputView.close(); }
+    $('#alchemy-results-view').empty();
+    $('#entity-results').empty();
+
     reco.stop();
-    this.wordListView = new WordListView({ collection: this.collection });
+    this.speechInputView = new SpeechInputView({ collection: this.collection, liveMode: false });
+    this.collection.fetch({
+      success: function(){
+      this.wordListView = new WordListView({ collection: this.collection });
+    }.bind(this)});
   }
 });
 

@@ -7,9 +7,16 @@ var SpeechInputView = Backbone.View.extend({
 
   initialize: function(options){
     this.options = options || {};
-    this.wordStorage = [];
 
-    //setup webspeech and webspeech listeners
+    // reset
+    $('#microphone').nextAll().remove();
+
+    // setup dummy/placeholder vars
+    this.tempWordStorage = [];
+    this.prevAlchemyWordString = '';
+    this.curAlchemyWordString = '';
+
+    // setup webspeech and webspeech listeners
     reco.statusText('status');
     reco.statusImage('status_img');
     reco.finalResults('final_span');
@@ -23,19 +30,28 @@ var SpeechInputView = Backbone.View.extend({
       for (var i = event.resultIndex; i < event.results.length; ++i) {
         if (event.results[i].isFinal) {
           var indivWords = event.results[i][0].transcript.trim().split(" ");
+        // add period to last word in block of words for alchemy recognition purposes
+          indivWords[indivWords.length - 1] += ".";
           _.each(indivWords, function(word, index){
-            this.wordStorage.push(word);
+            this.tempWordStorage.push(word);
+            this.curAlchemyWordString += (word + " ");
           }.bind(this));
         } else {
           interim_transcript += event.results[i][0].transcript;
         }
-        }
+      }
       document.getElementById('interim_span').innerHTML = interim_transcript;
     }.bind(this);
 
-    //begin listening every for word additions
+    // begin listening every for word additions
     this.listenForWords();
-    this.checkLiveMode();
+
+    // if live mode, render alchemy results on an interval
+    if (this.options.liveMode) {
+      this.setPlaceHolder();
+      this.setQueryInterval();
+      reco.toggleStartStop();
+    }
   },
 
   microphoneButton: function(){
@@ -43,22 +59,43 @@ var SpeechInputView = Backbone.View.extend({
   },
 
   listenForWords: function(){
-    var interval = setInterval(function(){
-      // add period to last word in block of words for alchemy recognition purposes
-      if (this.wordStorage.length > 0) {
-        this.wordStorage[this.wordStorage.length - 1] += ".";
+    var currentListenInterval = setInterval(function(){
+      if (this.tempWordStorage.length > 0) {
+        for (var i = 0; i < this.tempWordStorage.length; i++) {
+          var newWord = {letters: this.tempWordStorage[i]};
+          this.collection.create(newWord);
+        }
+      this.tempWordStorage = [];
       }
-      for (var i = 0; i < this.wordStorage.length; i++) {
-        var newWord = {letters: this.wordStorage[i]};
-        this.collection.create(newWord);
-      }
-      this.wordStorage = [];
     }.bind(this), 2000);
   },
 
-  checkLiveMode: function(){
-    if (this.options.liveMode) {
-      // this.microphoneButton();
-    }
+  setQueryInterval: function(){
+    clearInterval(this.currentQueryInterval);
+    this.currentQueryInterval = setInterval(function(){
+      if (this.curAlchemyWordString !== '' && this.prevAlchemyWordString !== this.curAlchemyWordString) {
+        $('#placeholder').remove();
+        this.prevAlchemyWordString = this.curAlchemyWordString;
+        this.renderAlchemyView(this.curAlchemyWordString);
+      }
+    }.bind(this), 5000);
+  },
+
+  displayNoSpeechError: function(){
+    $('#RelephantError').remove();
+    this.$el.append('<div id="RelephantError">No words detected, please continue speaking</div>');
+  },
+
+  renderAlchemyView: function(){
+    new AlchemyResultsView({stringToQuery: this.curAlchemyWordString, liveMode: true});
+  },
+
+  setPlaceHolder: function(){
+    this.$el.append('<div id="placeholder"><h3>Please continue speaking</h3></div>');
+  },
+
+  close: function(){
+    clearInterval(this.currentQueryInterval);
+    clearInterval(this.currentListenInterval);
   }
 });

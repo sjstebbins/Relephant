@@ -65,10 +65,9 @@ li{
 }
 
 #treemap{
-  margin-top: 20px;
-  margin-left: 7%;
-  width: 80%;
+  text-align: center;
 }
+
 .treemap-node {
   box-sizing: border-box;
   border: 1px solid #fff;
@@ -77,6 +76,7 @@ li{
   color: #fff;
   text-shadow: 1px 1px #333;
 }
+
 .treemap-legend {
   width: 500px;
   padding: 0 1em;
@@ -125,10 +125,12 @@ li{
   position:  fixed;
   margin-left: 30px;
 }
+
 #scroller-icon{
   font-size: 35px;
   color: rgba(0,0,0,.3);
 }
+
 #scroller{
   position: fixed;
   right: 0px;
@@ -137,27 +139,55 @@ li{
   z-index: 10000;
 }
 
-#alchemy{
-  margin: 10px;
-  border-radius: 5px;
-  background: white;
-   font-family: "Lucida Grande";
-}
 #datetimebutton{
   margin: 10px;
   margin-left: 10px;
   border-radius: 5px;
   background: white;
-   font-family: "Lucida Grande";
+  font-family: "Lucida Grande";
+}
+
+#transcript-box {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  display: none;
+  margin: 20px auto;
+  padding: 20px;
+  position: relative;
+  width: 90%
+}
+
+#email{
+  font-size: 18px;
+  right: 5px;
+  position: absolute;
+  top: 5px;
+}
+
+#extra-menu {
+  text-align: center;
+}
+
+#extra-menu>button {
+  margin: 10px 20px;
 }
 
 #transcript{
-  margin: 10px;
-  margin-left: 5%;
   border-radius: 5px;
   background: white;
-   font-family: "Lucida Grande";
+  font-family: "Lucida Grande";
 }
+
+#alchemy-results-view {
+  padding-top: 20px;
+}
+
+#alchemy{
+  border-radius: 5px;
+  background: white;
+ font-family: "Lucida Grande";
+}
+
 #live{
   background: "red";
   margin: 10px;
@@ -165,14 +195,6 @@ li{
   border-radius: 5px;
   background: white;
   font-family: "Lucida Grande";
-}
-#transcript-box{
-  margin: 20px;
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 10px;
-  margin-left: 30px;
-  width: 90%
 }
 .search-term {
   display: inline-block;
@@ -193,50 +215,37 @@ li{
 .close :hover{
   color: "red";
 }
-#search-icon{
-  font-size: 20px;
-  color: rgba(0,0,0,.3);
-  position: fixed;
-  margin-left:60%;
-  margin-top: -70px;
-}
-#search{
-  margin-left:55%;
+#search {
   background: rgba(255,255,255,1);
-  width: 60%;
-  margin-top: -175px;
-  position:fixed;
-  box-shadow: 0px 0px 5px 5px rgba(68,68,68,0.2);
-  z-index: 100
+  box-shadow: 1px 0px 1px 1px rgba(68,68,68,0.2);
+  float: right;
+  height: 55px;
+  margin-top: -75px;
+  width: 30%;
+  z-index: 100;
 }
+
+#search-input{
+  background: rgba(255,255,255,1);
+  border: none;
+  color: rgba(0,0,0,.5);
+  font-family: "Lucida Grande";
+  height: 50px;
+  padding: 5px;
+  width: 60%;
+}
+
 #word-search{
-  margin: 2px;
-  width:50px;
-  margin:15px;
   background: white;
   border: 1px solid #ddd;
-  position: absolute;
   border-radius: 90px;
+  width: 32px;
 }
-#word-search :hover{
-  background: 'red'
-}
-#search-input{
-  border: none;
-  margin-left: 40px;
-  color: rgba(0,0,0,.5);
-  width: 55%;
-  height: 60px;
-  background: rgba(255,255,255,1);
-  font-family: "Lucida Grande";
-}
-#extra-menu{
-  margin: 30%;
-  display: inline;
-}
+
 #legend{
   margin-left: 30px
 }
+
 #devise{
   margin-left: 100px;
   margin-top: 100px;
@@ -253,17 +262,6 @@ li{
   opacity: .7;
 }
 
-#email{
-  margin: 20px;
-  padding: 10px;
-  position: absolute;
-  font-size: 18px;
-  margin-left: 80%;
-  color: black;
-  text-decoration: none;
-  margin-top: -45px
-}
-
 #entity-results {
   text-align: center;
 }
@@ -277,6 +275,7 @@ li{
   width: 29%;
   min-width: 320px;
 }
+
 .entity-item-view{
   background: rgba(0,0,0,.025);
   margin: 15px auto 0 auto;
@@ -365,12 +364,27 @@ li{
   text-align: center;
   width: 50%;
 }
+
 #entity-nav{
+  display: none;
   text-align: center
 }
-#entity-nav ul li{
-  color: 'light-blue';
+
+#entity-nav {
+  list-style: none;
 }
+
+#entity-nav ul li{
+  display: inline;
+  margin: 0 20px;
+}
+
 .entity-nav-click{
   color: rgba(0,0,0,.3);
+}
+
+@media only screen and (max-width: 480px) {
+  #scroller {
+    visibility: hidden;
+  }
 }

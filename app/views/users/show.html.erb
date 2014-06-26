@@ -13,82 +13,85 @@
     </button>
   </div>
 
+  <div id="history-mode"></div>
 
-  <div id="word-chart">
-    <div id="chart-to-hide">
-      <!-- Search Input-->
-      <br>
-      <div id="search">
-        <input type="text" placeholder="Search" id="search-input" >
-        <button id="word-search"><i class="fa fa-search"></i></button>
-      </div>
+  <script type="text/template" id="word-chart-template">
+    <div id="word-chart">
+      <div id="chart-to-hide">
+        <!-- Search Input-->
+        <br>
+        <div id="search">
+          <input type="text" placeholder="Search" id="search-input" >
+          <button id="word-search"><i class="fa fa-search"></i></button>
+        </div>
 
 
-      <!--   Calendar -->
-      <div id="calendar" class="container">
-        <div class="row">
-          <div id="calendar-slider" class='col-sm-3'>
-            <div class="form-group">
-              <div class='input-group date' id='datetimepicker1'>
-                <input type='text' placeholder="Input Graph Start Date" class="form-control" />
-                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        <!--   Calendar -->
+        <div id="calendar" class="container">
+          <div class="row">
+            <div id="calendar-slider" class='col-sm-3'>
+              <div class="form-group">
+                <div class='input-group date' id='datetimepicker1'>
+                  <input type='text' placeholder="Input Graph Start Date" class="form-control" />
+                  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+                <p style="margin:10px">Update Interval: <span id="tick-interval"></span></p>
               </div>
-              <p style="margin:10px">Update Interval: <span id="tick-interval"></span></p>
             </div>
+            <button id="datetimebutton">Set Time</button>
           </div>
-          <button id="datetimebutton">Set Time</button>
+        </div>
+
+        <!-- Chart -->
+        <div id="chart_container"></div>
+
+        <!-- Sliders -->
+        <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" style=" margin-left: 40px; width: 900px;">
+          <div id ="range-slider"class="ui-slider-range ui-widget-header" style="left: 0%; width: 100%;"></div>
+          <a id="left-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%; border: 1px solid black;"></a>
+          <a id="right-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%; border: 1px solid black;"></a>
+        </div>
+
+        <!-- Legend -->
+        <div id="legend">
+          <h4 style="font-weight: bold;">DateTime: <span id="legend-datetime"></span></h4>
+          <h5>Spoken Words: <span id="legend-words">""</span></h5>
+          <ul id="queries"></ul>
+        </div>
+
+        <!-- Alchemy / Transcript buttons -->
+        <div id="extra-menu">
+          <button id="alchemy">Search Speech For Concepts</button>
+          <button id="transcript">Generate Transcript</button>
+        </div>
+
+        <!-- Transcript Box -->
+        <div class="col-m-3"id="transcript-box">
         </div>
       </div>
-
-      <!-- Chart -->
-      <div id="chart_container"></div>
-
-      <!-- Sliders -->
-      <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" style=" margin-left: 40px; width: 900px;">
-        <div id ="range-slider"class="ui-slider-range ui-widget-header" style="left: 0%; width: 100%;"></div>
-        <a id="left-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%; border: 1px solid black;"></a>
-        <a id="right-slider" class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%; border: 1px solid black;"></a>
-      </div>
-
-      <!-- Legend -->
-      <div id="legend">
-        <h4 style="font-weight: bold;">DateTime: <span id="legend-datetime"></span></h4>
-        <h5>Spoken Words: <span id="legend-words">""</span></h5>
-        <ul id="queries"></ul>
-      </div>
-
-      <!-- Alchemy / Transcript buttons -->
-      <div id="extra-menu">
-        <button id="alchemy">Search Speech For Concepts</button>
-        <button id="transcript">Generate Transcript</button>
-      </div>
-
-      <!-- Transcript Box -->
-      <div class="col-m-3"id="transcript-box">
-      </div>
-    </div>
+  </script>
     <!-- Alchemy Treemap Box -->
     <div id="alchemy-results-view">
       <!-- <button id="treemap-button">Show Treemap</button> -->
       <div id="treemap"></div>
     </div>
 
-   <!--  Entity results nav -->
-    <div id="entity-nav">
-      <ul>
-        <li id="entity-nav-image"><i class="fa fa-camera"></i> Images</li>
-        <li id="entity-nav-google"><i class="fa fa-google"></i> Google</li>
-        <li id="entity-nav-map"><i class="fa fa-map-marker"></i> Maps</li>
-        <li id="entity-nav-info"><i class="fa fa-info"></i> Info</li>
-        <li id="entity-nav-video"><i class="fa fa-video-camera"></i> Video</li>
-        <li id="entity-nav-ticket"><i class="fa fa-ticket"></i> Tickets</li>
-        <li id="entity-nav-facebook"><i class="fa fa-facebook-square"></i> Facebook</li>
-      </ul>
+      <!-- Entity Results Box -->
+      <div id="entity-results">
+        <!--  Entity results nav -->
+        <div id="entity-nav">
+          <ul>
+            <li id="entity-nav-image"><i class="fa fa-camera"></i> Images</li>
+            <li id="entity-nav-google"><i class="fa fa-google"></i> Google</li>
+            <li id="entity-nav-map"><i class="fa fa-map-marker"></i> Maps</li>
+            <li id="entity-nav-info"><i class="fa fa-info"></i> Info</li>
+            <li id="entity-nav-video"><i class="fa fa-video-camera"></i> Video</li>
+            <li id="entity-nav-ticket"><i class="fa fa-ticket"></i> Tickets</li>
+            <li id="entity-nav-facebook"><i class="fa fa-facebook-square"></i> Facebook</li>
+          </ul>
+        </div>
+      </div>
     </div>
-
-    <!-- Google Results Box -->
-    <div id="entity-results"></div>
-  </div>
 </div>
 
 <!-- Scroll to top button -->
@@ -97,10 +100,10 @@
 <!-- Tooltip Guide Content -->
 <ol id="joyRideTipContent" data-joyride>
   <li>Welcome to Relephant. Your persistent memory personal assistant. This guide will show you how to use the basic functionality of Relephant.</li>
-  <li data-id="live-mode">Use live mode to see the most relevant concepts of your conversation in real time as you're speaking. Just make sure the mic is on and recording.</li>
+  <li data-id="live-mode">Let's jump into live mode (if we're not there already), where the most relevant concepts of your conversation will appear below in real time as you're speaking. Just make sure the mic is on and recording. Give it a try and be sure to hit some major points like locations or celebrities.</li>
   <li data-id="history">Jump into history mode to look back at previously recorded convsersations. Go ahead, click "History" now!</li>
   <li data-id="datetimebutton">Choose a date and time and click "Set Time" to see everything recorded from then until now.</li>
   <li data-id="search-input">Use the search box to find a particular word you've said.</li>
-  <li data-id="left-slider">The sliders allow you to zoom into the graph, so you can hone in on small sections of conversations.</li>
+  <li data-id="left-slider">The sliders allow you to zoom into the graph, so you can hone in on small sections of conversations. If you don't see anything on the graph, you probably haven't recorded anything yet.</li>
   <li data-id="alchemy">Once the conversation you want to focus on is in view, click "Search Speech For Concepts" to see a map of the most relevant concepts in the conversation. Then click on a concept to dig deeper.</li>
 </ol>
