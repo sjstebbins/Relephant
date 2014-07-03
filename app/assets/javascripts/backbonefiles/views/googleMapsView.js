@@ -12,7 +12,7 @@ var GoogleMapsView = Backbone.View.extend({
       geocoder.geocode( { 'address': this.options.googleMapsQuery }, function(results, status){
         if (status == google.maps.GeocoderStatus.OK) {
           var lat = results[0].geometry.location.k;
-          var lon = results[0].geometry.location.A;
+          var lon = results[0].geometry.location.B;
           this.initializeMap(lat, lon);
         }
       }.bind(this));

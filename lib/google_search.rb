@@ -4,5 +4,4 @@ module GoogleSearch
     HTTParty.get("https://www.googleapis.com/customsearch/v1?key=#{ENV['RELEPHANT_GOOGLE_KEY']}&cx=015698937417642655162:-drsz93czku&q=#{entity}")
   end
 
-
 end
