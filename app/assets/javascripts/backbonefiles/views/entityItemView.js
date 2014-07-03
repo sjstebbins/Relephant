@@ -1,10 +1,12 @@
 var EntityItemView = Backbone.View.extend({
   tagName: 'div',
   className: 'entity-item-view',
-  initialize: function(options){
+  events: {
+    "click .entity-delete-x": "removeSelf"
+  },
+  initialize: function(options) {
     this.options = options || {};
-    var entity = (this.options.query).split('+').join(' ');
-    this.$el.append('<h3 class="entity-title">'+ entity + '</h3>');
+    this.addHeader();
     googleImagesBox = new GoogleImagesView({query: this.options.query, liveMode: this.options.liveMode});
     googleResultBox = new GoogleResultsView({query: this.options.query, liveMode: this.options.liveMode});
     var specialBox = this.specialBox();
@@ -23,6 +25,13 @@ var EntityItemView = Backbone.View.extend({
       var crunchBaseView = new CrunchBaseView({query: this.options.query});
       return crunchBaseView.el;
     }
+  },
+  addHeader: function() {
+    var entity = (this.options.query).split('+').join(' ');
+    this.$el.append("<i class='entity-delete-x fa fa-times-circle-o'></i>");
+    this.$el.append('<h3 class="entity-title">' + entity + '</h3>');
+  },
+  removeSelf: function() {
+    this.$el.remove();
   }
-
 });

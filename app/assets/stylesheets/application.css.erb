@@ -251,13 +251,13 @@ li{
   margin-top: 100px;
 }
 
-#relephant-placeholder {
+#placeholder {
   font-size: 36px;
   height: 300px;
   text-align: center;
 }
 
-#relephant-placeholder img {
+#placeholder img {
   margin-top: 100px;
   opacity: .7;
 }
@@ -281,6 +281,13 @@ li{
   margin: 15px auto 0 auto;
   width: 90%;
   padding: 10px;
+  position: relative;
+}
+
+.entity-delete-x {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .google-results-view {
@@ -366,7 +373,6 @@ li{
 }
 
 #entity-nav{
-  display: none;
   text-align: center
 }
 
@@ -375,6 +381,7 @@ li{
 }
 
 #entity-nav ul li{
+  cursor: pointer;
   display: inline;
   margin: 0 20px;
 }

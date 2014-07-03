@@ -91,7 +91,7 @@ var SpeechInputView = Backbone.View.extend({
   },
 
   setPlaceHolder: function(){
-    this.$el.append('<div id="placeholder"><h3>Please continue speaking</h3></div>');
+    this.$el.append('<div id="placeholder"><img src="http://i.imgur.com/c1ZAaYq.png" /><h3>Please continue speaking</h3></div>');
   },
 
   close: function(){

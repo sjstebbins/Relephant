@@ -5,6 +5,9 @@ var AlchemyResultsView = Backbone.View.extend({
   },
 
   initialize: function(options){
+    // necessary to use 'this' in mouseclickhandler
+    alchemyResultsSelf = this;
+
     this.options = options || {};
     this.queryAlchemy(this.options.stringToQuery);
   },
@@ -38,6 +41,8 @@ var AlchemyResultsView = Backbone.View.extend({
     this.$el.empty();
     this.$el.append("<div id='treemap'>");
     if (entities.length > 0) {
+      var entityNav = _.template($('#entity-nav-template').html());
+      this.$el.append(entityNav);
       $("#treemap").treemap({
         "nodeData": {
           "id": "group 1", "children": entities
@@ -63,7 +68,6 @@ var AlchemyResultsView = Backbone.View.extend({
       $(window).on('resize', function(){
         $('canvas').width(window.innerWidth - 100);
       });
-      $('#entity-nav').show();
     } else {
       this.displayNoEntitiesError();
     }
@@ -72,14 +76,27 @@ var AlchemyResultsView = Backbone.View.extend({
   mouseclickhandler: function(e, data){
     var nodes = data.nodes;
     var ids = data.ids;
-    var entity = ids[0].split(' - ')[0];
+    var entity = ids[0].split(' - ')[0].toLowerCase();
     var type = ids[0].split(' - ')[1].toLowerCase();
-    var query = entity.toLowerCase().split(" ").join("+");
-    var entityItem = new EntityItemView({type: type, query: query});
-    $('#entity-results').prepend(entityItem.$el);
-    $('html, body').animate({
-      scrollTop: $('#entity-results').offset().top - 80
+    if (alchemyResultsSelf.entityDisplayed(entity)) {
+      $('html, body').animate({
+        scrollTop: $("h3:contains(" + entity + ")").offset().top - 80
+      });
+    } else {
+      var query = entity.split(" ").join("+");
+      var entityItem = new EntityItemView({type: type, query: query});
+      $('#entity-results').prepend(entityItem.$el);
+      $('html, body').animate({
+        scrollTop: $('#entity-results').offset().top - 80
+      });
+    }
+  },
+  // query param should be lowercase with spaces
+  entityDisplayed: function(entity) {
+    var currentEntities = $('.entity-title').map(function() {
+      return $(this).text();
     });
+    return $.makeArray(currentEntities).indexOf(entity) !== -1;
   },
 
   hideTranscript: function(){

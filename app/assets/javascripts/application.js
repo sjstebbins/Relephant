@@ -57,15 +57,15 @@ function ready(){
   });
 
   // Entity Nav Click
-    $('#entity-nav-image').on('click', function(){
+    $('#alchemy-results-view').on('click', '#entity-nav-image', function(){
       $('#entity-nav-image').toggleClass('entity-nav-click');
-      $('.google-image-view').slideToggle();
+      $('.google-images-view').slideToggle();
     });
-    $('#entity-nav-google').on('click', function(){
+    $('#alchemy-results-view').on('click', '#entity-nav-google', function(){
       $('#entity-nav-google').toggleClass('entity-nav-click');
       $('.google-results-view').slideToggle();
     });
-    $('#entity-nav-map').on('click', function(){
+    $('#alchemy-results-view').on('click', '#entity-nav-map', function(){
       $('#entity-nav-map').toggleClass('entity-nav-click');
       $('.google-maps-view').slideToggle();
     });
